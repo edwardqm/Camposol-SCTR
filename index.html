@@ -175,30 +175,42 @@ function getSheetUrl(){return localStorage.getItem(LS_SHEET_URL)||'';}
 function getActiveDB(){return ONLINE_DB||LOCAL_DB;}
 
 async function syncFromGoogleSheets(){
-    if(!getSheetUrl()){
-        showAlert('Google Sheets no configurado. Edita G_SHEETS_CSV_URL en el código.','error');
+    const url=getSheetUrl();
+    if(!url){
+        showAlert('No hay URL configurada. Ingrese una URL en el Panel de Control.','error');
         return false;
     }
     try{
         showLoading(true);
         const controller=new AbortController();
         const timeout=setTimeout(()=>controller.abort(),15000);
-        const res=await fetch(getSheetUrl(),{signal:controller.signal,mode:'cors'});
+        const res=await fetch(url,{signal:controller.signal,mode:'cors'});
         clearTimeout(timeout);
         if(!res.ok)throw new Error('HTTP '+res.status);
         const csv=await res.text();
+        if(!csv||csv.trim().length<50)throw new Error('Respuesta vacía o muy corta');
         ONLINE_DB=parseCSV(csv);
+        if(!ONLINE_DB||ONLINE_DB.length===0)throw new Error('No se encontraron registros válidos en el CSV');
         LAST_SYNC=new Date();
         IS_ONLINE=true;
         updateStats();
         renderSyncStatus();
-        showAlert('Sincronizado con Google Sheets ✓','info');
+        showAlert('Sincronizado ✓ · '+ONLINE_DB.length+' registros cargados','info');
         return true;
     }catch(err){
         IS_ONLINE=false;
+        ONLINE_DB=null;
         renderSyncStatus();
         console.error('Sync error:',err);
-        showAlert('No se pudo conectar a Google Sheets. Usando datos locales.','error');
+        let msg='No se pudo conectar. ';
+        if(err.name==='AbortError'||err.name==='TypeError'){
+            msg+='Posible problema de CORS o red. Si usa SharePoint, debe usar Google Sheets o un servidor con CORS habilitado.';
+        }else if(err.message.includes('HTTP')){
+            msg+='Error del servidor: '+err.message;
+        }else{
+            msg+=err.message;
+        }
+        showAlert(msg,'error');
         return false;
     }finally{
         showLoading(false);
@@ -529,22 +541,22 @@ function loadConfigPanel(){
 function saveSheetConfig(){
     const url=document.getElementById('sheetUrlInput').value.trim();
     if(!url){
-        showAlert('Ingrese una URL válida','error');
+        showAlert('Ingrese una URL','error');
         return;
     }
-    if(!url.includes('google.com')||!url.includes('output=csv')){
-        showAlert('La URL no parece ser un enlace CSV de Google Sheets válido.','error');
-        return;
-    }
+    // Guardar SIEMPRE la URL, sin importar de dónde venga
     localStorage.setItem(LS_SHEET_URL,url);
-    showAlert('URL guardada. Sincronizando...','info');
+    showAlert('URL guardada. Intentando sincronizar...','info');
+
     syncFromGoogleSheets().then(ok=>{
         if(ok){
             localStorage.setItem(LS_LAST_SYNC,Date.now().toString());
-            showAlert('✅ Configuración guardada y sincronizada','info');
-            closeConfigModal();
+            showAlert('✅ Sincronizado correctamente','info');
+            loadConfigPanel(); // refrescar panel
         }else{
-            loadConfigPanel();
+            // La URL se guardó pero no se pudo sincronizar
+            loadConfigPanel(); // mostrar estado actual
+            showAlert('⚠️ URL guardada pero no se pudo sincronizar. Verifique que la URL sea accesible públicamente.','error');
         }
     });
 }
@@ -597,7 +609,7 @@ document.addEventListener('touchend',e=>{let now=Date.now();if(now-lastTouch<300
                 <div style="margin-bottom:16px">
                     <label style="font-size:0.8rem;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px">🔗 URL de Google Sheets (CSV)</label>
                     <textarea id="sheetUrlInput" placeholder="https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?output=csv" style="width:100%;padding:12px;border:2px solid #e0e0e0;border-radius:12px;font-size:0.85rem;min-height:80px;resize:vertical;font-family:inherit"></textarea>
-                    <div style="font-size:0.75rem;color:var(--gray);margin-top:6px">💡 Pega aquí el enlace CSV publicado. Se guardará en este dispositivo.</div>
+                    <div style="font-size:0.75rem;color:var(--gray);margin-top:6px">💡 Pega aquí el enlace directo a un archivo CSV. Compatible con Google Sheets publicado como CSV. SharePoint NO funciona directamente.</div>
                 </div>
 
                 <div style="background:var(--light);border-radius:12px;padding:12px;margin-bottom:16px">
