@@ -102,6 +102,7 @@ html,body{font-family:'Segoe UI',Roboto,-apple-system,BlinkMacSystemFont,sans-se
 
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@zxing/browser@0.1.5/umd/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><div style="color:var(--primary);font-weight:600">Buscando...</div></div>
@@ -174,49 +175,123 @@ function getSheetUrl(){return localStorage.getItem(LS_SHEET_URL)||'';}
 
 function getActiveDB(){return ONLINE_DB||LOCAL_DB;}
 
-async function syncFromGoogleSheets(){
-    const url=getSheetUrl();
-    if(!url){
-        showAlert('No hay URL configurada. Ingrese una URL en el Panel de Control.','error');
-        return false;
-    }
-    try{
-        showLoading(true);
-        const controller=new AbortController();
-        const timeout=setTimeout(()=>controller.abort(),15000);
-        const res=await fetch(url,{signal:controller.signal,mode:'cors'});
-        clearTimeout(timeout);
-        if(!res.ok)throw new Error('HTTP '+res.status);
-        const csv=await res.text();
-        if(!csv||csv.trim().length<50)throw new Error('Respuesta vacía o muy corta');
-        ONLINE_DB=parseCSV(csv);
-        if(!ONLINE_DB||ONLINE_DB.length===0)throw new Error('No se encontraron registros válidos en el CSV');
-        LAST_SYNC=new Date();
-        IS_ONLINE=true;
-        updateStats();
-        renderSyncStatus();
-        showAlert('Sincronizado ✓ · '+ONLINE_DB.length+' registros cargados','info');
-        return true;
-    }catch(err){
-        IS_ONLINE=false;
-        ONLINE_DB=null;
-        renderSyncStatus();
-        console.error('Sync error:',err);
-        let msg='No se pudo conectar. ';
-        if(err.name==='AbortError'||err.name==='TypeError'){
-            msg+='Posible problema de CORS o red. Si usa SharePoint, debe usar Google Sheets o un servidor con CORS habilitado.';
-        }else if(err.message.includes('HTTP')){
-            msg+='Error del servidor: '+err.message;
-        }else{
-            msg+=err.message;
-        }
-        showAlert(msg,'error');
-        return false;
-    }finally{
-        showLoading(false);
-    }
+// ═══════════════════════════════════════════════════════════════
+// MOTOR DE DESCARGA MULTI-ESTRATEGIA v3
+// HTTP 0 = preflight CORS bloqueado por Android Chrome.
+// Solución: fetch sin headers custom + proxies CORS como fallback.
+// ═══════════════════════════════════════════════════════════════
+
+function isValidData(text){
+    if(!text||text.trim().length<30) return false;
+    var low=text.toLowerCase();
+    if(low.indexOf('<!doctype')>-1) return false;
+    if(low.indexOf('<html')>-1) return false;
+    if(low.indexOf('accessdenied')>-1) return false;
+    return true;
 }
 
+function buildAttempts(url){
+    var b64='';
+    try{b64=btoa(unescape(encodeURIComponent(url))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');}catch(e){}
+    var dlUrl=url+(url.indexOf('?')>-1?'&download=1':'?download=1');
+    var encOrig=encodeURIComponent(url);
+    var encDl=encodeURIComponent(dlUrl);
+    var graphUrl='https://api.onedrive.com/v1.0/shares/u!'+b64+'/root/content';
+    var encGraph=encodeURIComponent(graphUrl);
+    return [
+        {u:graphUrl,                                              t:'graph'},
+        {u:'https://corsproxy.io/?'+encGraph,                     t:'corsproxy-graph'},
+        {u:'https://corsproxy.io/?'+encDl,                        t:'corsproxy-dl'},
+        {u:'https://corsproxy.io/?'+encOrig,                      t:'corsproxy-orig'},
+        {u:'https://api.allorigins.win/raw?url='+encGraph,        t:'allorigins-graph'},
+        {u:'https://api.allorigins.win/raw?url='+encDl,           t:'allorigins-dl'},
+        {u:dlUrl,                                                  t:'direct-dl'},
+        {u:url,                                                    t:'direct'},
+    ];
+}
+
+function tryFetchBin(url,ms){
+    return new Promise(function(resolve,reject){
+        var done=false;
+        var tid=setTimeout(function(){if(!done){done=true;reject(new Error('timeout '+ms+'ms'));}},ms||5000);
+        fetch(url).then(function(res){
+            if(done)return;
+            clearTimeout(tid);
+            if(res.ok){
+                res.arrayBuffer().then(function(buf){done=true;resolve(buf);}).catch(function(e){done=true;reject(e);});
+            }else{
+                done=true;reject(new Error('HTTP '+res.status));
+            }
+        }).catch(function(e){if(!done){clearTimeout(tid);done=true;reject(e);}});
+    });
+}
+
+function bufferToCSV(buf){
+    var text='';
+    try{text=new TextDecoder('utf-8').decode(new Uint8Array(buf));}catch(e){}
+    if(isValidData(text)) return text;
+    if(typeof XLSX!=='undefined'){
+        try{
+            var wb=XLSX.read(new Uint8Array(buf),{type:'array'});
+            var ws=wb.Sheets[wb.SheetNames[0]];
+            var csv=XLSX.utils.sheet_to_csv(ws);
+            if(csv&&csv.length>30) return csv;
+        }catch(e){console.log('XLSX err:',e.message);}
+    }
+    return null;
+}
+
+async function syncFromGoogleSheets(silent){
+    silent=!!silent;
+    var url=getSheetUrl();
+    if(!url){
+        if(!silent)showAlert('No hay URL configurada. Use ⚙️ Admin para ingresar la URL.','error');
+        return false;
+    }
+    if(!silent)showLoading(true);
+
+    var csvText=null;
+    var tag='';
+    var attempts=buildAttempts(url);
+
+    for(var i=0;i<attempts.length;i++){
+        if(csvText)break;
+        var a=attempts[i];
+        try{
+            console.log('>>'+a.t);
+            var buf=await tryFetchBin(a.u,6000);
+            if(buf&&buf.byteLength>50){
+                var c=bufferToCSV(buf);
+                if(c){csvText=c;tag=a.t;console.log('OK:'+tag+' bytes='+buf.byteLength);}
+                else{console.log('XX:'+a.t+' no legible');}
+            }else{console.log('XX:'+a.t+' vacío');}
+        }catch(e){console.log('XX:'+a.t+' '+e.message);}
+    }
+
+    if(!silent)showLoading(false);
+
+    if(!csvText){
+        IS_ONLINE=false;ONLINE_DB=null;renderSyncStatus();
+        if(!silent)showAlert('⚠️ SharePoint requiere sesión activa de Microsoft. Use la opción de Google Sheets o cargue el CSV manual.','error');
+        return false;
+    }
+
+    try{
+        var p=parseCSV(csvText);
+        if(!p||p.length===0)throw new Error('Sin registros válidos');
+        ONLINE_DB=p;
+        localStorage.setItem('sctr_online_db_cache',JSON.stringify(ONLINE_DB));
+        localStorage.setItem(LS_LAST_SYNC,Date.now().toString());
+        LAST_SYNC=new Date();IS_ONLINE=true;
+        updateStats();renderSyncStatus();
+        if(!silent)showAlert('✅ Sincronizado ['+tag+'] · '+ONLINE_DB.length+' registros','info');
+        return true;
+    }catch(err){
+        IS_ONLINE=false;ONLINE_DB=null;renderSyncStatus();
+        if(!silent)showAlert('⚠️ Error al leer datos: '+err.message,'error');
+        return false;
+    }
+}
 function parseCSV(text){
     const lines=text.trim().split('\n');
     if(lines.length<2)return[];
@@ -283,10 +358,10 @@ function renderSyncStatus(){
     }
     if(IS_ONLINE&&LAST_SYNC){
         el.style.background='#e8f5e9';el.style.color='#2e7d32';el.style.border='1px solid #a5d6a7';
-        el.innerHTML='🟢 Online · '+LAST_SYNC.toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'})+' <span style="cursor:pointer;text-decoration:underline" onclick="syncFromGoogleSheets()">↻</span>';
+        el.innerHTML='🟢 Online · '+LAST_SYNC.toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'})+' <span style="cursor:pointer;text-decoration:underline" onclick="syncFromGoogleSheets(false)">↻</span>';
     }else{
         el.style.background='#ffebee';el.style.color='#c62828';el.style.border='1px solid #ef9a9a';
-        el.innerHTML='🔴 Offline · Local <span style="cursor:pointer;text-decoration:underline" onclick="syncFromGoogleSheets()">↻</span>';
+        el.innerHTML='🔴 Offline · Local <span style="cursor:pointer;text-decoration:underline" onclick="syncFromGoogleSheets(false)">↻</span>';
     }
 }
 
@@ -295,13 +370,18 @@ let recentSearches=JSON.parse(localStorage.getItem('sctr_recent')||'[]');
 
 window.addEventListener('DOMContentLoaded',()=>{
     useZXing=typeof window.ZXingBrowser!=='undefined';
+    // Recuperar caché de base online si existe
+    const cached=localStorage.getItem('sctr_online_db_cache');
+    if(cached){
+        try{ONLINE_DB=JSON.parse(cached);IS_ONLINE=true;LAST_SYNC=new Date(parseInt(localStorage.getItem(LS_LAST_SYNC)||0));}catch(e){}
+    }
     updateStats();
     renderRecent();
     renderSyncStatus();
     startScanner();
-    // Intentar sincronizar con Google Sheets al cargar (silencioso)
+    // Sync silencioso al cargar: si falla, no muestra alertas rojas al usuario
     if(getSheetUrl()){
-        syncFromGoogleSheets().catch(()=>{});
+        syncFromGoogleSheets(true).catch(()=>{});
     }
     document.getElementById('dniInput').addEventListener('keypress',e=>{if(e.key==='Enter')searchManual()});
     if('serviceWorker'in navigator){
@@ -492,6 +572,38 @@ function closeModal(e){if(!e||e.target===document.getElementById('modalOverlay')
 // ═══════════════════════════════════════════════════════
 // PANEL DE CONTROL — CONFIGURACIÓN ADMIN
 // ═══════════════════════════════════════════════════════
+
+function handleCsvUpload(event){
+    const file=event.target.files[0];
+    if(!file)return;
+    showAlert('⏳ Leyendo archivo...','info');
+    const reader=new FileReader();
+    reader.onload=function(e){
+        try{
+            const csv=e.target.result;
+            ONLINE_DB=parseCSV(csv);
+            if(!ONLINE_DB||ONLINE_DB.length===0){
+                showAlert('❌ El archivo no contiene registros válidos','error');
+                loadConfigPanel();
+                return;
+            }
+            localStorage.setItem('sctr_online_db_cache',JSON.stringify(ONLINE_DB));
+            localStorage.setItem(LS_LAST_SYNC,Date.now().toString());
+            IS_ONLINE=true;
+            LAST_SYNC=new Date();
+            updateStats();
+            renderSyncStatus();
+            loadConfigPanel();
+            showAlert('✅ CSV CARGADO · '+ONLINE_DB.length+' registros guardados en el dispositivo','info');
+        }catch(err){
+            showAlert('❌ Error al leer CSV: '+err.message,'error');
+            loadConfigPanel();
+        }
+    };
+    reader.onerror=function(){showAlert('❌ No se pudo leer el archivo','error');};
+    reader.readAsText(file);
+}
+
 function showConfigModal(){
     document.getElementById('configModalOverlay').classList.add('active');
     document.getElementById('configStepKey').style.display='block';
@@ -525,44 +637,69 @@ function loadConfigPanel(){
     document.getElementById('sheetUrlInput').value=url;
     const statusEl=document.getElementById('configStatusText');
     const syncEl=document.getElementById('configLastSync');
+    const urlEl=document.getElementById('configUrlDisplay');
+    const resultBox=document.getElementById('configResultBox');
+
+    // Detectar si es SharePoint
+    const isSharePoint=url.includes('sharepoint.com')||url.includes('sharepoint');
+
     if(url){
+        urlEl.textContent='URL: '+url.substring(0,60)+(url.length>60?'...':'');
         if(IS_ONLINE&&ONLINE_DB&&ONLINE_DB.length>0){
-            statusEl.innerHTML='<span style="color:var(--success);font-weight:700">🟢 Conectado · '+ONLINE_DB.length+' registros</span>';
+            statusEl.innerHTML='<span style="color:var(--success)">🟢 ONLINE · '+ONLINE_DB.length+' registros activos</span>';
+            const last=localStorage.getItem(LS_LAST_SYNC);
+            syncEl.textContent='Última carga: '+(last?new Date(parseInt(last)).toLocaleString('es-PE'):'desconocida');
+        }else if(isSharePoint){
+            statusEl.innerHTML='<span style="color:var(--warning)">🟡 SHAREPOINT DETECTADO</span>';
+            syncEl.innerHTML='❌ SharePoint no permite descargas directas desde apps web por seguridad.<br><br>👉 <strong>Use el botón "📁 Subir CSV manual" abajo</strong> para cargar el archivo directamente desde su dispositivo.';
         }else{
-            statusEl.innerHTML='<span style="color:var(--warning);font-weight:700">🟡 URL guardada pero no sincronizado</span>';
+            statusEl.innerHTML='<span style="color:var(--warning)">🟡 URL guardada pero NO conectado</span>';
+            syncEl.textContent='No se pudo sincronizar. Verifique que la URL sea pública o use Subir CSV manual.';
         }
     }else{
-        statusEl.innerHTML='<span style="color:var(--gray);font-weight:700">⚪ Sin configurar · usando datos locales</span>';
+        urlEl.textContent='Sin URL configurada';
+        statusEl.innerHTML='<span style="color:var(--gray)">⚪ OFFLINE · Usando datos locales ('+LOCAL_DB.length+' registros)</span>';
+        syncEl.textContent='Configure una URL o suba un CSV manualmente.';
     }
-    const last=localStorage.getItem(LS_LAST_SYNC);
-    syncEl.textContent=last?'Última sincronización: '+new Date(parseInt(last)).toLocaleString('es-PE'):'Sin sincronizaciones previas';
+
+    // Mostrar resultado de última operación si hay datos en caché
+    const cachedCount=localStorage.getItem('sctr_online_db_cache');
+    if(cachedCount){
+        try{
+            const arr=JSON.parse(cachedCount);
+            if(Array.isArray(arr)&&arr.length>0){
+                resultBox.style.display='block';
+                document.getElementById('configResultText').innerHTML='📦 '+arr.length+' registros en caché local (funcionan sin internet). Última actualización: '+new Date(parseInt(localStorage.getItem(LS_LAST_SYNC)||0)).toLocaleString('es-PE');
+            }else{
+                resultBox.style.display='none';
+            }
+        }catch(e){resultBox.style.display='none';}
+    }else{
+        resultBox.style.display='none';
+    }
 }
 
 function saveSheetConfig(){
-    const url=document.getElementById('sheetUrlInput').value.trim();
+    var url=document.getElementById('sheetUrlInput').value.trim();
     if(!url){
         showAlert('Ingrese una URL','error');
         return;
     }
-    // Guardar SIEMPRE la URL, sin importar de dónde venga
     localStorage.setItem(LS_SHEET_URL,url);
-    showAlert('URL guardada. Intentando sincronizar...','info');
+    showAlert('⏳ Intentando conectar (hasta 4 estrategias automáticas)...','info');
 
-    syncFromGoogleSheets().then(ok=>{
+    syncFromGoogleSheets(false).then(function(ok){
+        loadConfigPanel();
         if(ok){
             localStorage.setItem(LS_LAST_SYNC,Date.now().toString());
-            showAlert('✅ Sincronizado correctamente','info');
-            loadConfigPanel(); // refrescar panel
         }else{
-            // La URL se guardó pero no se pudo sincronizar
-            loadConfigPanel(); // mostrar estado actual
-            showAlert('⚠️ URL guardada pero no se pudo sincronizar. Verifique que la URL sea accesible públicamente.','error');
+            showAlert('⚠️ No se pudo conectar. Asegúrese que el archivo esté compartido como "Cualquier persona con el vínculo puede ver".','error');
         }
     });
 }
 
 function resetSheetConfig(){
-    if(!confirm('¿Eliminar la conexión a Google Sheets y volver a usar datos locales?'))return;
+    if(!confirm('¿Eliminar la conexión y volver a usar datos locales?'))return;
     localStorage.removeItem(LS_SHEET_URL);
     localStorage.removeItem(LS_LAST_SYNC);
     ONLINE_DB=null;
@@ -609,7 +746,7 @@ document.addEventListener('touchend',e=>{let now=Date.now();if(now-lastTouch<300
                 <div style="margin-bottom:16px">
                     <label style="font-size:0.8rem;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px">🔗 URL de Google Sheets (CSV)</label>
                     <textarea id="sheetUrlInput" placeholder="https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?output=csv" style="width:100%;padding:12px;border:2px solid #e0e0e0;border-radius:12px;font-size:0.85rem;min-height:80px;resize:vertical;font-family:inherit"></textarea>
-                    <div style="font-size:0.75rem;color:var(--gray);margin-top:6px">💡 Pega aquí el enlace directo a un archivo CSV. Compatible con Google Sheets publicado como CSV. SharePoint NO funciona directamente.</div>
+                    <div style="font-size:0.75rem;color:var(--gray);margin-top:6px">💡 <strong>SharePoint/OneDrive corporativo requiere sesión Microsoft activa</strong> — los proxies no pueden acceder. <strong style="color:var(--primary)">Solución recomendada:</strong> importe el Excel a Google Sheets → Archivo → Publicar en la web → CSV → pegue esa URL aquí.</div>
                 </div>
 
                 <div style="background:var(--light);border-radius:12px;padding:12px;margin-bottom:16px">
@@ -620,6 +757,11 @@ document.addEventListener('touchend',e=>{let now=Date.now();if(now-lastTouch<300
 
                 <div style="display:flex;gap:10px;flex-direction:column">
                     <button class="btn btn-primary" onclick="saveSheetConfig()">💾 Guardar y Sincronizar</button>
+                    <div style="border-top:1px dashed #ddd;padding-top:10px;margin-top:4px">
+                        <div style="font-size:0.75rem;color:var(--gray);margin-bottom:8px;text-align:center">📁 O suba un archivo CSV directamente desde su dispositivo (funciona 100% offline)</div>
+                        <input type="file" id="csvFileInput" accept=".csv" style="display:none" onchange="handleCsvUpload(event)">
+                        <button class="btn btn-secondary" onclick="document.getElementById('csvFileInput').click()">📁 Subir CSV manual</button>
+                    </div>
                     <button class="btn btn-secondary" onclick="resetSheetConfig()">🔄 Volver a datos locales</button>
                     <button class="btn btn-secondary" onclick="closeConfigModal()" style="border-color:var(--gray);color:var(--gray)">✖️ Cerrar</button>
                 </div>
