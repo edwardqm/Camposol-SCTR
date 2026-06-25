@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0d47a1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Consulta de vigencia SCTR - Seguridad Patrimonial Camposol">
+    <title>SCTR Check - Vigencia SCTR</title>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiU0NUUiBDaGVjayIsInNob3J0X25hbWUiOiJTQ1RSIiwic3RhcnRfdXJsIjoiLiIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwZDQ3YTEiLCJ0aGVtZV9jb2xvciI6IiMwZDQ3YTEiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxOTIgMTkyJyBmaWxsPScjZmZmJyUzRSUzQ3JlY3Qgd2lkdGg9JzE5MicgaGVpZ2h0PScxOTInIHJ4PScyNCcgZmlsbD0nIzBkNDdhMSclM0UlM0MvcGF0aCUzRSUzQ3N2ZyB4PSczNicgeT0nMzYnIHdpZHRoPScxMjAnIGhlaWdodD0nMTIwJyB2aWV3Qm94PScwIDAgMjQgMjQnIGZpbGw9JyNmZmZmZmYnJTNFJTNDcGF0aCBkPSdNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptLTIgMTUuNXYtN2g0djdoLTR6bTAtOWgtNFY2aDR2Mi41eicvJTNFJTNDL3N2ZyUzRSM0Mvc3ZnJTNFIn0seyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDE5MiAxOTInIGZpbGw9JyNmZmYnJTNFXTNDcmVjdCB3aWR0aD0nMTkyJyBoZWlnaHQ9JzE5Micgcng9JzI0JyBmaWxsPScjMGQ0N2ExJyUzRSUzQy9wYXRoJTNFJTNDc3ZnIHg9JzM2JyB5PSczNicgd2lkdGg9JzEyMCcgaGVpZ2h0PScxMjAnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nI2ZmZmZmZiclM0UlM0NwYXRoIGQ9J00xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0tMiAxNS41di03aDR2N2gtNHptMC05aC00VjZoNHYyLjV6Jy8lM0UlM0Mvc3ZnJTNFJTNDL3N2ZyUzRSIsInNpemVzIjoiMTkyeDE5MiIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dfQ==">
+    <style>
+
+:root{--primary:#0d47a1;--primary-dark:#002171;--primary-light:#5472d3;--accent:#ff6f00;--success:#2e7d32;--warning:#f57c00;--danger:#c62828;--gray:#757575;--light:#f5f5f5;--white:#ffffff;--shadow:0 2px 8px rgba(0,0,0,0.15);--shadow-lg:0 4px 16px rgba(0,0,0,0.2)}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{font-family:'Segoe UI',Roboto,-apple-system,BlinkMacSystemFont,sans-serif;background:var(--light);color:#212121;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.header{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:var(--white);padding:16px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-lg)}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.header-title{font-size:1.3rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.header-icon{width:32px;height:32px;background:rgba(255,255,255,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.header-subtitle{font-size:0.75rem;opacity:0.85;letter-spacing:0.5px}
+.version-badge{font-size:0.65rem;background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:12px}
+.container{max-width:600px;margin:0 auto;padding:16px}
+.search-card{background:var(--white);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.search-tabs{display:flex;gap:8px;margin-bottom:16px}
+.tab-btn{flex:1;padding:12px;border:2px solid var(--primary-light);background:var(--white);color:var(--primary);border-radius:12px;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.tab-btn.active{background:var(--primary);color:var(--white);border-color:var(--primary)}
+.tab-btn:active{transform:scale(0.98)}
+.scanner-container{display:none;position:relative;width:100%;max-width:400px;margin:0 auto 16px}
+.scanner-container.active{display:block}
+#video{width:100%;border-radius:16px;background:#000;display:block}
+.scanner-overlay{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:16px;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.scanner-frame{width:70%;aspect-ratio:1.6;border:3px solid var(--accent);border-radius:12px;position:relative;box-shadow:0 0 0 9999px rgba(0,0,0,0.5)}
+.scanner-frame::before,.scanner-frame::after{content:'';position:absolute;width:20px;height:20px;border-color:var(--accent);border-style:solid}
+.scanner-frame::before{top:-3px;left:-3px;border-width:4px 0 0 4px}
+.scanner-frame::after{bottom:-3px;right:-3px;border-width:0 4px 4px 0}
+.scanner-line{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);animation:scan 2s linear infinite}
+@keyframes scan{0%{top:0;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
+.scanner-hint{position:absolute;bottom:20px;color:var(--white);font-size:0.85rem;text-shadow:0 1px 4px rgba(0,0,0,0.8);background:rgba(0,0,0,0.5);padding:6px 16px;border-radius:20px}
+.scanner-controls{display:flex;gap:10px;justify-content:center;margin-top:12px}
+.manual-container{display:none}
+.manual-container.active{display:block}
+.input-group{position:relative;margin-bottom:12px}
+.input-group input{width:100%;padding:16px 16px 16px 48px;border:2px solid #e0e0e0;border-radius:12px;font-size:1.1rem;font-weight:500;transition:all 0.2s;background:var(--white)}
+.input-group input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(13,71,161,0.1)}
+.input-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--gray);font-size:1.2rem}
+.btn{width:100%;padding:16px;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-primary{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:var(--white);box-shadow:0 4px 12px rgba(13,71,161,0.3)}
+.btn-primary:active{transform:translateY(2px);box-shadow:0 2px 6px rgba(13,71,161,0.3)}
+.btn-secondary{background:var(--white);color:var(--primary);border:2px solid var(--primary-light)}
+.btn-danger{background:linear-gradient(135deg,var(--danger) 0%,#8e0000 100%);color:var(--white)}
+.btn:disabled{opacity:0.6;cursor:not-allowed}
+.results-section{display:none}
+.results-section.active{display:block}
+.result-card{background:var(--white);border-radius:16px;overflow:hidden;margin-bottom:16px;box-shadow:var(--shadow);animation:slideUp 0.3s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.result-header{padding:16px 20px;color:var(--white);position:relative}
+.result-header.vigente{background:linear-gradient(135deg,var(--success) 0%,#1b5e20 100%)}
+.result-header.por-vencer{background:linear-gradient(135deg,var(--warning) 0%,#e65100 100%)}
+.result-header.vencido{background:linear-gradient(135deg,var(--danger) 0%,#8e0000 100%)}
+.result-header.sin-datos{background:linear-gradient(135deg,var(--gray) 0%,#424242 100%)}
+.result-status{font-size:1.5rem;font-weight:800;text-transform:uppercase;letter-spacing:1px}
+.result-days{font-size:2.5rem;font-weight:900;margin-top:4px}
+.result-days-label{font-size:0.9rem;opacity:0.9}
+.result-body{padding:20px}
+.info-row{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f0f0f0}
+.info-row:last-child{border-bottom:none}
+.info-label{font-size:0.8rem;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;flex-shrink:0;margin-right:12px}
+.info-value{font-size:0.95rem;color:#212121;font-weight:500;text-align:right;word-break:break-word}
+.info-value.highlight{color:var(--primary);font-weight:700}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+.stat-box{background:var(--white);border-radius:12px;padding:16px;text-align:center;box-shadow:var(--shadow)}
+.stat-number{font-size:1.8rem;font-weight:800;color:var(--primary)}
+.stat-label{font-size:0.75rem;color:var(--gray);margin-top:4px;text-transform:uppercase}
+.alert{padding:14px 16px;border-radius:12px;margin-bottom:16px;font-size:0.9rem;display:flex;align-items:center;gap:10px;animation:slideUp 0.3s ease}
+.alert-error{background:#ffebee;color:var(--danger);border-left:4px solid var(--danger)}
+.alert-info{background:#e3f2fd;color:var(--primary);border-left:4px solid var(--primary)}
+.loading-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.9);z-index:1000;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.loading-overlay.active{display:flex}
+.spinner{width:48px;height:48px;border:4px solid #e3f2fd;border-top-color:var(--primary);border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.recent-section{margin-top:16px}
+.section-title{font-size:0.85rem;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.recent-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--white);border:1px solid #e0e0e0;border-radius:20px;font-size:0.85rem;margin:0 6px 8px 0;cursor:pointer;transition:all 0.2s}
+.recent-chip:active{background:#e3f2fd;border-color:var(--primary-light)}
+.chip-status{width:8px;height:8px;border-radius:50%}
+.chip-status.vigente{background:var(--success)}
+.chip-status.por-vencer{background:var(--warning)}
+.chip-status.vencido{background:var(--danger)}
+.footer{text-align:center;padding:24px 16px;color:var(--gray);font-size:0.75rem}
+.footer-brand{font-weight:700;color:var(--primary);margin-bottom:4px}
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:500;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.active{display:flex}
+.modal-content{background:var(--white);border-radius:20px;padding:24px;max-width:400px;width:100%;text-align:center;animation:scaleIn 0.2s ease}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+.modal-icon{font-size:3rem;margin-bottom:12px}
+.modal-title{font-size:1.2rem;font-weight:700;margin-bottom:8px}
+.modal-text{color:var(--gray);margin-bottom:20px;font-size:0.9rem}
+@media(min-width:768px){.container{padding:24px}.header{padding:20px 24px}.header-title{font-size:1.5rem}}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#bdbdbd;border-radius:3px}
+.hidden{display:none!important}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@zxing/browser@0.1.5/umd/index.min.js"></script>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><div style="color:var(--primary);font-weight:600">Buscando...</div></div>
+    <header class="header"><div class="header-top"><div class="header-title"><div class="header-icon">🛡️</div><div><div>SCTR Check</div><div class="header-subtitle">Seguridad Patrimonial · Camposol</div></div></div><span class="version-badge">v1.0.0</span><button onclick="showConfigModal()" style="background:rgba(255,255,255,0.2);border:none;color:#fff;padding:4px 10px;border-radius:8px;font-size:0.75rem;cursor:pointer;margin-left:8px">⚙️ Admin</button></div></header>
+    <div class="container">
+        <div class="stats-grid" id="statsGrid"><div class="stat-box"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Registros</div></div><div class="stat-box"><div class="stat-number" id="statVigentes" style="color:var(--success)">0</div><div class="stat-label">Vigentes</div></div></div>
+        <div class="search-card">
+            <div class="search-tabs">
+                <button class="tab-btn active" onclick="switchTab('scanner')" id="tabScanner"><span>📷</span> Escanear</button>
+                <button class="tab-btn" onclick="switchTab('manual')" id="tabManual"><span>⌨️</span> Manual</button>
+            </div>
+            <div class="scanner-container active" id="scannerContainer">
+                <div style="position:relative"><video id="video" autoplay playsinline muted></video>
+                    <div class="scanner-overlay"><div class="scanner-frame"><div class="scanner-line"></div></div></div>
+                    <div class="scanner-hint">Apunte al código de barras del DNI</div></div>
+                <div class="scanner-controls">
+                    <button class="btn btn-secondary" onclick="stopScanner()" style="flex:1">⏹️ Detener</button>
+                    <button class="btn btn-primary" onclick="toggleFlash()" style="flex:1">💡 Flash</button>
+                </div>
+                <canvas id="canvas" style="display:none"></canvas>
+            </div>
+            <div class="manual-container" id="manualContainer">
+                <div class="input-group"><span class="input-icon">🆔</span><input type="text" id="dniInput" placeholder="Ingrese número de DNI" maxlength="20" inputmode="numeric" autocomplete="off"></div>
+                <button class="btn btn-primary" onclick="searchManual()" id="btnSearch">🔍 Consultar Vigencia SCTR</button>
+            </div>
+        </div>
+        <div id="alertContainer"></div>
+        <div class="results-section" id="resultsSection">
+            <div class="result-card" id="resultCard">
+                <div class="result-header" id="resultHeader">
+                    <div class="result-status" id="resultStatus">--</div>
+                    <div class="result-days" id="resultDays">--</div>
+                    <div class="result-days-label" id="resultDaysLabel">días restantes</div>
+                </div>
+                <div class="result-body" id="resultBody"></div>
+            </div>
+            <button class="btn btn-secondary" onclick="clearResults()">🔄 Nueva Consulta</button>
+        </div>
+        <div class="recent-section" id="recentSection">
+            <div class="section-title"><span>🕐 Consultas recientes</span><span style="cursor:pointer;color:var(--primary)" onclick="clearRecent()">Limpiar</span></div>
+            <div id="recentList"></div>
+        </div>
+        <div class="footer"><div class="footer-brand">SEGURIDAD PATRIMONIAL</div><div>Camposol · Consulta de Vigencia SCTR</div><div style="margin-top:8px;opacity:0.7">Solo lectura · Uso interno autorizado</div><div style="margin-top:12px;font-size:0.7rem;opacity:0.6"><a href="https://www.linkedin.com/in/edwardqm" target="_blank" rel="noopener" style="color:var(--primary);text-decoration:none;font-weight:600">👨‍💻 Desarrollado por Edward QM</a></div></div>
+    </div>
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-icon" id="modalIcon">ℹ️</div>
+            <div class="modal-title" id="modalTitle">Título</div>
+            <div class="modal-text" id="modalText">Mensaje</div>
+            <button class="btn btn-primary" onclick="closeModal()">Aceptar</button>
+        </div>
+    </div>
+    <script>
+let LOCAL_DB=[{d:"5877322",td:"CARNET EXTRANJERIA",a:"CONDE RIVAS",n:"JULIO CESAR",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"SRV. MANTTO CUATRO (04) TUNELES DE REFRIGERACION MP",l1:"PLANTA CHAO",fi:"46158",fs:"46174",rz:"AG & V INDUSTRIAL SOLUTIONS",ru:"20609243911",ce:"970731132",is:"46143",fsctr:"46174",di:"-349",v:"SCTR VENCIDO HACE -349 DÍAS",co:"nsanchez@camposol.com"},{d:"61765824",td:"DNI",a:"Garcia Zapata",n:"Danilo Gabriel",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",l2:"FUNDOS PIURA",l3:"FUNDOS PIURA",fi:"46147",fs:"46174",rz:"AGRORAPAZ PERÚ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"27",v:"SCTR VENCE EN 27 DIAS",co:"jrodriguez@camposol.com"},{d:"43002984",td:"DNI",a:"Cobos Vargas",n:"Miguel Angel",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",l2:"FUNDOS PIURA",l3:"FUNDOS PIURA",fi:"46147",fs:"46174",rz:"AGRORAPAZ PERÚ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"27",v:"SCTR VENCE EN 27 DIAS",co:"jrodriguez@camposol.com"},{d:"62983551",td:"DNI",a:"Chavez Salazar",n:"Snaider David",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",l2:"FUNDOS PIURA",l3:"FUNDOS PIURA",fi:"46147",fs:"46174",rz:"AGRORAPAZ PERÚ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"27",v:"SCTR VENCE EN 27 DIAS",co:"jrodriguez@camposol.com"},{d:"61336094",td:"DNI",a:"Castillo Nima",n:"Jordan Alexis",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46153",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"61022065",td:"DNI",a:"Castillo Zapata",n:"Jairo Yoel",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46146",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"62845587",td:"DNI",a:"Flores Jaramillo",n:"Carlos Alfredo",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"75569334",td:"DNI",a:"Zapata Aguilar",n:"Jeyson Alexander",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46148",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"77209896",td:"DNI",a:"Cubas Gonzales",n:"Nanuel",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"47856307",td:"DNI",a:"Cubas Gonzales",n:"Grimaldo",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"47218194",td:"DNI",a:"Farfan Carrazco",n:"Luis Jeiner",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"20",v:"SCTR VENCE EN 20 DIAS",co:"jrodriguez@camposol.com"},{d:"46424595",td:"DNI",a:"PALACIOS ALBURQUEQUE",n:"JULIO CESAR",p:"REPRESENTANTE TECNICO",tp:"PROVEEDOR DE BIENES",m:"ENTREGA DE MERCADERIA",l1:"FUNDO TERRA",l2:"FUNDO TERRA",l3:"FUNDO TERRA",fi:"46104",fs:"46174",rz:"AVGUST PERU SAC",ru:"20535703214",ce:"943597783",is:"45992",fsctr:"46174",di:"70",co:"J.palacios@avgust.com.pe",tv:"CAMIONETA FORD",pl:"CHO 834"},{d:"46424595",td:"DNI",a:"PALACIOS ALBURQUEQUE",n:"JULIO CESAR",p:"REPRESENTANTE TECNICO",tp:"PROVEEDOR DE BIENES",m:"ENTREGA DE SUMINISTROS",l1:"FUNDO AGROALEGRE",l2:"FUNDO TERRA",l3:"FUNDO AGROALEGRE",fi:"46128",fs:"46174",rz:"AVGUST PERU SAC",ru:"20535703214",ce:"943597783",is:"45992",fsctr:"46174",di:"46",co:"J.palacios@avgust.com.pe",tv:"CAMIONETA FORD",pl:"CHO 834"},{d:"70108973",td:"DNI",a:"CARRILLO MANTILLA",n:"DEYLER ALY",p:"SUPERVISOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"26729609",td:"DNI",a:"ALIAGA MALPARTIDA",n:"CLODOMIRO",p:"PREVENCIONISTA",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"70778548",td:"DNI",a:"SAAVEDRA SOTOMAYOR",n:"MARCOS WILSON",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"10289486",td:"DNI",a:"VARGAS REYES",n:"NILTON CESAR",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"73051309",td:"DNI",a:"AGURTO CARREÑO",n:"KENYI PAUL",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"3621944",td:"CARNET DE EXTRANJERIA",a:"MEZA FLORES",n:"TIHUWEL ELIOMAR",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"43469975",td:"DNI",a:"OBREGON GUTIERREZ",n:"WILFREDO",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"43785527",td:"DNI",a:"HERRERA DE LA CRUZ",n:"WALTER JONATHAN",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"2094292",td:"DNI",a:"SANCHEZ CASTILLO",n:"JOSE RAMON",p:"CONDUCTOR",tp:"PROVEEDOR DE BIENES",m:"TRASLADO DE MERCADERIA",l1:"PLANTA CHAO",fi:"46150",fs:"46174",rz:"CITITRANS S.A.C.",ru:"20609553376",ce:"998143943",is:"46143",fsctr:"46174",di:"23",v:"SCTR VENCE EN 23 DÍAS",co:"jfernandez@camposol.com"},{d:"71587288",td:"DNI",a:"VALDIVIEZO CARHUATANTA",n:"CESAR AUGUSTO",p:"ASISTENTE DE OBRA",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"EJECUCIÓN DE SERVICIO",l1:"FUNDO YAKUY MINKA",fi:"46149",fs:"46174",rz:"CONSTRUCTORA Y CONSULTORA COCAZA E.I.R.L.",ru:"20604938211",ce:"933649316",is:"46143",fsctr:"46174",di:"25",v:"SCTR VENCE EN 25 DÍAS",co:"onarva@camposol.com"},{d:"45326549",td:"DNI",a:"BARRIOS REYES",n:"JUAN MICHAELL",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"MOTIVO_INGRESO",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"6",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com"},{d:"80330544",td:"DNI",a:"BENITO MILLONES",n:"JORGE LUIS",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"MOTIVO_INGRESO",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"6",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com"},{d:"74959915",td:"DNI",a:"CESPEDES BENITO",n:"JESÚS ALBERTO",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"MOTIVO_INGRESO",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"46069",fsctr:"46174",di:"6",co:"fcarrasco@camposol.com"},{d:"75884653",td:"DNI",a:"RAMOS VIDAL",n:"CARLOS DANIEL",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"MOTIVO_INGRESO",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"6",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com"},{d:"76918652",td:"DNI",a:"ROSARIO QUISPE",n:"WILDER ALEXANDER",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"MOTIVO_INGRESO",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"6",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com",tv:"TOYOTA",pl:"TCD-898"},{d:"70933032",td:"DNI",a:"ZAVALETA LEONARDO",n:"GEOFFREY WERENSON",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"46069",fsctr:"46174",di:"6",v:"SCTR VENCE EN 8 DÍAS",co:"fcarrasco@camposol.com"},{d:"80330544",td:"DNI",a:"BENITO MILLONES",n:"JORGE LUIS",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"4",v:"FALTA 4 DÍAS PARA VENCER SCTR",co:"fcarrasco@camposol.com"},{d:"76918652",td:"DNI",a:"ROSARIO QUISPE",n:"WILDER ALEXANDER",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"4",v:"FALTA 4 DÍAS PARA VENCER SCTR",co:"fcarrasco@camposol.com",tv:"TOYOTA",pl:"TCD-898"},{d:"75884653",td:"DNI",a:"RAMOS VIDAL",n:"CARLOS DANIEL",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"4",v:"FALTA 4 DÍAS PARA VENCER SCTR",co:"fcarrasco@camposol.com"},{d:"45326549",td:"DNI",a:"BARRIOS REYES",n:"JUAN MICHAELL",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"4",v:"FALTA 4 DÍAS PARA VENCER SCTR",co:"fcarrasco@camposol.com"},{d:"70933032",td:"DNI",a:"ZAVALETA LEONARDO",n:"GEOFFREY WERENSON",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"46069",fsctr:"46174",di:"4",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com"},{d:"74959915",td:"DNI",a:"CESPEDES BENITO",n:"JESÚS ALBERTO",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"46069",fsctr:"46174",di:"4",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com"},{d:"40818833",td:"DNI",a:"AGUILAR TELLO",n:"GILMER ELADIO",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"M5W-617"},{d:"42191002",td:"DNI",a:"CUSTODIO CASTAÑEDA",n:"DANY ABEL",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"MINIVAN",pl:"BPI-306"},{d:"72939370",td:"DNI",a:"GUTIERREZ VARAS",n:"ROLIN ALEXANDER",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"MINIVAN",pl:"F5J-180"},{d:"71247644",td:"DNI",a:"LOPEZ CASTILLO",n:"ALIN ALI",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"T7J-149"},{d:"47068823",td:"DNI",a:"NAZARIO RUIZ",n:"ALEX IVAN",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"BUI-077"},{d:"18049711",td:"DNI",a:"NAZARIO SANTIAGO",n:"FERNANDO LUIS",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"T2P-798"},{d:"18045023",td:"DNI",a:"NAZARIO SANTIAGO",n:"CLAUDIO MANUEL",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"T4X-385"},{d:"75314915",td:"DNI",a:"NAZARIO QUITO",n:"CLAUDIO MANUEL",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"T5V-099"},{d:"70348902",td:"DNI",a:"NAZARIO LOPEZ",n:"BRAYAN PIERO",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI"},{d:"71099856",td:"DNI",a:"VASQUEZ VALDERRAMA",n:"REYNER MICKEY",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"MINIVAN",pl:"CEW-578"},{d:"18083321",td:"DNI",a:"VERBEECK GUZMAN",n:"VICTOR HENRRY",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"T6Q-004"},{d:"71504731",td:"DNI",a:"AGUILAR MONTOYA",n:"GERSON ANTHONY",p:"AYUDANTE",tp:"PROVEEDOR DE BIENES",m:"REPARTO DE ALIMENTOS",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com"},{d:"60970430",td:"DNI",a:"AGUILAR MONTOYA",n:"YIMI GABRIEL",p:"AYUDANTE",tp:"PROVEEDOR DE BIENES",m:"REPARTO DE ALIMENTOS",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com"},{d:"73251924",td:"DNI",a:"ALVARADO VERDE",n:"BRAYAN WILFREDO",p:"AYUDANTE",tp:"PROVEEDOR DE BIENES",m:"REPARTO DE ALIMENTOS",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com"},{d:"73314639",td:"DNI",a:"CORONEL LOPEZ",n:"CARINA MARILIN",p:"AYUDANTE",tp:"PROVEEDOR DE BIENES",m:"REPARTO DE ALIMENTOS",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com"}];
+
+let ONLINE_DB=null;
+let LAST_SYNC=null;
+let IS_ONLINE=false;
+
+// ═══════════════════════════════════════════════════════
+// CONFIGURACIÓN GOOGLE SHEETS — PANEL DE CONTROL
+// ═══════════════════════════════════════════════════════
+// El enlace se configura una sola vez desde el panel ⚙️ Admin
+// y se guarda automáticamente en este dispositivo.
+// ═══════════════════════════════════════════════════════
+const ADMIN_KEY = '0987';
+const LS_SHEET_URL = 'sctr_sheet_url';
+const LS_LAST_SYNC = 'sctr_last_sync';
+function getSheetUrl(){return localStorage.getItem(LS_SHEET_URL)||'';}
+
+function getActiveDB(){return ONLINE_DB||LOCAL_DB;}
+
+async function syncFromGoogleSheets(){
+    if(!getSheetUrl()){
+        showAlert('Google Sheets no configurado. Edita G_SHEETS_CSV_URL en el código.','error');
+        return false;
+    }
+    try{
+        showLoading(true);
+        const controller=new AbortController();
+        const timeout=setTimeout(()=>controller.abort(),15000);
+        const res=await fetch(getSheetUrl(),{signal:controller.signal,mode:'cors'});
+        clearTimeout(timeout);
+        if(!res.ok)throw new Error('HTTP '+res.status);
+        const csv=await res.text();
+        ONLINE_DB=parseCSV(csv);
+        LAST_SYNC=new Date();
+        IS_ONLINE=true;
+        updateStats();
+        renderSyncStatus();
+        showAlert('Sincronizado con Google Sheets ✓','info');
+        return true;
+    }catch(err){
+        IS_ONLINE=false;
+        renderSyncStatus();
+        console.error('Sync error:',err);
+        showAlert('No se pudo conectar a Google Sheets. Usando datos locales.','error');
+        return false;
+    }finally{
+        showLoading(false);
+    }
+}
+
+function parseCSV(text){
+    const lines=text.trim().split('\n');
+    if(lines.length<2)return[];
+    const headers=parseCSVLine(lines[0]).map(h=>h.trim().toLowerCase());
+    const out=[];
+    for(let i=1;i<lines.length;i++){
+        const cols=parseCSVLine(lines[i]);
+        if(cols.length<3)continue;
+        const obj={};
+        headers.forEach((h,idx)=>{obj[h]=cols[idx]!==undefined?cols[idx].trim():'';});
+        // Normalizar campos a los nombres cortos que usa la app
+        const r={};
+        r.d=obj.d||obj.documento||obj.dni||obj['n° documento']||'';
+        r.td=obj.td||obj['tipo documento']||'DNI';
+        r.a=obj.a||obj.apellidos||obj.apellido||'';
+        r.n=obj.n||obj.nombres||obj.nombre||'';
+        r.p=obj.p||obj.puesto||obj.cargo||'';
+        r.tp=obj.tp||obj['tipo proveedor']||'';
+        r.m=obj.m||obj.motivo||obj['motivo ingreso']||'';
+        r.l1=obj.l1||obj.lugar1||obj['area/lugar']||obj.area||'';
+        r.l2=obj.l2||obj.lugar2||'';
+        r.l3=obj.l3||obj.lugar3||'';
+        r.fi=obj.fi||obj['fecha inicio']||'';
+        r.fs=obj.fs||obj['fecha fin']||'';
+        r.rz=obj.rz||obj['razon social']||obj.empresa||'';
+        r.ru=obj.ru||obj.ruc||'';
+        r.ce=obj.ce||obj.celular||obj['celular empresa']||'';
+        r.is=obj.is||obj['inicio sctr']||'';
+        r.fsctr=obj.fsctr||obj['fin sctr']||'';
+        r.di=obj.di||obj.dias||obj['dias restantes']||'';
+        r.v=obj.v||obj.vigencia||'';
+        r.co=obj.co||obj.correo||obj['correo solicitante']||'';
+        r.tv=obj.tv||obj['tipo vehiculo']||obj.vehiculo||'';
+        r.pl=obj.pl||obj.placa||'';
+        if(r.d)out.push(r);
+    }
+    return out;
+}
+
+function parseCSVLine(line){
+    const res=[];let cur='';let inQuotes=false;
+    for(let i=0;i<line.length;i++){
+        const ch=line[i];
+        if(ch==='"'){
+            if(inQuotes&&line[i+1]==='"'){cur+='"';i++;}
+            else inQuotes=!inQuotes;
+        }else if(ch===','&&!inQuotes){
+            res.push(cur);cur='';
+        }else{
+            cur+=ch;
+        }
+    }
+    res.push(cur);
+    return res;
+}
+
+function renderSyncStatus(){
+    let el=document.getElementById('syncStatus');
+    if(!el){
+        el=document.createElement('div');
+        el.id='syncStatus';
+        el.style.cssText='position:fixed;bottom:8px;right:8px;z-index:200;padding:6px 12px;border-radius:12px;font-size:0.75rem;font-weight:600;display:flex;align-items:center;gap:6px;transition:all 0.3s;box-shadow:0 2px 8px rgba(0,0,0,0.15);';
+        document.body.appendChild(el);
+    }
+    if(IS_ONLINE&&LAST_SYNC){
+        el.style.background='#e8f5e9';el.style.color='#2e7d32';el.style.border='1px solid #a5d6a7';
+        el.innerHTML='🟢 Online · '+LAST_SYNC.toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'})+' <span style="cursor:pointer;text-decoration:underline" onclick="syncFromGoogleSheets()">↻</span>';
+    }else{
+        el.style.background='#ffebee';el.style.color='#c62828';el.style.border='1px solid #ef9a9a';
+        el.innerHTML='🔴 Offline · Local <span style="cursor:pointer;text-decoration:underline" onclick="syncFromGoogleSheets()">↻</span>';
+    }
+}
+
+let stream=null,isScanning=false,scanInterval=null,codeReader=null,scanControls=null,useZXing=false;
+let recentSearches=JSON.parse(localStorage.getItem('sctr_recent')||'[]');
+
+window.addEventListener('DOMContentLoaded',()=>{
+    useZXing=typeof window.ZXingBrowser!=='undefined';
+    updateStats();
+    renderRecent();
+    renderSyncStatus();
+    startScanner();
+    // Intentar sincronizar con Google Sheets al cargar (silencioso)
+    if(getSheetUrl()){
+        syncFromGoogleSheets().catch(()=>{});
+    }
+    document.getElementById('dniInput').addEventListener('keypress',e=>{if(e.key==='Enter')searchManual()});
+    if('serviceWorker'in navigator){
+        const sw=`self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(clients.claim()));self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>caches.match(e.request))));`;
+        navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{});
+    }
+});
+
+function updateStats(){
+    document.getElementById('statTotal').textContent=getActiveDB().length;
+    let v=getActiveDB().filter(r=>{let d=parseInt(r.di||0);return d>0;}).length;
+    document.getElementById('statVigentes').textContent=v;
+}
+
+function switchTab(tab){
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab'+tab[0].toUpperCase()+tab.slice(1)).classList.add('active');
+    document.getElementById('scannerContainer').classList.toggle('active',tab==='scanner');
+    document.getElementById('manualContainer').classList.toggle('active',tab==='manual');
+    if(tab==='scanner')startScanner();else{stopScanner();document.getElementById('dniInput').focus();}
+}
+
+async function startScanner(){
+    if(isScanning)return;
+    let video=document.getElementById('video');
+    if(useZXing){
+        try{
+            stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment',width:{ideal:1920},height:{ideal:1080}}});
+            video.srcObject=stream;
+            await video.play();
+            const hints=new Map();
+            hints.set(ZXingBrowser.DecodeHintType.TRY_HARDER,true);
+            if(ZXingBrowser.BarcodeFormat&&ZXingBrowser.BarcodeFormat.PDF_417){
+                hints.set(ZXingBrowser.DecodeHintType.POSSIBLE_FORMATS,[ZXingBrowser.BarcodeFormat.PDF_417]);
+            }
+            codeReader=new ZXingBrowser.BrowserMultiFormatReader(hints);
+            scanControls=await codeReader.decodeFromVideoElement(video,(result,error)=>{
+                if(result){
+                    const text=result.getText();
+                    const match=text.match(/\b\d{8}\b/);
+                    if(match){
+                        stopScanner();
+                        performSearch(match[0]);
+                    }
+                }
+            });
+            isScanning=true;
+        }catch(err){
+            console.error(err);
+            showAlert('No se pudo iniciar el escáner avanzado. Use el modo manual.','error');
+            switchTab('manual');
+        }
+    }else{
+        try{
+            stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment',width:{ideal:1280},height:{ideal:720}}});
+            video.srcObject=stream;
+            isScanning=true;
+            scanInterval=setInterval(()=>{if(isScanning)detectBarcode();},500);
+        }catch(err){
+            showAlert('No se pudo acceder a la cámara. Use el modo manual.','error');
+            switchTab('manual');
+        }
+    }
+}
+
+function stopScanner(){
+    isScanning=false;
+    if(useZXing&&scanControls){
+        scanControls.stop();
+        scanControls=null;
+        codeReader=null;
+    }
+    if(scanInterval){clearInterval(scanInterval);scanInterval=null;}
+    if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}
+    document.getElementById('video').srcObject=null;
+}
+
+function toggleFlash(){
+    if(!stream)return;
+    let track=stream.getVideoTracks()[0];
+    if(track&&'torch'in track.getCapabilities()){
+        track.applyConstraints({advanced:[{torch:!track.getConstraints().torch}]}).catch(()=>{});
+    }
+}
+
+function detectBarcode(){
+    let video=document.getElementById('video'),canvas=document.getElementById('canvas');
+    if(!video.videoWidth)return;
+    canvas.width=video.videoWidth;canvas.height=video.videoHeight;
+    let ctx=canvas.getContext('2d');ctx.drawImage(video,0,0);
+    let w=canvas.width,h=canvas.height,cx=w*0.5,cy=h*0.5,rw=w*0.6,rh=h*0.3;
+    let imgData=ctx.getImageData(cx-rw/2,cy-rh/2,rw,rh),data=imgData.data;
+    let transitions=0,lastBright=0,threshold=100,sampleRow=Math.floor(rh/2);
+    for(let x=0;x<rw;x+=2){
+        let idx=(sampleRow*rw+x)*4,brightness=(data[idx]+data[idx+1]+data[idx+2])/3;
+        if((brightness>threshold&&lastBright<=threshold)||(brightness<=threshold&&lastBright>threshold))transitions++;
+        lastBright=brightness;
+    }
+    if(transitions>30){
+        let numbers=extractNumbers(ctx,cx-rw/2,cy-rh/2,rw,rh);
+        if(numbers&&numbers.length>=8){stopScanner();performSearch(numbers);}
+    }
+}
+
+function extractNumbers(ctx,x,y,w,h){
+    let imgData=ctx.getImageData(x,y,w,h),data=imgData.data,candidates=[];
+    for(let row=Math.floor(h*0.3);row<h*0.7;row+=5){
+        let seq='',barCount=0,inBar=false;
+        for(let col=0;col<w;col++){
+            let idx=(row*w+col)*4,brightness=(data[idx]+data[idx+1]+data[idx+2])/3,isDark=brightness<120;
+            if(isDark&&!inBar){inBar=true;barCount=1;}
+            else if(isDark&&inBar)barCount++;
+            else if(!isDark&&inBar){if(barCount>3&&barCount<15)seq+='1';else if(barCount>=15)seq+='0';inBar=false;}
+        }
+        let m=seq.match(/\d{8,}/);if(m)candidates.push(m[0]);
+    }
+    if(!candidates.length)return null;
+    let counts={},best=candidates[0],bestCount=0;
+    for(let c of candidates){counts[c]=(counts[c]||0)+1;if(counts[c]>bestCount){bestCount=counts[c];best=c;}}
+    return best;
+}function searchManual(){
+    let dni=document.getElementById('dniInput').value.trim();
+    if(!dni){showAlert('Ingrese un número de documento','error');return;}
+    performSearch(dni);
+}
+
+function performSearch(query){
+    showLoading(true);
+    query=query.replace(/\D/g,'');
+    setTimeout(()=>{
+        showLoading(false);
+        let results=getActiveDB().filter(r=>r.d&&r.d.replace(/\D/g,'').includes(query));
+        if(!results.length){showAlert('No se encontró registro con el documento: '+query,'error');showResults(null);return;}
+        let record=results[0];showResults(record);addToRecent(record);
+    },600);
+}
+
+function showResults(record){
+    let section=document.getElementById('resultsSection'),card=document.getElementById('resultCard'),header=document.getElementById('resultHeader'),body=document.getElementById('resultBody');
+    if(!record){section.classList.remove('active');return;}
+    section.classList.add('active');
+    let dias=parseInt(record.di||0),statusClass,statusText,daysText,daysLabel;
+    if(!record.di||record.di===''){statusClass='sin-datos';statusText='SIN DATOS';daysText='--';daysLabel='vigencia no registrada';}
+    else if(dias>15){statusClass='vigente';statusText='VIGENTE';daysText=dias.toString();daysLabel='días restantes';}
+    else if(dias>0){statusClass='por-vencer';statusText='POR VENCER';daysText=dias.toString();daysLabel='días restantes';}
+    else if(dias===0){statusClass='por-vencer';statusText='VENCE HOY';daysText='0';daysLabel='días restantes';}
+    else{statusClass='vencido';statusText='VENCIDO';daysText=Math.abs(dias).toString();daysLabel='días vencidos';}
+    header.className='result-header '+statusClass;
+    document.getElementById('resultStatus').textContent=statusText;
+    document.getElementById('resultDays').textContent=daysText;
+    document.getElementById('resultDaysLabel').textContent=daysLabel;
+    let fields=[['Documento',(record.td||'DNI')+': '+(record.d||'-'),true],['Apellidos',record.a||'-',false],['Nombres',record.n||'-',false],['Puesto',record.p||'-',false],['Tipo Proveedor',record.tp||'-',false],['Motivo Ingreso',record.m||'-',false],['Área / Lugar',[record.l1,record.l2,record.l3].filter(Boolean).join(' · ')||'-',false],['Razón Social',record.rz||'-',true],['RUC',record.ru||'-',false],['Vigencia SCTR',record.v||'-',true],['Días Restantes',record.di||'-',true],['Inicio SCTR',record.is?fmtDate(record.is):'-',false],['Fin SCTR',record.fsctr?fmtDate(record.fsctr):'-',false],['Correo Solicitante',record.co||'-',false],['Celular Empresa',record.ce||'-',false],['Tipo Vehículo',record.tv||'-',false],['Placa',record.pl||'-',false]];
+    body.innerHTML=fields.map(([l,v,h])=>`<div class="info-row"><span class="info-label">${l}</span><span class="info-value ${h?'highlight':''}">${v}</span></div>`).join('');
+    setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+
+function fmtDate(serial){
+    if(!serial||isNaN(serial))return serial;
+    let d=new Date((parseInt(serial)-25569)*86400*1000);
+    if(isNaN(d.getTime()))return serial;
+    return d.toLocaleDateString('es-PE',{day:'2-digit',month:'2-digit',year:'numeric'});
+}
+
+function addToRecent(record){
+    let entry={d:record.d,n:record.n,a:record.a,di:record.di,t:Date.now()};
+    recentSearches=[entry,...recentSearches.filter(r=>r.d!==record.d)].slice(0,10);
+    localStorage.setItem('sctr_recent',JSON.stringify(recentSearches));
+    renderRecent();
+}
+
+function renderRecent(){
+    let container=document.getElementById('recentList');
+    if(!recentSearches.length){container.innerHTML='<span style="color:#999;font-size:0.85rem">No hay consultas recientes</span>';return;}
+    container.innerHTML=recentSearches.map(r=>{
+        let d=parseInt(r.di||0),sc='vigente';
+        if(d<=0&&r.di!=='')sc='vencido';else if(d>0&&d<=15)sc='por-vencer';else if(!r.di||r.di==='')sc='sin-datos';
+        return `<span class="recent-chip" onclick="performSearch('${r.d}')"><span class="chip-status ${sc}"></span><strong>${r.d}</strong> · ${r.a}, ${r.n}</span>`;
+    }).join('');
+}
+
+function clearRecent(){recentSearches=[];localStorage.removeItem('sctr_recent');renderRecent();}
+function clearResults(){document.getElementById('resultsSection').classList.remove('active');document.getElementById('dniInput').value='';document.getElementById('alertContainer').innerHTML='';}
+function showLoading(show){document.getElementById('loadingOverlay').classList.toggle('active',show);}
+function showAlert(message,type){let container=document.getElementById('alertContainer'),div=document.createElement('div');div.className='alert alert-'+type;div.innerHTML=(type==='error'?'⚠️ ':'ℹ️ ')+message;container.appendChild(div);setTimeout(()=>div.remove(),5000);}
+function showModal(icon,title,text){document.getElementById('modalIcon').textContent=icon;document.getElementById('modalTitle').textContent=title;document.getElementById('modalText').textContent=text;document.getElementById('modalOverlay').classList.add('active');}
+function closeModal(e){if(!e||e.target===document.getElementById('modalOverlay'))document.getElementById('modalOverlay').classList.remove('active');}
+
+// ═══════════════════════════════════════════════════════
+// PANEL DE CONTROL — CONFIGURACIÓN ADMIN
+// ═══════════════════════════════════════════════════════
+function showConfigModal(){
+    document.getElementById('configModalOverlay').classList.add('active');
+    document.getElementById('configStepKey').style.display='block';
+    document.getElementById('configStepPanel').style.display='none';
+    document.getElementById('adminKeyInput').value='';
+    document.getElementById('keyError').style.display='none';
+    setTimeout(()=>document.getElementById('adminKeyInput').focus(),100);
+}
+
+function closeConfigModal(e){
+    if(!e||e.target===document.getElementById('configModalOverlay')){
+        document.getElementById('configModalOverlay').classList.remove('active');
+    }
+}
+
+function validateAdminKey(){
+    const key=document.getElementById('adminKeyInput').value.trim();
+    if(key===ADMIN_KEY){
+        document.getElementById('configStepKey').style.display='none';
+        document.getElementById('configStepPanel').style.display='block';
+        loadConfigPanel();
+    }else{
+        document.getElementById('keyError').style.display='block';
+        document.getElementById('adminKeyInput').value='';
+        document.getElementById('adminKeyInput').focus();
+    }
+}
+
+function loadConfigPanel(){
+    const url=localStorage.getItem(LS_SHEET_URL)||'';
+    document.getElementById('sheetUrlInput').value=url;
+    const statusEl=document.getElementById('configStatusText');
+    const syncEl=document.getElementById('configLastSync');
+    if(url){
+        if(IS_ONLINE&&ONLINE_DB&&ONLINE_DB.length>0){
+            statusEl.innerHTML='<span style="color:var(--success);font-weight:700">🟢 Conectado · '+ONLINE_DB.length+' registros</span>';
+        }else{
+            statusEl.innerHTML='<span style="color:var(--warning);font-weight:700">🟡 URL guardada pero no sincronizado</span>';
+        }
+    }else{
+        statusEl.innerHTML='<span style="color:var(--gray);font-weight:700">⚪ Sin configurar · usando datos locales</span>';
+    }
+    const last=localStorage.getItem(LS_LAST_SYNC);
+    syncEl.textContent=last?'Última sincronización: '+new Date(parseInt(last)).toLocaleString('es-PE'):'Sin sincronizaciones previas';
+}
+
+function saveSheetConfig(){
+    const url=document.getElementById('sheetUrlInput').value.trim();
+    if(!url){
+        showAlert('Ingrese una URL válida','error');
+        return;
+    }
+    if(!url.includes('google.com')||!url.includes('output=csv')){
+        showAlert('La URL no parece ser un enlace CSV de Google Sheets válido.','error');
+        return;
+    }
+    localStorage.setItem(LS_SHEET_URL,url);
+    showAlert('URL guardada. Sincronizando...','info');
+    syncFromGoogleSheets().then(ok=>{
+        if(ok){
+            localStorage.setItem(LS_LAST_SYNC,Date.now().toString());
+            showAlert('✅ Configuración guardada y sincronizada','info');
+            closeConfigModal();
+        }else{
+            loadConfigPanel();
+        }
+    });
+}
+
+function resetSheetConfig(){
+    if(!confirm('¿Eliminar la conexión a Google Sheets y volver a usar datos locales?'))return;
+    localStorage.removeItem(LS_SHEET_URL);
+    localStorage.removeItem(LS_LAST_SYNC);
+    ONLINE_DB=null;
+    IS_ONLINE=false;
+    updateStats();
+    renderSyncStatus();
+    showAlert('Datos locales restaurados','info');
+    closeConfigModal();
+}
+
+// Permitir Enter en el input de clave
+document.addEventListener('DOMContentLoaded',()=>{
+    const keyInput=document.getElementById('adminKeyInput');
+    if(keyInput){
+        keyInput.addEventListener('keypress',e=>{if(e.key==='Enter')validateAdminKey();});
+    }
+});
+
+let lastTouch=0;
+document.addEventListener('touchend',e=>{let now=Date.now();if(now-lastTouch<300)e.preventDefault();lastTouch=now;},{passive:false});
+
+</script>
+
+    <div class="modal-overlay" id="configModalOverlay" onclick="closeConfigModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()" style="max-width:480px;text-align:left">
+            <div style="text-align:center;margin-bottom:16px">
+                <div class="modal-icon">🔐</div>
+                <div class="modal-title">Panel de Control</div>
+            </div>
+
+            <!-- Paso 1: Verificar clave -->
+            <div id="configStepKey">
+                <div class="modal-text" style="text-align:center">Ingrese la clave de administrador para acceder a la configuración.</div>
+                <div class="input-group" style="margin-bottom:16px">
+                    <span class="input-icon">🔑</span>
+                    <input type="password" id="adminKeyInput" placeholder="Clave de acceso" maxlength="10" inputmode="numeric" autocomplete="off" style="padding-left:48px">
+                </div>
+                <div id="keyError" style="color:var(--danger);font-size:0.85rem;text-align:center;margin-bottom:12px;display:none">❌ Clave incorrecta</div>
+                <button class="btn btn-primary" onclick="validateAdminKey()">🔓 Acceder</button>
+            </div>
+
+            <!-- Paso 2: Panel de configuración -->
+            <div id="configStepPanel" style="display:none">
+                <div style="margin-bottom:16px">
+                    <label style="font-size:0.8rem;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px">🔗 URL de Google Sheets (CSV)</label>
+                    <textarea id="sheetUrlInput" placeholder="https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?output=csv" style="width:100%;padding:12px;border:2px solid #e0e0e0;border-radius:12px;font-size:0.85rem;min-height:80px;resize:vertical;font-family:inherit"></textarea>
+                    <div style="font-size:0.75rem;color:var(--gray);margin-top:6px">💡 Pega aquí el enlace CSV publicado. Se guardará en este dispositivo.</div>
+                </div>
+
+                <div style="background:var(--light);border-radius:12px;padding:12px;margin-bottom:16px">
+                    <div style="font-size:0.8rem;font-weight:600;color:var(--gray);margin-bottom:4px">📊 Estado actual</div>
+                    <div id="configStatusText" style="font-size:0.9rem">Cargando...</div>
+                    <div id="configLastSync" style="font-size:0.75rem;color:var(--gray);margin-top:4px">--</div>
+                </div>
+
+                <div style="display:flex;gap:10px;flex-direction:column">
+                    <button class="btn btn-primary" onclick="saveSheetConfig()">💾 Guardar y Sincronizar</button>
+                    <button class="btn btn-secondary" onclick="resetSheetConfig()">🔄 Volver a datos locales</button>
+                    <button class="btn btn-secondary" onclick="closeConfigModal()" style="border-color:var(--gray);color:var(--gray)">✖️ Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
