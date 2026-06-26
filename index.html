@@ -9,8 +9,11 @@
     <meta name="description" content="Consulta de vigencia SCTR - Seguridad Patrimonial Camposol">
     <title>SCTR Check - Vigencia SCTR</title>
     <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiU0NUUiBDaGVjayIsInNob3J0X25hbWUiOiJTQ1RSIiwic3RhcnRfdXJsIjoiLiIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwZDQ3YTEiLCJ0aGVtZV9jb2xvciI6IiMwZDQ3YTEiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxOTIgMTkyJyBmaWxsPScjZmZmJyUzRSUzQ3JlY3Qgd2lkdGg9JzE5MicgaGVpZ2h0PScxOTInIHJ4PScyNCcgZmlsbD0nIzBkNDdhMSclM0UlM0MvcGF0aCUzRSUzQ3N2ZyB4PSczNicgeT0nMzYnIHdpZHRoPScxMjAnIGhlaWdodD0nMTIwJyB2aWV3Qm94PScwIDAgMjQgMjQnIGZpbGw9JyNmZmZmZmYnJTNFJTNDcGF0aCBkPSdNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptLTIgMTUuNXYtN2g0djdoLTR6bTAtOWgtNFY2aDR2Mi41eicvJTNFJTNDL3N2ZyUzRSM0Mvc3ZnJTNFIn0seyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDE5MiAxOTInIGZpbGw9JyNmZmYnJTNFXTNDcmVjdCB3aWR0aD0nMTkyJyBoZWlnaHQ9JzE5Micgcng9JzI0JyBmaWxsPScjMGQ0N2ExJyUzRSUzQy9wYXRoJTNFJTNDc3ZnIHg9JzM2JyB5PSczNicgd2lkdGg9JzEyMCcgaGVpZ2h0PScxMjAnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nI2ZmZmZmZiclM0UlM0NwYXRoIGQ9J00xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0tMiAxNS41di03aDR2N2gtNHptMC05aC00VjZoNHYyLjV6Jy8lM0UlM0Mvc3ZnJTNFJTNDL3N2ZyUzRSIsInNpemVzIjoiMTkyeDE5MiIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dfQ==">
+    
+    <!-- QuaggaJS - Librería de lectura de códigos de barras -->
+    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+    
     <style>
-
 :root{--primary:#0d47a1;--primary-dark:#002171;--primary-light:#5472d3;--accent:#ff6f00;--success:#2e7d32;--warning:#f57c00;--danger:#c62828;--gray:#757575;--light:#f5f5f5;--white:#ffffff;--shadow:0 2px 8px rgba(0,0,0,0.15);--shadow-lg:0 4px 16px rgba(0,0,0,0.2)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{font-family:'Segoe UI',Roboto,-apple-system,BlinkMacSystemFont,sans-serif;background:var(--light);color:#212121;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
@@ -28,9 +31,10 @@ html,body{font-family:'Segoe UI',Roboto,-apple-system,BlinkMacSystemFont,sans-se
 .tab-btn:active{transform:scale(0.98)}
 .scanner-container{display:none;position:relative;width:100%;max-width:400px;margin:0 auto 16px}
 .scanner-container.active{display:block}
-#video{width:100%;border-radius:16px;background:#000;display:block}
+#interactive{width:100%;border-radius:16px;overflow:hidden;background:#000;position:relative;aspect-ratio:4/3}
+#interactive video{width:100%;height:100%;object-fit:cover;display:block}
 .scanner-overlay{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:16px;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.scanner-frame{width:70%;aspect-ratio:1.6;border:3px solid var(--accent);border-radius:12px;position:relative;box-shadow:0 0 0 9999px rgba(0,0,0,0.5)}
+.scanner-frame{width:70%;aspect-ratio:1.6;border:3px solid var(--accent);border-radius:12px;position:relative;box-shadow:0 0 0 9999px rgba(0,0,0,0.4)}
 .scanner-frame::before,.scanner-frame::after{content:'';position:absolute;width:20px;height:20px;border-color:var(--accent);border-style:solid}
 .scanner-frame::before{top:-3px;left:-3px;border-width:4px 0 0 4px}
 .scanner-frame::after{bottom:-3px;right:-3px;border-width:0 4px 4px 0}
@@ -99,7 +103,6 @@ html,body{font-family:'Segoe UI',Roboto,-apple-system,BlinkMacSystemFont,sans-se
 @media(min-width:768px){.container{padding:24px}.header{padding:20px 24px}.header-title{font-size:1.5rem}}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#bdbdbd;border-radius:3px}
 .hidden{display:none!important}
-
     </style>
 </head>
 <body>
@@ -113,14 +116,15 @@ html,body{font-family:'Segoe UI',Roboto,-apple-system,BlinkMacSystemFont,sans-se
                 <button class="tab-btn" onclick="switchTab('manual')" id="tabManual"><span>⌨️</span> Manual</button>
             </div>
             <div class="scanner-container active" id="scannerContainer">
-                <div style="position:relative"><video id="video" autoplay playsinline muted></video>
-                    <div class="scanner-overlay"><div class="scanner-frame"><div class="scanner-line"></div></div></div>
-                    <div class="scanner-hint">Apunte al código de barras del DNI</div></div>
+                <div id="interactive"></div>
+                <div class="scanner-overlay">
+                    <div class="scanner-frame"><div class="scanner-line"></div></div>
+                    <div class="scanner-hint">Apunte al código de barras del DNI</div>
+                </div>
                 <div class="scanner-controls">
                     <button class="btn btn-secondary" onclick="stopScanner()" style="flex:1">⏹️ Detener</button>
                     <button class="btn btn-primary" onclick="toggleFlash()" style="flex:1">💡 Flash</button>
                 </div>
-                <canvas id="canvas" style="display:none"></canvas>
             </div>
             <div class="manual-container" id="manualContainer">
                 <div class="input-group"><span class="input-icon">🆔</span><input type="text" id="dniInput" placeholder="Ingrese número de DNI" maxlength="20" inputmode="numeric" autocomplete="off"></div>
@@ -156,18 +160,14 @@ html,body{font-family:'Segoe UI',Roboto,-apple-system,BlinkMacSystemFont,sans-se
     <script>
 const DB=[{d:"5877322",td:"CARNET EXTRANJERIA",a:"CONDE RIVAS",n:"JULIO CESAR",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"SRV. MANTTO CUATRO (04) TUNELES DE REFRIGERACION MP",l1:"PLANTA CHAO",fi:"46158",fs:"46174",rz:"AG & V INDUSTRIAL SOLUTIONS",ru:"20609243911",ce:"970731132",is:"46143",fsctr:"46174",di:"-349",v:"SCTR VENCIDO HACE -349 DÍAS",co:"nsanchez@camposol.com"},{d:"61765824",td:"DNI",a:"Garcia Zapata",n:"Danilo Gabriel",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",l2:"FUNDOS PIURA",l3:"FUNDOS PIURA",fi:"46147",fs:"46174",rz:"AGRORAPAZ PERÚ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"27",v:"SCTR VENCE EN 27 DIAS",co:"jrodriguez@camposol.com"},{d:"43002984",td:"DNI",a:"Cobos Vargas",n:"Miguel Angel",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",l2:"FUNDOS PIURA",l3:"FUNDOS PIURA",fi:"46147",fs:"46174",rz:"AGRORAPAZ PERÚ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"27",v:"SCTR VENCE EN 27 DIAS",co:"jrodriguez@camposol.com"},{d:"62983551",td:"DNI",a:"Chavez Salazar",n:"Snaider David",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",l2:"FUNDOS PIURA",l3:"FUNDOS PIURA",fi:"46147",fs:"46174",rz:"AGRORAPAZ PERÚ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"27",v:"SCTR VENCE EN 27 DIAS",co:"jrodriguez@camposol.com"},{d:"61336094",td:"DNI",a:"Castillo Nima",n:"Jordan Alexis",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46153",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"61022065",td:"DNI",a:"Castillo Zapata",n:"Jairo Yoel",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46146",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"62845587",td:"DNI",a:"Flores Jaramillo",n:"Carlos Alfredo",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"75569334",td:"DNI",a:"Zapata Aguilar",n:"Jeyson Alexander",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46148",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"77209896",td:"DNI",a:"Cubas Gonzales",n:"Nanuel",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"47856307",td:"DNI",a:"Cubas Gonzales",n:"Grimaldo",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"47218194",td:"DNI",a:"Farfan Carrazco",n:"Luis Jeiner",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"20",v:"SCTR VENCE EN 20 DIAS",co:"jrodriguez@camposol.com"},{d:"46424595",td:"DNI",a:"PALACIOS ALBURQUEQUE",n:"JULIO CESAR",p:"REPRESENTANTE TECNICO",tp:"PROVEEDOR DE BIENES",m:"ENTREGA DE MERCADERIA",l1:"FUNDO TERRA",l2:"FUNDO TERRA",l3:"FUNDO TERRA",fi:"46104",fs:"46174",rz:"AVGUST PERU SAC",ru:"20535703214",ce:"943597783",is:"45992",fsctr:"46174",di:"70",co:"J.palacios@avgust.com.pe",tv:"CAMIONETA FORD",pl:"CHO 834"},{d:"46424595",td:"DNI",a:"PALACIOS ALBURQUEQUE",n:"JULIO CESAR",p:"REPRESENTANTE TECNICO",tp:"PROVEEDOR DE BIENES",m:"ENTREGA DE SUMINISTROS",l1:"FUNDO AGROALEGRE",l2:"FUNDO TERRA",l3:"FUNDO AGROALEGRE",fi:"46128",fs:"46174",rz:"AVGUST PERU SAC",ru:"20535703214",ce:"943597783",is:"45992",fsctr:"46174",di:"46",co:"J.palacios@avgust.com.pe",tv:"CAMIONETA FORD",pl:"CHO 834"},{d:"70108973",td:"DNI",a:"CARRILLO MANTILLA",n:"DEYLER ALY",p:"SUPERVISOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"26729609",td:"DNI",a:"ALIAGA MALPARTIDA",n:"CLODOMIRO",p:"PREVENCIONISTA",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"70778548",td:"DNI",a:"SAAVEDRA SOTOMAYOR",n:"MARCOS WILSON",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"10289486",td:"DNI",a:"VARGAS REYES",n:"NILTON CESAR",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"73051309",td:"DNI",a:"AGURTO CARREÑO",n:"KENYI PAUL",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"3621944",td:"CARNET DE EXTRANJERIA",a:"MEZA FLORES",n:"TIHUWEL ELIOMAR",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"43469975",td:"DNI",a:"OBREGON GUTIERREZ",n:"WILFREDO",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"43785527",td:"DNI",a:"HERRERA DE LA CRUZ",n:"WALTER JONATHAN",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"2094292",td:"DNI",a:"SANCHEZ CASTILLO",n:"JOSE RAMON",p:"CONDUCTOR",tp:"PROVEEDOR DE BIENES",m:"TRASLADO DE MERCADERIA",l1:"PLANTA CHAO",fi:"46150",fs:"46174",rz:"CITITRANS S.A.C.",ru:"20609553376",ce:"998143943",is:"46143",fsctr:"46174",di:"23",v:"SCTR VENCE EN 23 DÍAS",co:"jfernandez@camposol.com"},{d:"71587288",td:"DNI",a:"VALDIVIEZO CARHUATANTA",n:"CESAR AUGUSTO",p:"ASISTENTE DE OBRA",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"EJECUCIÓN DE SERVICIO",l1:"FUNDO YAKUY MINKA",fi:"46149",fs:"46174",rz:"CONSTRUCTORA Y CONSULTORA COCAZA E.I.R.L.",ru:"20604938211",ce:"933649316",is:"46143",fsctr:"46174",di:"25",v:"SCTR VENCE EN 25 DÍAS",co:"onarva@camposol.com"},{d:"45326549",td:"DNI",a:"BARRIOS REYES",n:"JUAN MICHAELL",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"MOTIVO_INGRESO",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"6",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com"},{d:"80330544",td:"DNI",a:"BENITO MILLONES",n:"JORGE LUIS",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"MOTIVO_INGRESO",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"6",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com"},{d:"74959915",td:"DNI",a:"CESPEDES BENITO",n:"JESÚS ALBERTO",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"MOTIVO_INGRESO",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"46069",fsctr:"46174",di:"6",co:"fcarrasco@camposol.com"},{d:"75884653",td:"DNI",a:"RAMOS VIDAL",n:"CARLOS DANIEL",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"MOTIVO_INGRESO",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"6",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com"},{d:"76918652",td:"DNI",a:"ROSARIO QUISPE",n:"WILDER ALEXANDER",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"MOTIVO_INGRESO",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"6",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com",tv:"TOYOTA",pl:"TCD-898"},{d:"70933032",td:"DNI",a:"ZAVALETA LEONARDO",n:"GEOFFREY WERENSON",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"46069",fsctr:"46174",di:"6",v:"SCTR VENCE EN 8 DÍAS",co:"fcarrasco@camposol.com"},{d:"80330544",td:"DNI",a:"BENITO MILLONES",n:"JORGE LUIS",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"4",v:"FALTA 4 DÍAS PARA VENCER SCTR",co:"fcarrasco@camposol.com"},{d:"76918652",td:"DNI",a:"ROSARIO QUISPE",n:"WILDER ALEXANDER",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"4",v:"FALTA 4 DÍAS PARA VENCER SCTR",co:"fcarrasco@camposol.com",tv:"TOYOTA",pl:"TCD-898"},{d:"75884653",td:"DNI",a:"RAMOS VIDAL",n:"CARLOS DANIEL",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"4",v:"FALTA 4 DÍAS PARA VENCER SCTR",co:"fcarrasco@camposol.com"},{d:"45326549",td:"DNI",a:"BARRIOS REYES",n:"JUAN MICHAELL",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"4",v:"FALTA 4 DÍAS PARA VENCER SCTR",co:"fcarrasco@camposol.com"},{d:"70933032",td:"DNI",a:"ZAVALETA LEONARDO",n:"GEOFFREY WERENSON",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"46069",fsctr:"46174",di:"4",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com"},{d:"74959915",td:"DNI",a:"CESPEDES BENITO",n:"JESÚS ALBERTO",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"46069",fsctr:"46174",di:"4",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com"},{d:"40818833",td:"DNI",a:"AGUILAR TELLO",n:"GILMER ELADIO",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"M5W-617"},{d:"42191002",td:"DNI",a:"CUSTODIO CASTAÑEDA",n:"DANY ABEL",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"MINIVAN",pl:"BPI-306"},{d:"72939370",td:"DNI",a:"GUTIERREZ VARAS",n:"ROLIN ALEXANDER",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"MINIVAN",pl:"F5J-180"},{d:"71247644",td:"DNI",a:"LOPEZ CASTILLO",n:"ALIN ALI",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"T7J-149"},{d:"47068823",td:"DNI",a:"NAZARIO RUIZ",n:"ALEX IVAN",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"BUI-077"},{d:"18049711",td:"DNI",a:"NAZARIO SANTIAGO",n:"FERNANDO LUIS",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"T2P-798"},{d:"18045023",td:"DNI",a:"NAZARIO SANTIAGO",n:"CLAUDIO MANUEL",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"T4X-385"},{d:"75314915",td:"DNI",a:"NAZARIO QUITO",n:"CLAUDIO MANUEL",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"T5V-099"},{d:"70348902",td:"DNI",a:"NAZARIO LOPEZ",n:"BRAYAN PIERO",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI"},{d:"71099856",td:"DNI",a:"VASQUEZ VALDERRAMA",n:"REYNER MICKEY",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"MINIVAN",pl:"CEW-578"},{d:"18083321",td:"DNI",a:"VERBEECK GUZMAN",n:"VICTOR HENRRY",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"T6Q-004"},{d:"71504731",td:"DNI",a:"AGUILAR MONTOYA",n:"GERSON ANTHONY",p:"AYUDANTE",tp:"PROVEEDOR DE BIENES",m:"REPARTO DE ALIMENTOS",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com"},{d:"60970430",td:"DNI",a:"AGUILAR MONTOYA",n:"YIMI GABRIEL",p:"AYUDANTE",tp:"PROVEEDOR DE BIENES",m:"REPARTO DE ALIMENTOS",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com"},{d:"73251924",td:"DNI",a:"ALVARADO VERDE",n:"BRAYAN WILFREDO",p:"AYUDANTE",tp:"PROVEEDOR DE BIENES",m:"REPARTO DE ALIMENTOS",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com"},{d:"73314639",td:"DNI",a:"CORONEL LOPEZ",n:"CARINA MARILIN",p:"AYUDANTE",tp:"PROVEEDOR DE BIENES",m:"REPARTO DE ALIMENTOS",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com"}];
 
-let stream=null,isScanning=false,scanInterval=null;
 let recentSearches=JSON.parse(localStorage.getItem('sctr_recent')||'[]');
+let scannerRunning=false;
 
 window.addEventListener('DOMContentLoaded',()=>{
     updateStats();
     renderRecent();
-    startScanner();
     document.getElementById('dniInput').addEventListener('keypress',e=>{if(e.key==='Enter')searchManual()});
-    if('serviceWorker'in navigator){
-        const sw=`self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(clients.claim()));self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>caches.match(e.request))));`;
-        navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{});
-    }
+    startScanner();
 });
 
 function updateStats(){
@@ -181,144 +181,213 @@ function switchTab(tab){
     document.getElementById('tab'+tab[0].toUpperCase()+tab.slice(1)).classList.add('active');
     document.getElementById('scannerContainer').classList.toggle('active',tab==='scanner');
     document.getElementById('manualContainer').classList.toggle('active',tab==='manual');
-    if(tab==='scanner')startScanner();else{stopScanner();document.getElementById('dniInput').focus();}
+    if(tab==='scanner'){startScanner();}else{stopScanner();document.getElementById('dniInput').focus();}
 }
 
-async function startScanner(){
-    if(isScanning)return;
-    let video=document.getElementById('video');
-    try{
-        stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment',width:{ideal:1280},height:{ideal:720}}});
-        video.srcObject=stream;
-        isScanning=true;
-        scanInterval=setInterval(()=>{if(isScanning)detectBarcode();},500);
-    }catch(err){
-        showAlert('No se pudo acceder a la cámara. Use el modo manual.','error');
+function startScanner(){
+    if(scannerRunning) return;
+    if(typeof Quagga === 'undefined'){
+        showAlert('Librería de escáner no cargada. Use modo manual.','error');
         switchTab('manual');
+        return;
     }
+    scannerRunning=true;
+    Quagga.init({
+        inputStream: {
+            name: "Live",
+            type: "LiveStream",
+            target: document.querySelector('#interactive'),
+            constraints: {
+                facingMode: "environment",
+                width: { ideal: 640 },
+                height: { ideal: 480 }
+            }
+        },
+        decoder: {
+            readers: ["code_128_reader", "ean_reader", "code_39_reader", "codabar_reader"]
+        },
+        locate: true
+    }, function(err) {
+        if(err){
+            console.error(err);
+            showAlert('No se pudo iniciar la cámara. Use modo manual.','error');
+            switchTab('manual');
+            scannerRunning=false;
+            return;
+        }
+        Quagga.start();
+    });
+    Quagga.onDetected(function(result){
+        let code = result.codeResult.code;
+        if(code && code.length >= 6){
+            scannerRunning=false;
+            Quagga.stop();
+            playBeep(true); // Sonido de éxito
+            if(navigator.vibrate) navigator.vibrate(50);
+            performSearch(code);
+            setTimeout(()=>{ if(!scannerRunning) startScanner(); }, 3000);
+        }
+    });
+    Quagga.onProcessed(function(result){
+        let drawingCtx = Quagga.canvas.ctx.overlay,
+            drawingCanvas = Quagga.canvas.dom.overlay;
+        if(result){
+            if(result.boxes){
+                drawingCtx.clearRect(0,0,parseInt(drawingCanvas.getAttribute('width')),parseInt(drawingCanvas.getAttribute('height')));
+                result.boxes.filter(function(b){return b!==result.box;}).forEach(function(b){
+                    Quagga.ImageDebug.drawPath(b, {x:0, y:1}, drawingCtx, {color:'#00FF00', lineWidth:2});
+                });
+            }
+            if(result.box){
+                Quagga.ImageDebug.drawPath(result.box, {x:0, y:1}, drawingCtx, {color:'#FF0000', lineWidth:3});
+            }
+            if(result.codeResult && result.codeResult.code){
+                drawingCtx.font = "bold 18px Arial";
+                drawingCtx.fillStyle = "#00FF00";
+                drawingCtx.fillText(result.codeResult.code, 10, 30);
+            }
+        }
+    });
 }
 
 function stopScanner(){
-    isScanning=false;
-    if(scanInterval){clearInterval(scanInterval);scanInterval=null;}
-    if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}
-    document.getElementById('video').srcObject=null;
+    scannerRunning=false;
+    try{
+        Quagga.stop();
+    }catch(e){}
+    let container = document.querySelector('#interactive');
+    if(container) container.innerHTML = '';
 }
 
 function toggleFlash(){
-    if(!stream)return;
-    let track=stream.getVideoTracks()[0];
-    if(track&&'torch'in track.getCapabilities()){
-        track.applyConstraints({advanced:[{torch:!track.getConstraints().torch}]}).catch(()=>{});
-    }
-}
-
-function detectBarcode(){
-    let video=document.getElementById('video'),canvas=document.getElementById('canvas');
-    if(!video.videoWidth)return;
-    canvas.width=video.videoWidth;canvas.height=video.videoHeight;
-    let ctx=canvas.getContext('2d');ctx.drawImage(video,0,0);
-    let w=canvas.width,h=canvas.height,cx=w*0.5,cy=h*0.5,rw=w*0.6,rh=h*0.3;
-    let imgData=ctx.getImageData(cx-rw/2,cy-rh/2,rw,rh),data=imgData.data;
-    let transitions=0,lastBright=0,threshold=100,sampleRow=Math.floor(rh/2);
-    for(let x=0;x<rw;x+=2){
-        let idx=(sampleRow*rw+x)*4,brightness=(data[idx]+data[idx+1]+data[idx+2])/3;
-        if((brightness>threshold&&lastBright<=threshold)||(brightness<=threshold&&lastBright>threshold))transitions++;
-        lastBright=brightness;
-    }
-    if(transitions>30){
-        let numbers=extractNumbers(ctx,cx-rw/2,cy-rh/2,rw,rh);
-        if(numbers&&numbers.length>=8){stopScanner();performSearch(numbers);}
-    }
-}
-
-function extractNumbers(ctx,x,y,w,h){
-    let imgData=ctx.getImageData(x,y,w,h),data=imgData.data,candidates=[];
-    for(let row=Math.floor(h*0.3);row<h*0.7;row+=5){
-        let seq='',barCount=0,inBar=false;
-        for(let col=0;col<w;col++){
-            let idx=(row*w+col)*4,brightness=(data[idx]+data[idx+1]+data[idx+2])/3,isDark=brightness<120;
-            if(isDark&&!inBar){inBar=true;barCount=1;}
-            else if(isDark&&inBar)barCount++;
-            else if(!isDark&&inBar){if(barCount>3&&barCount<15)seq+='1';else if(barCount>=15)seq+='0';inBar=false;}
+    try{
+        let track = Quagga.CameraAccess.getActiveStream().getVideoTracks()[0];
+        if(track && 'torch' in track.getCapabilities()){
+            track.applyConstraints({advanced:[{torch:!track.getConstraints().torch}]}).catch(()=>{});
         }
-        let m=seq.match(/\d{8,}/);if(m)candidates.push(m[0]);
-    }
-    if(!candidates.length)return null;
-    let counts={},best=candidates[0],bestCount=0;
-    for(let c of candidates){counts[c]=(counts[c]||0)+1;if(counts[c]>bestCount){bestCount=counts[c];best=c;}}
-    return best;
+    }catch(e){}
+}
+
+function playBeep(success){
+    try{
+        let ctx = new (window.AudioContext || window.webkitAudioContext)();
+        let osc = ctx.createOscillator();
+        let gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        gain.gain.value = 0.15;
+        if(success){
+            osc.frequency.setValueAtTime(800, ctx.currentTime);
+            osc.frequency.linearRampToValueAtTime(1200, ctx.currentTime + 0.15);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.25);
+        }else{
+            osc.frequency.setValueAtTime(400, ctx.currentTime);
+            osc.frequency.linearRampToValueAtTime(300, ctx.currentTime + 0.2);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.3);
+        }
+    }catch(e){}
 }
 
 function searchManual(){
-    let dni=document.getElementById('dniInput').value.trim();
-    if(!dni){showAlert('Ingrese un número de documento','error');return;}
+    let dni = document.getElementById('dniInput').value.trim();
+    if(!dni){ showAlert('Ingrese un número de documento','error'); return; }
     performSearch(dni);
 }
 
 function performSearch(query){
     showLoading(true);
-    query=query.replace(/\D/g,'');
+    query = query.replace(/\D/g,'');
     setTimeout(()=>{
         showLoading(false);
-        let results=DB.filter(r=>r.d&&r.d.replace(/\D/g,'').includes(query));
-        if(!results.length){showAlert('No se encontró registro con el documento: '+query,'error');showResults(null);return;}
-        let record=results[0];showResults(record);addToRecent(record);
+        let results = DB.filter(r=>r.d && r.d.replace(/\D/g,'').includes(query));
+        if(!results.length){
+            playBeep(false); // Sonido de error
+            if(navigator.vibrate) navigator.vibrate([30,50,30]);
+            showAlert('No se encontró registro con el documento: '+query,'error');
+            showResults(null);
+            return;
+        }
+        playBeep(true); // Sonido de éxito
+        if(navigator.vibrate) navigator.vibrate(50);
+        let record = results[0];
+        showResults(record);
+        addToRecent(record);
     },600);
 }
 
 function showResults(record){
-    let section=document.getElementById('resultsSection'),card=document.getElementById('resultCard'),header=document.getElementById('resultHeader'),body=document.getElementById('resultBody');
-    if(!record){section.classList.remove('active');return;}
+    let section = document.getElementById('resultsSection');
+    let header = document.getElementById('resultHeader');
+    let body = document.getElementById('resultBody');
+    if(!record){ section.classList.remove('active'); return; }
     section.classList.add('active');
-    let dias=parseInt(record.di||0),statusClass,statusText,daysText,daysLabel;
-    if(!record.di||record.di===''){statusClass='sin-datos';statusText='SIN DATOS';daysText='--';daysLabel='vigencia no registrada';}
-    else if(dias>15){statusClass='vigente';statusText='VIGENTE';daysText=dias.toString();daysLabel='días restantes';}
-    else if(dias>0){statusClass='por-vencer';statusText='POR VENCER';daysText=dias.toString();daysLabel='días restantes';}
-    else if(dias===0){statusClass='por-vencer';statusText='VENCE HOY';daysText='0';daysLabel='días restantes';}
-    else{statusClass='vencido';statusText='VENCIDO';daysText=Math.abs(dias).toString();daysLabel='días vencidos';}
-    header.className='result-header '+statusClass;
-    document.getElementById('resultStatus').textContent=statusText;
-    document.getElementById('resultDays').textContent=daysText;
-    document.getElementById('resultDaysLabel').textContent=daysLabel;
-    let fields=[['Documento',(record.td||'DNI')+': '+(record.d||'-'),true],['Apellidos',record.a||'-',false],['Nombres',record.n||'-',false],['Puesto',record.p||'-',false],['Tipo Proveedor',record.tp||'-',false],['Motivo Ingreso',record.m||'-',false],['Área / Lugar',[record.l1,record.l2,record.l3].filter(Boolean).join(' · ')||'-',false],['Razón Social',record.rz||'-',true],['RUC',record.ru||'-',false],['Vigencia SCTR',record.v||'-',true],['Días Restantes',record.di||'-',true],['Inicio SCTR',record.is?fmtDate(record.is):'-',false],['Fin SCTR',record.fsctr?fmtDate(record.fsctr):'-',false],['Correo Solicitante',record.co||'-',false],['Celular Empresa',record.ce||'-',false],['Tipo Vehículo',record.tv||'-',false],['Placa',record.pl||'-',false]];
-    body.innerHTML=fields.map(([l,v,h])=>`<div class="info-row"><span class="info-label">${l}</span><span class="info-value ${h?'highlight':''}">${v}</span></div>`).join('');
-    setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'start'}),100);
+    let dias = parseInt(record.di||0), statusClass, statusText, daysText, daysLabel;
+    if(!record.di || record.di===''){ statusClass='sin-datos'; statusText='SIN DATOS'; daysText='--'; daysLabel='vigencia no registrada'; }
+    else if(dias>15){ statusClass='vigente'; statusText='VIGENTE'; daysText=dias.toString(); daysLabel='días restantes'; }
+    else if(dias>0){ statusClass='por-vencer'; statusText='POR VENCER'; daysText=dias.toString(); daysLabel='días restantes'; }
+    else if(dias===0){ statusClass='por-vencer'; statusText='VENCE HOY'; daysText='0'; daysLabel='días restantes'; }
+    else{ statusClass='vencido'; statusText='VENCIDO'; daysText=Math.abs(dias).toString(); daysLabel='días vencidos'; }
+    header.className = 'result-header '+statusClass;
+    document.getElementById('resultStatus').textContent = statusText;
+    document.getElementById('resultDays').textContent = daysText;
+    document.getElementById('resultDaysLabel').textContent = daysLabel;
+    let fields = [
+        ['Documento', (record.td||'DNI')+': '+(record.d||'-'), true],
+        ['Apellidos', record.a||'-', false],
+        ['Nombres', record.n||'-', false],
+        ['Puesto', record.p||'-', false],
+        ['Tipo Proveedor', record.tp||'-', false],
+        ['Motivo Ingreso', record.m||'-', false],
+        ['Área / Lugar', [record.l1,record.l2,record.l3].filter(Boolean).join(' · ')||'-', false],
+        ['Razón Social', record.rz||'-', true],
+        ['RUC', record.ru||'-', false],
+        ['Vigencia SCTR', record.v||'-', true],
+        ['Días Restantes', record.di||'-', true],
+        ['Inicio SCTR', record.is?fmtDate(record.is):'-', false],
+        ['Fin SCTR', record.fsctr?fmtDate(record.fsctr):'-', false],
+        ['Correo Solicitante', record.co||'-', false],
+        ['Celular Empresa', record.ce||'-', false],
+        ['Tipo Vehículo', record.tv||'-', false],
+        ['Placa', record.pl||'-', false]
+    ];
+    body.innerHTML = fields.map(([l,v,h])=>`<div class="info-row"><span class="info-label">${l}</span><span class="info-value ${h?'highlight':''}">${v}</span></div>`).join('');
+    setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth',block:'start'}),100);
 }
 
 function fmtDate(serial){
-    if(!serial||isNaN(serial))return serial;
-    let d=new Date((parseInt(serial)-25569)*86400*1000);
-    if(isNaN(d.getTime()))return serial;
+    if(!serial || isNaN(serial)) return serial;
+    let d = new Date((parseInt(serial)-25569)*86400*1000);
+    if(isNaN(d.getTime())) return serial;
     return d.toLocaleDateString('es-PE',{day:'2-digit',month:'2-digit',year:'numeric'});
 }
 
 function addToRecent(record){
-    let entry={d:record.d,n:record.n,a:record.a,di:record.di,t:Date.now()};
-    recentSearches=[entry,...recentSearches.filter(r=>r.d!==record.d)].slice(0,10);
-    localStorage.setItem('sctr_recent',JSON.stringify(recentSearches));
+    let entry = {d:record.d, n:record.n, a:record.a, di:record.di, t:Date.now()};
+    recentSearches = [entry, ...recentSearches.filter(r=>r.d!==record.d)].slice(0,10);
+    localStorage.setItem('sctr_recent', JSON.stringify(recentSearches));
     renderRecent();
 }
 
 function renderRecent(){
-    let container=document.getElementById('recentList');
-    if(!recentSearches.length){container.innerHTML='<span style="color:#999;font-size:0.85rem">No hay consultas recientes</span>';return;}
-    container.innerHTML=recentSearches.map(r=>{
-        let d=parseInt(r.di||0),sc='vigente';
-        if(d<=0&&r.di!=='')sc='vencido';else if(d>0&&d<=15)sc='por-vencer';else if(!r.di||r.di==='')sc='sin-datos';
+    let container = document.getElementById('recentList');
+    if(!recentSearches.length){ container.innerHTML='<span style="color:#999;font-size:0.85rem">No hay consultas recientes</span>'; return; }
+    container.innerHTML = recentSearches.map(r=>{
+        let d = parseInt(r.di||0), sc='vigente';
+        if(d<=0 && r.di!=='') sc='vencido';
+        else if(d>0 && d<=15) sc='por-vencer';
+        else if(!r.di || r.di==='') sc='sin-datos';
         return `<span class="recent-chip" onclick="performSearch('${r.d}')"><span class="chip-status ${sc}"></span><strong>${r.d}</strong> · ${r.a}, ${r.n}</span>`;
     }).join('');
 }
 
-function clearRecent(){recentSearches=[];localStorage.removeItem('sctr_recent');renderRecent();}
-function clearResults(){document.getElementById('resultsSection').classList.remove('active');document.getElementById('dniInput').value='';document.getElementById('alertContainer').innerHTML='';}
-function showLoading(show){document.getElementById('loadingOverlay').classList.toggle('active',show);}
-function showAlert(message,type){let container=document.getElementById('alertContainer'),div=document.createElement('div');div.className='alert alert-'+type;div.innerHTML=(type==='error'?'⚠️ ':'ℹ️ ')+message;container.appendChild(div);setTimeout(()=>div.remove(),5000);}
-function showModal(icon,title,text){document.getElementById('modalIcon').textContent=icon;document.getElementById('modalTitle').textContent=title;document.getElementById('modalText').textContent=text;document.getElementById('modalOverlay').classList.add('active');}
-function closeModal(e){if(!e||e.target===document.getElementById('modalOverlay'))document.getElementById('modalOverlay').classList.remove('active');}
-let lastTouch=0;
-document.addEventListener('touchend',e=>{let now=Date.now();if(now-lastTouch<300)e.preventDefault();lastTouch=now;},{passive:false});
-
-</script>
+function clearRecent(){ recentSearches=[]; localStorage.removeItem('sctr_recent'); renderRecent(); }
+function clearResults(){ document.getElementById('resultsSection').classList.remove('active'); document.getElementById('dniInput').value=''; document.getElementById('alertContainer').innerHTML=''; }
+function showLoading(show){ document.getElementById('loadingOverlay').classList.toggle('active',show); }
+function showAlert(message,type){ let container=document.getElementById('alertContainer'), div=document.createElement('div'); div.className='alert alert-'+type; div.innerHTML=(type==='error'?'⚠️ ':'ℹ️ ')+message; container.appendChild(div); setTimeout(()=>div.remove(),5000); }
+function showModal(icon,title,text){ document.getElementById('modalIcon').textContent=icon; document.getElementById('modalTitle').textContent=title; document.getElementById('modalText').textContent=text; document.getElementById('modalOverlay').classList.add('active'); }
+function closeModal(e){ if(!e||e.target===document.getElementById('modalOverlay')) document.getElementById('modalOverlay').classList.remove('active'); }
+    </script>
 </body>
 </html>
