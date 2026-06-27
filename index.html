@@ -164,7 +164,7 @@ body{min-height:100vh;background:linear-gradient(160deg,#060f1e 0%,#0a1f3d 50%,#
     <div class="fd">Desarrollado por Edward Quezada M.</div>
     <div class="fr">Profesional en Seguridad Patrimonial</div>
     <a class="flink" href="https://www.linkedin.com/in/edwardqm" target="_blank">🔗 linkedin.com/in/edwardqm</a>
-    <div class="fver">v1.8.0 — SISTEMA DE CONSULTA SCTR © 2025</div>
+    <div class="fver">v1.9.0 — SISTEMA DE CONSULTA SCTR © 2025</div>
   </div>
 </div>
 
@@ -465,8 +465,27 @@ function doSearch(forced) {
   var q = String(forced || document.getElementById('dinput').value || '').trim();
   if (!q) return;
   var qn = norm(q);
-  var found = DB.filter(function(r){ return norm(r.__DOC__||r.NRO_DOCUMENTO) === qn; });
-  renderResults(found, q);
+  var allFound = DB.filter(function(r){ return norm(r.__DOC__||r.NRO_DOCUMENTO) === qn; });
+
+  // ── Deduplicar: quedarse solo con el SCTR más reciente por trabajador ──
+  // Agrupa por persona (mismo nombre+empresa) y toma el de mayor FIN_VIGENCIA_SCTR
+  var best = null;
+  if (allFound.length > 1) {
+    // Ordenar por FIN_VIGENCIA_SCTR descendente (mayor = más reciente)
+    var sorted = allFound.slice().sort(function(a, b) {
+      var da = parseFloat(a.FIN_VIGENCIA_SCTR) || 0;
+      var db = parseFloat(b.FIN_VIGENCIA_SCTR) || 0;
+      return db - da; // descendente
+    });
+    best = [sorted[0]]; // solo el más reciente
+    // Guardar los anteriores para mostrar historial de vigencias
+    best[0].__prevVigencias = sorted.slice(1);
+  } else {
+    best = allFound;
+  }
+
+  var found = best || [];
+  renderResults(found, q, allFound.length);
   addToHistory(q, found);
   document.getElementById('btn-nueva').style.display='block';
   beep(found.length > 0 && getStatus(found[0]).ok ? 'ok' : 'err');
@@ -481,7 +500,8 @@ function fld(lb,val,ac){
   if(!v||v==='—') return '';
   return '<div><div class="fl">'+esc(lb)+'</div><div class="'+(ac?'fva':'fv')+'">'+esc(v)+'</div></div>';
 }
-function renderResults(found, q) {
+
+function renderResults(found, q, totalRaw) {
   var el = document.getElementById('results');
   if (!found.length) {
     el.innerHTML='<div class="nf"><div class="nfi">🚫</div>'
@@ -490,44 +510,102 @@ function renderResults(found, q) {
       +'<div class="nfh">Verifique el número o actualice la base de datos desde el Panel de Control.</div></div>';
     return;
   }
-  var html='<div class="rcnt">'+found.length+' REGISTRO'+(found.length>1?'S':'')+' ENCONTRADO'+(found.length>1?'S':'')+'</div>';
-  found.forEach(function(row){
-    var st=getStatus(row);
-    var d=daysLeft(row.FIN_VIGENCIA_SCTR);
-    var name=((row.APELLIDOS||'')+' '+(row.NOMBRES||'')).trim();
-    var docDisp=(row.TIPO_DOCUMENTO?row.TIPO_DOCUMENTO+': ':'')+String(row.NRO_DOCUMENTO||row.__DOC__||'');
-    html+='<div class="card" style="border:2px solid '+st.bg+';box-shadow:0 0 18px '+st.bg+'44">'
-      +'<div class="sbanner" style="background:'+st.bg+';color:'+st.fg+'">'+st.ic+' '+esc(st.lbl)+'</div>'
-      +'<div class="g2">'
-        +fld('APELLIDOS Y NOMBRES',name)
-        +fld('N° DOCUMENTO',docDisp)
-        +fld('PUESTO',row.PUESTO_DE_TRABAJO)
-        +fld('EMPRESA',row.RAZON_SOCIAL)
-        +fld('RUC',row.RUC)
-        +fld('CELULAR EMPRESA',row.CELULAR_EMERGENCIA_EMPRESA)
+
+  var row = found[0];
+  var st  = getStatus(row);
+  var d   = daysLeft(row.FIN_VIGENCIA_SCTR);
+  var name = ((row.APELLIDOS||'')+' '+(row.NOMBRES||'')).trim();
+  var docDisp = (row.TIPO_DOCUMENTO ? row.TIPO_DOCUMENTO+': ' : '')+String(row.NRO_DOCUMENTO||row.__DOC__||'');
+
+  // ── Bloque principal ──
+  var html = '<div class="card" style="border:2px solid '+st.bg+';box-shadow:0 0 20px '+st.bg+'44">';
+
+  // Banner estado SCTR
+  html += '<div class="sbanner" style="background:'+st.bg+';color:'+st.fg+'">'+st.ic+' '+esc(st.lbl)+'</div>';
+
+  // Datos personales
+  html += '<div class="g2">'
+    +fld('APELLIDOS Y NOMBRES',name)
+    +fld('N° DOCUMENTO',docDisp)
+    +fld('PUESTO',row.PUESTO_DE_TRABAJO)
+    +fld('EMPRESA',row.RAZON_SOCIAL)
+    +fld('RUC',row.RUC)
+    +fld('CELULAR EMPRESA',row.CELULAR_EMERGENCIA_EMPRESA)
+  +'</div>';
+
+  // ── Bloque SCTR con etiquetas claras ──
+  html += '<div class="sctrb">'
+    +'<div class="sctrt">📋 VIGENCIA SCTR</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin-bottom:8px">'
+      +'<div>'
+        +'<div class="fl" style="color:#22c55e">📅 INICIO SCTR</div>'
+        +'<div class="fva" style="color:#4ade80">'+fmtDate(row.INICIO_VIGENCIA_SCTR)+'</div>'
       +'</div>'
-      +'<div class="sctrb"><div class="sctrt">📋 DATOS SCTR</div>'
-      +'<div class="g3">'
-        +fld('INICIO',fmtDate(row.INICIO_VIGENCIA_SCTR),true)
-        +fld('FIN VIGENCIA',fmtDate(row.FIN_VIGENCIA_SCTR),true)
-        +fld('DÍAS',d!=null?d+' días':'—',true)
-      +'</div></div>'
-      +'<div class="g2">'
-        +fld('TIPO PROVEEDOR',row.TIPO_DE_PROVEEDOR)
-        +fld('MOTIVO',row.MOTIVO_INGRESO)
-        +fld('F. INGRESO',fmtDate(row.FECHA_INGRESO))
-        +fld('F. SALIDA',fmtDate(row.FECHA_SALIDA))
-        +fld('SITE 1',row.LUGAR_SITE1)
-        +fld('SITE 2',row.LUGAR_SITE2)
-        +fld('SITE 3',row.LUGAR_SITE3)
-        +fld('VEHÍCULO',row.TIPO_VEHICULO)
-        +fld('PLACA',row.PLACA)
-        +fld('LICENCIA',row.TIPO_LICENCIA)
+      +'<div>'
+        +'<div class="fl" style="color:#'+( d !== null && d < 0 ? 'f87171' : d !== null && d <= 7 ? 'fbbf24' : '22c55e' )+'">⏳ VENCE SCTR</div>'
+        +'<div class="fva" style="color:#'+( d !== null && d < 0 ? 'f87171' : d !== null && d <= 7 ? 'fbbf24' : '4ade80' )+'">'+fmtDate(row.FIN_VIGENCIA_SCTR)+'</div>'
       +'</div>'
-      +(row.CORREO_SOLICITANTE_DE_CAMPOSOL?'<div class="erow">📧 <span>'+esc(row.CORREO_SOLICITANTE_DE_CAMPOSOL)+'</span></div>':'')
+    +'</div>'
+    +'<div style="background:#0f2744;border-radius:6px;padding:6px 10px;text-align:center">'
+      +'<span class="fl">DÍAS RESTANTES: </span>'
+      +'<span style="font-weight:800;font-size:14px;color:#'+( d===null?'6b7280':d<0?'f87171':d<=7?'fbbf24':'4ade80' )+'">'+
+        (d!==null ? (d<0?'VENCIDO '+Math.abs(d)+' DÍAS ATRÁS':d===0?'VENCE HOY':'+'+d+' DÍAS') : '—')
+      +'</span>'
+    +'</div>'
+  +'</div>';
+
+  // ── Bloque Acceso/Visita con etiquetas claras ──
+  html += '<div style="background:#0a1f3d;border-radius:10px;padding:11px 14px;margin-bottom:11px;border:1px solid #1e3a6e">'
+    +'<div class="sctrt">🏢 AUTORIZACIÓN DE INGRESO</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin-bottom:8px">'
+      +'<div>'
+        +'<div class="fl" style="color:#60a5fa">📥 FECHA INGRESO</div>'
+        +'<div class="fv" style="color:#93c5fd">'+fmtDate(row.FECHA_INGRESO)+'</div>'
+      +'</div>'
+      +'<div>'
+        +'<div class="fl" style="color:#60a5fa">📤 FECHA SALIDA</div>'
+        +'<div class="fv" style="color:#93c5fd">'+fmtDate(row.FECHA_SALIDA)+'</div>'
+      +'</div>'
+    +'</div>'
+    +(row.LUGAR_SITE1||row.LUGAR_SITE2||row.LUGAR_SITE3 ? '<div style="display:flex;gap:6px;flex-wrap:wrap">'
+      +(row.LUGAR_SITE1?'<span style="background:#1e3a5f;border-radius:5px;padding:2px 8px;font-size:11px;color:#60a5fa">📍'+esc(row.LUGAR_SITE1)+'</span>':'')
+      +(row.LUGAR_SITE2?'<span style="background:#1e3a5f;border-radius:5px;padding:2px 8px;font-size:11px;color:#60a5fa">📍'+esc(row.LUGAR_SITE2)+'</span>':'')
+      +(row.LUGAR_SITE3?'<span style="background:#1e3a5f;border-radius:5px;padding:2px 8px;font-size:11px;color:#60a5fa">📍'+esc(row.LUGAR_SITE3)+'</span>':'')
+    +'</div>' : '')
+  +'</div>';
+
+  // Datos adicionales
+  var extras = '';
+  extras += fld('TIPO PROVEEDOR',row.TIPO_DE_PROVEEDOR);
+  extras += fld('MOTIVO',row.MOTIVO_INGRESO);
+  extras += fld('VEHÍCULO',row.TIPO_VEHICULO);
+  extras += fld('PLACA',row.PLACA);
+  extras += fld('LICENCIA',row.TIPO_LICENCIA);
+  if (extras) html += '<div class="g2">'+extras+'</div>';
+
+  if (row.CORREO_SOLICITANTE_DE_CAMPOSOL)
+    html += '<div class="erow">📧 <span>'+esc(row.CORREO_SOLICITANTE_DE_CAMPOSOL)+'</span></div>';
+
+  // ── Historial de vigencias anteriores (registros duplicados) ──
+  var prevs = row.__prevVigencias || [];
+  if (prevs.length > 0) {
+    html += '<div style="margin-top:12px;border-top:1px solid #1e3a6e;padding-top:10px">'
+      +'<div style="color:#475569;font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:8px">📂 SCTR ANTERIORES ('+prevs.length+' registro'+(prevs.length>1?'s':'')+')</div>';
+    prevs.forEach(function(p){
+      var ps = getStatus(p);
+      html += '<div style="background:#060f1e;border-radius:7px;padding:7px 10px;margin-bottom:5px;border:1px solid #1e3a6e;display:flex;align-items:center;gap:8px">'
+        +'<div style="width:8px;height:8px;border-radius:50%;background:'+ps.bg+';flex-shrink:0"></div>'
+        +'<div style="flex:1;font-size:11px">'
+          +'<span style="color:#64748b">'+fmtDate(p.INICIO_VIGENCIA_SCTR)+' → '+fmtDate(p.FIN_VIGENCIA_SCTR)+'</span>'
+        +'</div>'
+        +'<div style="font-size:10px;color:'+ps.bg+'">'+esc(ps.lbl)+'</div>'
       +'</div>';
-  });
-  el.innerHTML=html;
+    });
+    html += '</div>';
+  }
+
+  html += '</div>'; // cierre card
+  el.innerHTML = html;
   el.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
