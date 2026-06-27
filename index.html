@@ -3,111 +3,139 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>🛡️ Consulta SCTR v1.3.0</title>
+<title>🛡️ Consulta SCTR v2.2.0</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{min-height:100vh;background:linear-gradient(160deg,#060f1e 0%,#0a1f3d 50%,#060f1e 100%);font-family:'Segoe UI',system-ui,sans-serif;color:#e2e8f0;font-size:15px}
-#hdr{background:linear-gradient(90deg,#0a1f3d,#1e3a6e);border-bottom:2px solid #1e3a6e;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:100}
+body{min-height:100vh;background:#f5f5f5;font-family:'Segoe UI',system-ui,sans-serif;color:#111;font-size:15px}
+
+/* ── HEADER ── */
+#hdr{background:linear-gradient(135deg,#84cc16 0%,#65a30d 100%);border-bottom:3px solid #4d7c0f;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px #84cc1655}
 #hdr-l{display:flex;align-items:center;gap:10px}
-#hdr-title{font-weight:900;font-size:16px;letter-spacing:1px;color:#fff}
-#hdr-sub{color:#60a5fa;font-size:10px;letter-spacing:2px}
+#hdr-title{font-weight:900;font-size:17px;letter-spacing:1px;color:#000;text-shadow:0 1px 0 #fff8}
+#hdr-sub{color:#1a3a00;font-size:10px;letter-spacing:2px;font-weight:700}
 #hdr-r{display:flex;gap:8px;align-items:center}
-#rec-box{background:#0a1f3d;border-radius:8px;padding:4px 12px;border:1px solid #1e3a6e;min-width:110px}
-.rl{color:#475569;font-size:9px;letter-spacing:1px}
-.rv{color:#4ade80;font-size:12px;font-weight:700}
-.btn-p{background:#2563eb;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+#rec-box{background:#fff;border-radius:8px;padding:4px 12px;border:2px solid #4d7c0f;min-width:110px}
+.rl{color:#4d7c0f;font-size:9px;letter-spacing:1px;font-weight:700}
+.rv{color:#1a3a00;font-size:12px;font-weight:900}
+.btn-p{background:#fff;color:#1a3a00;border:2px solid #4d7c0f;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:800;cursor:pointer;white-space:nowrap;box-shadow:0 2px 6px #0002}
+
+/* ── MAIN ── */
 #main{max-width:640px;margin:0 auto;padding:18px 14px}
-#abanner{background:#1e3a5f;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:none;flex-wrap:wrap;gap:12px;align-items:center}
-.al{color:#93c5fd;font-weight:700;font-size:13px}
+
+/* ── ALERT BANNER ── */
+#abanner{background:#fff;border:2px solid #84cc16;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:none;flex-wrap:wrap;gap:12px;align-items:center;box-shadow:0 2px 8px #84cc1633}
+.al{color:#1a3a00;font-weight:800;font-size:13px}
 .badge{border-radius:6px;padding:3px 11px;font-size:12px;font-weight:700}
-.br{background:#dc2626;color:#fff}.by{background:#f59e0b;color:#1c1c1c}
-#sbox{background:#0f2744;border:2px solid #1e3a6e;border-radius:14px;padding:18px;margin-bottom:18px}
-.slbl{color:#60a5fa;font-weight:700;font-size:12px;letter-spacing:2px;margin-bottom:12px}
+.br{background:#dc2626;color:#fff}.by{background:#f59e0b;color:#000}
+
+/* ── SEARCH BOX ── */
+#sbox{background:#fff;border:2px solid #84cc16;border-radius:14px;padding:18px;margin-bottom:18px;box-shadow:0 2px 12px #84cc1622}
+.slbl{color:#000;font-weight:900;font-size:12px;letter-spacing:2px;margin-bottom:12px;text-transform:uppercase}
 #srow{display:flex;gap:8px;margin-bottom:10px}
-#dinput{flex:1;background:#0a1f3d;border:1px solid #1e3a6e;border-radius:10px;color:#e2e8f0;padding:13px 15px;font-size:16px;outline:none;font-family:monospace;letter-spacing:1px}
-#dinput::placeholder{color:#334155;letter-spacing:0;font-size:13px;font-family:'Segoe UI',sans-serif}
-#bsrch{background:#2563eb;color:#fff;border:none;border-radius:10px;padding:0 18px;font-weight:800;font-size:20px;cursor:pointer;min-width:54px}
-#bscan{width:100%;background:linear-gradient(90deg,#1e3a5f,#0f2744);color:#60a5fa;border:1px dashed #2563eb;border-radius:10px;padding:13px 0;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px}
-.hint{color:#334155;font-size:10px;margin-top:7px;text-align:center}
+#dinput{flex:1;background:#f9fafb;border:2px solid #84cc16;border-radius:10px;color:#111;padding:13px 15px;font-size:16px;outline:none;font-family:monospace;letter-spacing:1px}
+#dinput:focus{border-color:#4d7c0f;background:#fff}
+#dinput::placeholder{color:#9ca3af;letter-spacing:0;font-size:13px;font-family:'Segoe UI',sans-serif}
+#bsrch{background:#84cc16;color:#000;border:none;border-radius:10px;padding:0 18px;font-weight:900;font-size:20px;cursor:pointer;min-width:54px;box-shadow:0 2px 8px #84cc1655}
+#bscan{width:100%;background:linear-gradient(90deg,#f0fdf4,#dcfce7);color:#1a3a00;border:2px dashed #84cc16;border-radius:10px;padding:13px 0;font-size:13px;font-weight:800;cursor:pointer;letter-spacing:.5px}
+.hint{color:#6b7280;font-size:10px;margin-top:7px;text-align:center}
+
+/* ── RESULTS ── */
 #results{margin-bottom:20px}
-.rcnt{color:#94a3b8;font-size:11px;margin-bottom:10px;letter-spacing:1px}
-.card{background:#0f2744;border-radius:14px;padding:18px;margin-bottom:14px}
-.sbanner{border-radius:8px;padding:9px 14px;font-weight:800;font-size:14px;letter-spacing:.5px;display:flex;align-items:center;gap:8px;margin-bottom:14px;justify-content:center;text-align:center;flex-wrap:wrap}
+.rcnt{color:#6b7280;font-size:11px;margin-bottom:10px;letter-spacing:1px;font-weight:700}
+.card{background:#fff;border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 2px 16px #0001}
+.sbanner{border-radius:8px;padding:9px 14px;font-weight:900;font-size:14px;letter-spacing:.5px;display:flex;align-items:center;gap:8px;margin-bottom:14px;justify-content:center;text-align:center;flex-wrap:wrap}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:9px 16px;margin-bottom:12px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px 12px}
-.fl{color:#475569;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1px}
-.fv{color:#e2e8f0;font-size:13px;font-weight:600}
-.fva{color:#fbbf24;font-size:13px;font-weight:700}
-.sctrb{background:#0a1f3d;border-radius:10px;padding:11px 14px;margin-bottom:11px;border:1px solid #1e3a6e}
-.sctrt{color:#60a5fa;font-weight:700;font-size:11px;letter-spacing:2px;margin-bottom:7px}
-.erow{color:#64748b;font-size:11px;margin-top:5px}.erow span{color:#93c5fd}
-.nf{background:#0f2744;border:2px solid #7f1d1d;border-radius:14px;padding:28px 18px;text-align:center}
-.nfi{font-size:38px;margin-bottom:10px}.nft{color:#f87171;font-weight:800;font-size:16px;margin-bottom:7px}
-.nfd{color:#64748b;font-size:13px}.nfd strong{color:#e2e8f0;font-family:monospace}
-.nfh{color:#475569;font-size:11px;margin-top:9px}
-#footer{margin-top:28px;border-top:1px solid #1e3a6e;padding-top:16px;text-align:center}
-.fi{color:#1e3a6e;font-size:18px;margin-bottom:6px}
-.fd{color:#334155;font-size:11px;font-weight:700;letter-spacing:1px}
-.fr{color:#1e3a6e;font-size:10px;margin-top:2px}
-.flink{color:#2563eb;font-size:10px;text-decoration:none;display:inline-block;margin-top:3px}
-.fver{color:#1e3a6e;font-size:9px;margin-top:7px;letter-spacing:1px}
-/* OVERLAY */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:500;display:flex;align-items:center;justify-content:center;padding:12px}
-.mbox{background:#0f2744;border:2px solid #1e3a6e;border-radius:16px;padding:24px;width:100%;max-width:430px}
-.mt{color:#60a5fa;font-weight:800;font-size:15px;margin-bottom:3px;letter-spacing:1px}
-.ms2{color:#475569;font-size:11px;margin-bottom:18px}
-/* SCANNER */
+.fl{color:#6b7280;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1px}
+.fv{color:#111;font-size:13px;font-weight:700}
+.fva{color:#1a3a00;font-size:13px;font-weight:900}
+.sctrb{background:#f0fdf4;border-radius:10px;padding:11px 14px;margin-bottom:11px;border:2px solid #84cc16}
+.sctrt{color:#000;font-weight:900;font-size:11px;letter-spacing:2px;margin-bottom:7px;text-transform:uppercase}
+.erow{color:#6b7280;font-size:11px;margin-top:5px}.erow span{color:#4d7c0f;font-weight:600}
+
+/* ── NOT FOUND ── */
+.nf{background:#fff;border:2px solid #fca5a5;border-radius:14px;padding:28px 18px;text-align:center;box-shadow:0 2px 12px #fca5a522}
+.nfi{font-size:38px;margin-bottom:10px}
+.nft{color:#dc2626;font-weight:900;font-size:16px;margin-bottom:7px}
+.nfd{color:#6b7280;font-size:13px}.nfd strong{color:#111;font-family:monospace}
+.nfh{color:#9ca3af;font-size:11px;margin-top:9px}
+
+/* ── FOOTER — Desarrollador (llamativo) ── */
+#footer{margin-top:28px;padding-top:0;text-align:center}
+#footer-dev{background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);border-radius:14px;padding:18px;margin-top:12px;border:2px solid #84cc16;box-shadow:0 4px 20px #84cc1644}
+.fi{font-size:22px;margin-bottom:6px}
+.fd{background:linear-gradient(90deg,#84cc16,#a3e635);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:14px;font-weight:900;letter-spacing:1px}
+.fr{color:#a3e635;font-size:11px;margin-top:3px;font-weight:600}
+.flink{color:#fff;font-size:11px;text-decoration:none;display:inline-block;margin-top:5px;font-weight:700;background:#0a66c2;border-radius:20px;padding:5px 16px;letter-spacing:.5px}
+.flink:hover{background:#004182}
+.fver{color:#4d7c0f;font-size:9px;margin-top:10px;letter-spacing:1px;border-top:1px solid #333;padding-top:8px}
+
+/* ── OVERLAY / MODALES ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;display:flex;align-items:center;justify-content:center;padding:12px}
+.mbox{background:#fff;border:3px solid #84cc16;border-radius:16px;padding:24px;width:100%;max-width:430px;box-shadow:0 8px 32px #84cc1633}
+.mt{color:#000;font-weight:900;font-size:15px;margin-bottom:3px;letter-spacing:1px;text-transform:uppercase}
+.ms2{color:#6b7280;font-size:11px;margin-bottom:18px}
+
+/* ── SCANNER ── */
 #vid-wrap{position:relative;margin-bottom:11px}
 #scvid{width:100%;border-radius:10px;background:#000;display:block;max-height:260px;object-fit:cover}
 #sovlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
-#sframe{width:190px;height:110px;border:2px solid #60a5fa;border-radius:8px;box-shadow:0 0 0 9999px rgba(0,0,0,0.4)}
-#sstatus{color:#94a3b8;font-size:12px;margin-bottom:12px;text-align:center}
-#serr{color:#f87171;font-size:12px;margin:12px 0;display:none;text-align:center}
+#sframe{width:190px;height:110px;border:2px solid #84cc16;border-radius:8px;box-shadow:0 0 0 9999px rgba(0,0,0,0.5)}
+#sstatus{color:#374151;font-size:12px;margin-bottom:12px;text-align:center;font-weight:600}
+#serr{color:#dc2626;font-size:12px;margin:12px 0;display:none;text-align:center}
 .bclose{background:#dc2626;color:#fff;border:none;border-radius:8px;padding:11px 0;font-weight:700;cursor:pointer;font-size:14px;width:100%}
-/* PANEL */
-.pll{color:#94a3b8;font-size:13px;margin-bottom:9px}
-#pinput{background:#0a1f3d;border:1px solid #1e3a6e;border-radius:8px;color:#e2e8f0;padding:12px;font-size:22px;width:100%;text-align:center;letter-spacing:10px;margin-bottom:7px}
-#perr{color:#f87171;font-size:12px;margin-bottom:7px;display:none}
-.brow{display:flex;gap:8px}
-.bent{flex:1;background:#2563eb;color:#fff;border:none;border-radius:8px;padding:12px 0;font-weight:700;cursor:pointer;font-size:14px}
-.bcan{flex:1;background:#1e3a5f;color:#94a3b8;border:none;border-radius:8px;padding:12px 0;font-weight:700;cursor:pointer;font-size:14px}
-#punlk{display:none}
-#psuc{font-size:13px;font-weight:700;margin-bottom:14px}
-/* PROGRESS */
-#prog-wrap{background:#0a1f3d;border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid #1e3a6e;display:none}
-#prog-bar-bg{background:#1e3a5f;border-radius:6px;height:10px;margin:8px 0}
-#prog-bar{background:#2563eb;border-radius:6px;height:10px;width:0%;transition:width .2s}
-#prog-txt{color:#60a5fa;font-size:12px;font-weight:700}
-#prog-sub{color:#475569;font-size:10px;margin-top:3px}
-/* UPLOAD AREA */
-#upload-area{background:#1e3a5f;border:2px dashed #2563eb;border-radius:10px;padding:22px;text-align:center;cursor:pointer;margin-bottom:14px;transition:background .2s}
-#upload-area:hover{background:#1e4a7f}
-#upload-area p{color:#60a5fa;font-size:14px;font-weight:700;margin-bottom:4px}
-#upload-area small{color:#475569;font-size:11px}
-#finput{display:none}
-#chint{background:#0a1f3d;border-radius:8px;padding:10px 13px;margin-bottom:12px;border:1px solid #1e3a6e}
-.ct{color:#60a5fa;font-size:11px;font-weight:700;margin-bottom:5px}
-.cl{color:#64748b;font-size:10px;line-height:1.8}
-#ustatus{font-size:13px;margin-bottom:10px;font-weight:600;min-height:18px}
-#dbgbox{background:#0a1f3d;border:1px solid #f59e0b;border-radius:8px;padding:10px 13px;margin-bottom:12px;display:none}
-.dt{color:#f59e0b;font-size:11px;font-weight:700;margin-bottom:5px}
-.dc{color:#94a3b8;font-size:10px;line-height:1.7;word-break:break-all;font-family:monospace;white-space:pre-wrap}
-.ghint{color:#475569;font-size:11px;margin-bottom:12px}
-.bcp{width:100%;background:#1e3a5f;color:#94a3b8;border:none;border-radius:8px;padding:12px 0;font-weight:700;cursor:pointer;font-size:14px;margin-top:4px}
-@media(max-width:460px){.g2{grid-template-columns:1fr}.g3{grid-template-columns:1fr 1fr}.card{padding:14px}}
 
+/* ── PANEL ── */
+.pll{color:#374151;font-size:13px;margin-bottom:9px}
+#pinput{background:#f9fafb;border:2px solid #84cc16;border-radius:8px;color:#111;padding:12px;font-size:22px;width:100%;text-align:center;letter-spacing:10px;margin-bottom:7px}
+#perr{color:#dc2626;font-size:12px;margin-bottom:7px;display:none;font-weight:700}
+.brow{display:flex;gap:8px}
+.bent{flex:1;background:#84cc16;color:#000;border:none;border-radius:8px;padding:12px 0;font-weight:900;cursor:pointer;font-size:14px;box-shadow:0 2px 8px #84cc1644}
+.bcan{flex:1;background:#f3f4f6;color:#374151;border:none;border-radius:8px;padding:12px 0;font-weight:700;cursor:pointer;font-size:14px}
+#punlk{display:none}
+#psuc{font-size:13px;font-weight:800;margin-bottom:14px}
+
+/* ── PROGRESS ── */
+#prog-wrap{background:#f0fdf4;border-radius:10px;padding:14px;margin-bottom:14px;border:2px solid #84cc16;display:none}
+#prog-bar-bg{background:#d1fae5;border-radius:6px;height:10px;margin:8px 0}
+#prog-bar{background:#84cc16;border-radius:6px;height:10px;width:0%;transition:width .2s}
+#prog-txt{color:#1a3a00;font-size:12px;font-weight:800}
+#prog-sub{color:#4d7c0f;font-size:10px;margin-top:3px}
+
+/* ── UPLOAD ── */
+#upload-area{background:#f0fdf4;border:2px dashed #84cc16;border-radius:10px;padding:22px;text-align:center;cursor:pointer;margin-bottom:14px;transition:background .2s}
+#upload-area:hover{background:#dcfce7}
+#upload-area p{color:#1a3a00;font-size:14px;font-weight:800;margin-bottom:4px}
+#upload-area small{color:#6b7280;font-size:11px}
+#finput{display:none}
+#chint{background:#f9fafb;border-radius:8px;padding:10px 13px;margin-bottom:12px;border:1px solid #84cc1666}
+.ct{color:#000;font-size:11px;font-weight:800;margin-bottom:5px}
+.cl{color:#6b7280;font-size:10px;line-height:1.8}
+#ustatus{font-size:13px;margin-bottom:10px;font-weight:700;min-height:18px}
+#dbgbox{background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:10px 13px;margin-bottom:12px;display:none}
+.dt{color:#92400e;font-size:11px;font-weight:700;margin-bottom:5px}
+.dc{color:#374151;font-size:10px;line-height:1.7;word-break:break-all;font-family:monospace;white-space:pre-wrap}
+.ghint{color:#6b7280;font-size:11px;margin-bottom:12px}
+.bcp{width:100%;background:#f3f4f6;color:#374151;border:none;border-radius:8px;padding:12px 0;font-weight:700;cursor:pointer;font-size:14px;margin-top:4px}
+
+/* ── HISTORIAL ── */
 #hist-section{margin-top:22px}
-#hist-title{color:#475569;font-size:11px;font-weight:700;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
-#hist-clear{background:none;border:1px solid #334155;border-radius:6px;color:#475569;font-size:10px;padding:3px 10px;cursor:pointer}
-.hist-item{background:#0a1f3d;border-radius:10px;padding:10px 14px;margin-bottom:8px;border:1px solid #1e3a6e;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .2s}
-.hist-item:hover{border-color:#2563eb}
+#hist-title{color:#6b7280;font-size:11px;font-weight:700;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+#hist-clear{background:none;border:1px solid #d1d5db;border-radius:6px;color:#6b7280;font-size:10px;padding:3px 10px;cursor:pointer}
+.hist-item{background:#fff;border-radius:10px;padding:10px 14px;margin-bottom:8px;border:1px solid #e5e7eb;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .2s;box-shadow:0 1px 4px #0001}
+.hist-item:hover{border-color:#84cc16;box-shadow:0 2px 8px #84cc1622}
 .hist-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 .hist-info{flex:1;min-width:0}
-.hist-doc{color:#e2e8f0;font-size:13px;font-weight:700;font-family:monospace}
-.hist-name{color:#64748b;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hist-time{color:#334155;font-size:10px;white-space:nowrap}
+.hist-doc{color:#111;font-size:13px;font-weight:700;font-family:monospace}
+.hist-name{color:#6b7280;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-time{color:#9ca3af;font-size:10px;white-space:nowrap}
 .hist-st{font-size:11px;font-weight:700;margin-top:2px}
-#btn-nueva{width:100%;background:#1e3a5f;color:#60a5fa;border:1px solid #2563eb;border-radius:10px;padding:13px 0;font-weight:800;font-size:14px;cursor:pointer;margin-bottom:16px;letter-spacing:.5px;display:none}
+#btn-nueva{width:100%;background:#84cc16;color:#000;border:none;border-radius:10px;padding:13px 0;font-weight:900;font-size:14px;cursor:pointer;margin-bottom:16px;letter-spacing:.5px;display:none;box-shadow:0 2px 10px #84cc1644}
+
+@media(max-width:460px){.g2{grid-template-columns:1fr}.g3{grid-template-columns:1fr 1fr}.card{padding:14px}}
+#url-gsheet:focus{border-color:#4d7c0f;box-shadow:0 0 0 3px #84cc1622}
+#url-onedrive:focus{border-color:#1d4ed8;box-shadow:0 0 0 3px #3b82f622}
+#url-sharepoint:focus{border-color:#5b21b6;box-shadow:0 0 0 3px #7c3aed22}
 </style>
 </head>
 <body>
@@ -160,11 +188,13 @@ body{min-height:100vh;background:linear-gradient(160deg,#060f1e 0%,#0a1f3d 50%,#
   </div>
 
   <div id="footer">
-    <div class="fi">🛡️</div>
-    <div class="fd">Desarrollado por Edward Quezada M.</div>
-    <div class="fr">Profesional en Seguridad Patrimonial</div>
-    <a class="flink" href="https://www.linkedin.com/in/edwardqm" target="_blank">🔗 linkedin.com/in/edwardqm</a>
-    <div class="fver">v1.9.0 — SISTEMA DE CONSULTA SCTR © 2025</div>
+    <div id="footer-dev">
+      <div class="fi">🛡️</div>
+      <div class="fd">Desarrollado por Edward Quezada M.</div>
+      <div class="fr">Profesional en Seguridad Patrimonial</div>
+      <a class="flink" href="https://www.linkedin.com/in/edwardqm" target="_blank">🔗 linkedin.com/in/edwardqm</a>
+      <div class="fver">v2.2.0 — SISTEMA DE CONSULTA SCTR © 2025</div>
+    </div>
   </div>
 </div>
 
@@ -172,19 +202,19 @@ body{min-height:100vh;background:linear-gradient(160deg,#060f1e 0%,#0a1f3d 50%,#
 <div id="scan-modal" class="overlay" style="display:none">
   <div class="mbox" style="text-align:center;padding:18px">
     <div class="mt" style="margin-bottom:2px">📷 LECTOR MULTIFORMATO</div>
-    <div style="color:#475569;font-size:10px;margin-bottom:10px;letter-spacing:.5px">DNI · PASAPORTE · CARNET EXTRANJERÍA · QR · PDF417 · CODE128</div>
+    <div style="color:#6b7280;font-size:10px;margin-bottom:10px;letter-spacing:.5px">DNI · PASAPORTE · CARNET EXTRANJERÍA · QR · PDF417 · CODE128</div>
     <div id="vid-wrap" style="position:relative;margin-bottom:10px;border-radius:10px;overflow:hidden;background:#000">
       <video id="scvid" muted playsinline autoplay style="width:100%;display:block;max-height:240px;object-fit:cover"></video>
       <!-- Scan overlay animado -->
       <div style="position:absolute;inset:0;pointer-events:none;display:flex;align-items:center;justify-content:center">
         <div id="sframe" style="position:relative;width:82%;height:110px;border:2px solid #60a5fa;border-radius:8px;box-shadow:0 0 0 9999px rgba(0,0,0,0.45)">
           <!-- Línea de escaneo animada -->
-          <div id="scan-line" style="position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#60a5fa,transparent);animation:scanline 1.8s linear infinite"></div>
+          <div id="scan-line" style="position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#a3e635,transparent);animation:scanline 1.8s linear infinite"></div>
           <!-- Esquinas -->
-          <div style="position:absolute;top:-2px;left:-2px;width:18px;height:18px;border-top:3px solid #3b82f6;border-left:3px solid #3b82f6;border-radius:3px 0 0 0"></div>
-          <div style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;border-top:3px solid #3b82f6;border-right:3px solid #3b82f6;border-radius:0 3px 0 0"></div>
-          <div style="position:absolute;bottom:-2px;left:-2px;width:18px;height:18px;border-bottom:3px solid #3b82f6;border-left:3px solid #3b82f6;border-radius:0 0 0 3px"></div>
-          <div style="position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-bottom:3px solid #3b82f6;border-right:3px solid #3b82f6;border-radius:0 0 3px 0"></div>
+          <div style="position:absolute;top:-2px;left:-2px;width:18px;height:18px;border-top:3px solid #84cc16;border-left:3px solid #84cc16;border-radius:3px 0 0 0"></div>
+          <div style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;border-top:3px solid #84cc16;border-right:3px solid #84cc16;border-radius:0 3px 0 0"></div>
+          <div style="position:absolute;bottom:-2px;left:-2px;width:18px;height:18px;border-bottom:3px solid #84cc16;border-left:3px solid #84cc16;border-radius:0 0 0 3px"></div>
+          <div style="position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-bottom:3px solid #84cc16;border-right:3px solid #84cc16;border-radius:0 0 3px 0"></div>
         </div>
       </div>
       <!-- Resultado flash -->
@@ -197,21 +227,21 @@ body{min-height:100vh;background:linear-gradient(160deg,#060f1e 0%,#0a1f3d 50%,#
     <div id="scan-engines" style="display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:12px"></div>
     <!-- Selector tipo de documento -->
     <div style="margin-bottom:10px">
-      <div style="color:#60a5fa;font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:7px">SELECCIONE TIPO DE DOCUMENTO A LEER:</div>
+      <div style="color:#a3e635;font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:7px">SELECCIONE TIPO DE DOCUMENTO A LEER:</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
-        <button id="btn-doc-dni" onclick="setDocMode('dni')" style="background:#1e4a7f;border:2px solid #2563eb;border-radius:8px;padding:8px 4px;color:#60a5fa;font-size:11px;font-weight:700;cursor:pointer">
-          🪪<br>DNI Perú<br><span style="color:#93c5fd;font-size:9px;font-weight:400">PDF417</span>
+        <button id="btn-doc-dni" onclick="setDocMode('dni')" style="background:#1a2e05;border:2px solid #84cc16;border-radius:8px;padding:8px 4px;color:#a3e635;font-size:11px;font-weight:700;cursor:pointer">
+          🪪<br>DNI Perú<br><span style="color:#d9f99d;font-size:9px;font-weight:400">PDF417</span>
         </button>
-        <button id="btn-doc-pp" onclick="setDocMode('pasaporte')" style="background:#1e3a5f;border:2px solid #334155;border-radius:8px;padding:8px 4px;color:#64748b;font-size:11px;font-weight:700;cursor:pointer">
+        <button id="btn-doc-pp" onclick="setDocMode('pasaporte')" style="background:#1a2e05;border:2px solid #334155;border-radius:8px;padding:8px 4px;color:#64748b;font-size:11px;font-weight:700;cursor:pointer">
           🛂<br>Pasaporte<br><span style="font-size:9px;font-weight:400">MRZ / Code39</span>
         </button>
-        <button id="btn-doc-ce" onclick="setDocMode('ce')" style="background:#1e3a5f;border:2px solid #334155;border-radius:8px;padding:8px 4px;color:#64748b;font-size:11px;font-weight:700;cursor:pointer">
+        <button id="btn-doc-ce" onclick="setDocMode('ce')" style="background:#1a2e05;border:2px solid #334155;border-radius:8px;padding:8px 4px;color:#64748b;font-size:11px;font-weight:700;cursor:pointer">
           📋<br>Carnet Ext.<br><span style="font-size:9px;font-weight:400">Code128/QR</span>
         </button>
       </div>
     </div>
     <!-- Instrucción según modo -->
-    <div id="doc-mode-hint" style="background:#0a1f3d;border-radius:7px;padding:7px 12px;margin-bottom:10px;border:1px solid #1e3a6e;font-size:11px;color:#94a3b8;text-align:left">
+    <div id="doc-mode-hint" style="background:#0d1a00;border-radius:7px;padding:7px 12px;margin-bottom:10px;border:1px solid #84cc1644;font-size:11px;color:#94a3b8;text-align:left">
       ℹ️ Seleccione el tipo de documento y luego apunte la cámara al código de barras o QR del documento.
     </div>
     <button class="bclose" onclick="closeScanner()" style="width:100%">✕ CERRAR CÁMARA</button>
@@ -240,16 +270,84 @@ body{min-height:100vh;background:linear-gradient(160deg,#060f1e 0%,#0a1f3d 50%,#
     <div id="punlk">
       <div id="psuc"></div>
 
-      <!-- BTN REALIZAR CONSULTA (visible after load) -->
+      <!-- BTN REALIZAR CONSULTA -->
       <div id="btn-ir-consulta" style="display:none;margin-bottom:14px">
-        <button onclick="irAConsulta()" style="width:100%;background:linear-gradient(90deg,#16a34a,#15803d);color:#fff;border:none;border-radius:10px;padding:14px 0;font-weight:800;font-size:15px;cursor:pointer;letter-spacing:1px">🔍 REALIZAR CONSULTA</button>
+        <button onclick="irAConsulta()" style="width:100%;background:linear-gradient(90deg,#84cc16,#65a30d);color:#000;border:none;border-radius:10px;padding:14px 0;font-weight:900;font-size:15px;cursor:pointer;letter-spacing:1px;box-shadow:0 2px 10px #84cc1644">🔍 REALIZAR CONSULTA</button>
       </div>
 
-      <!-- UPLOAD AREA -->
-      <div id="upload-area" onclick="document.getElementById('finput').click()">
-        <p>📂 Toque aquí para cargar Excel o CSV</p>
-        <small>.xlsx · .xls · .csv — cualquier tamaño</small>
-        <input type="file" id="finput" accept=".xlsx,.xls,.csv" onchange="handleFile(event)"/>
+      <!-- TABS DE ACTUALIZACIÓN -->
+      <div style="margin-bottom:14px">
+        <div style="font-size:11px;font-weight:800;color:#111;letter-spacing:1px;margin-bottom:8px;text-transform:uppercase">🔄 ACTUALIZAR BASE DE DATOS</div>
+        <!-- Tab selector -->
+        <div style="display:flex;gap:4px;background:#f3f4f6;border-radius:10px;padding:4px;margin-bottom:12px">
+          <button id="tab-file"   onclick="setTab('file')"   style="flex:1;padding:7px 4px;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;background:#84cc16;color:#000">📂 Archivo</button>
+          <button id="tab-gsheet" onclick="setTab('gsheet')" style="flex:1;padding:7px 4px;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;background:transparent;color:#6b7280">📊 G.Sheets</button>
+          <button id="tab-onedrive" onclick="setTab('onedrive')" style="flex:1;padding:7px 4px;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;background:transparent;color:#6b7280">☁️ OneDrive</button>
+          <button id="tab-sharepoint" onclick="setTab('sharepoint')" style="flex:1;padding:7px 4px;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;background:transparent;color:#6b7280">🏢 SharePt</button>
+        </div>
+
+        <!-- TAB: ARCHIVO LOCAL -->
+        <div id="pane-file">
+          <div id="upload-area" onclick="document.getElementById('finput').click()">
+            <p>📂 Toque aquí para cargar Excel o CSV</p>
+            <small>.xlsx · .xls · .csv — cualquier tamaño</small>
+            <input type="file" id="finput" accept=".xlsx,.xls,.csv" onchange="handleFile(event)"/>
+          </div>
+        </div>
+
+        <!-- TAB: GOOGLE SHEETS -->
+        <div id="pane-gsheet" style="display:none">
+          <div style="background:#f0fdf4;border:1px solid #84cc1666;border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:#374151;line-height:1.7">
+            <strong style="color:#1a3a00">📋 Cómo obtener el link de Google Sheets:</strong><br>
+            1. Abra su hoja en Google Sheets<br>
+            2. <strong>Archivo → Publicar en la web</strong><br>
+            3. Seleccione la hoja y formato <strong>CSV</strong><br>
+            4. Haga clic en <strong>Publicar</strong> y copie el link<br>
+            <span style="color:#84cc16;font-weight:700">✓ El link termina en ...output=csv</span>
+          </div>
+          <input id="url-gsheet" type="url" placeholder="https://docs.google.com/spreadsheets/d/.../pub?output=csv"
+            style="width:100%;background:#fff;border:2px solid #84cc16;border-radius:8px;padding:11px 12px;font-size:12px;color:#111;margin-bottom:8px;outline:none"/>
+          <button onclick="loadFromURL('gsheet')" style="width:100%;background:#84cc16;color:#000;border:none;border-radius:8px;padding:12px;font-weight:900;cursor:pointer;font-size:13px">⬇️ DESCARGAR Y ACTUALIZAR</button>
+        </div>
+
+        <!-- TAB: ONEDRIVE -->
+        <div id="pane-onedrive" style="display:none">
+          <div style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:#374151;line-height:1.7">
+            <strong style="color:#1e40af">☁️ Cómo obtener el link de OneDrive:</strong><br>
+            1. Abra el archivo en OneDrive<br>
+            2. Haga clic en <strong>Compartir → Cualquiera con el vínculo</strong><br>
+            3. Copie el link y péguelo aquí<br>
+            4. La app lo convierte a descarga directa<br>
+            <span style="color:#2563eb;font-weight:700">✓ Formatos: .xlsx, .xls, .csv</span>
+          </div>
+          <input id="url-onedrive" type="url" placeholder="https://1drv.ms/x/... o https://onedrive.live.com/..."
+            style="width:100%;background:#fff;border:2px solid #3b82f6;border-radius:8px;padding:11px 12px;font-size:12px;color:#111;margin-bottom:8px;outline:none"/>
+          <button onclick="loadFromURL('onedrive')" style="width:100%;background:#2563eb;color:#fff;border:none;border-radius:8px;padding:12px;font-weight:900;cursor:pointer;font-size:13px">⬇️ DESCARGAR Y ACTUALIZAR</button>
+        </div>
+
+        <!-- TAB: SHAREPOINT -->
+        <div id="pane-sharepoint" style="display:none">
+          <div style="background:#faf5ff;border:1px solid #c4b5fd;border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:#374151;line-height:1.7">
+            <strong style="color:#6d28d9">🏢 Cómo obtener el link de SharePoint:</strong><br>
+            1. Abra el archivo en SharePoint<br>
+            2. Haga clic en los <strong>3 puntos (...) → Compartir</strong><br>
+            3. En permisos elija <strong>"Cualquiera con el vínculo"</strong><br>
+            4. Copie el link y péguelo aquí<br>
+            <br>
+            <strong style="color:#7c3aed">⚙️ Para descarga directa desde SharePoint:</strong><br>
+            Cambie <code style="background:#ede9fe;padding:1px 4px;border-radius:3px">:x:/g/</code> por <code style="background:#ede9fe;padding:1px 4px;border-radius:3px">:x:/r/</code> y agregue <code style="background:#ede9fe;padding:1px 4px;border-radius:3px">?download=1</code> al final<br>
+            <span style="color:#7c3aed;font-weight:700">⚠️ Requiere que el archivo sea público o anónimo</span>
+          </div>
+          <input id="url-sharepoint" type="url" placeholder="https://empresa.sharepoint.com/:x:/g/..."
+            style="width:100%;background:#fff;border:2px solid #7c3aed;border-radius:8px;padding:11px 12px;font-size:12px;color:#111;margin-bottom:8px;outline:none"/>
+          <div style="margin-bottom:8px">
+            <label style="font-size:11px;color:#374151;font-weight:700">
+              <input type="checkbox" id="sp-download" style="margin-right:5px" checked/>
+              Agregar ?download=1 automáticamente
+            </label>
+          </div>
+          <button onclick="loadFromURL('sharepoint')" style="width:100%;background:#7c3aed;color:#fff;border:none;border-radius:8px;padding:12px;font-weight:900;cursor:pointer;font-size:13px">⬇️ DESCARGAR Y ACTUALIZAR</button>
+        </div>
       </div>
 
       <!-- PROGRESS BAR -->
@@ -266,8 +364,7 @@ body{min-height:100vh;background:linear-gradient(160deg,#060f1e 0%,#0a1f3d 50%,#
 
       <div id="dbgbox"><div class="dt">🔎 DIAGNÓSTICO</div><div class="dc" id="dbgtxt"></div></div>
       <div id="ustatus"></div>
-      <div class="ghint">💡 Google Sheets → Archivo → Descargar → CSV</div>
-      <button id="btn-borrar-db" onclick="borrarDB()" style="width:100%;background:#1e293b;color:#f87171;border:1px solid #7f1d1d;border-radius:8px;padding:10px 0;font-weight:700;cursor:pointer;font-size:12px;margin-bottom:8px">🗑️ BORRAR BASE DE DATOS GUARDADA</button>
+      <button id="btn-borrar-db" onclick="borrarDB()" style="width:100%;background:#fff5f5;color:#dc2626;border:2px solid #fca5a5;border-radius:8px;padding:10px 0;font-weight:700;cursor:pointer;font-size:12px;margin-bottom:8px">🗑️ BORRAR BASE DE DATOS GUARDADA</button>
       <button class="bcp" onclick="closePanel()">CERRAR PANEL</button>
     </div>
   </div>
@@ -546,7 +643,7 @@ function renderResults(found, q, totalRaw) {
         +'<div class="fva" style="color:#'+( d !== null && d < 0 ? 'f87171' : d !== null && d <= 7 ? 'fbbf24' : '4ade80' )+'">'+fmtDate(row.FIN_VIGENCIA_SCTR)+'</div>'
       +'</div>'
     +'</div>'
-    +'<div style="background:#0f2744;border-radius:6px;padding:6px 10px;text-align:center">'
+    +'<div style="background:#162300;border-radius:6px;padding:6px 10px;text-align:center">'
       +'<span class="fl">DÍAS RESTANTES: </span>'
       +'<span style="font-weight:800;font-size:14px;color:#'+( d===null?'6b7280':d<0?'f87171':d<=7?'fbbf24':'4ade80' )+'">'+
         (d!==null ? (d<0?'VENCIDO '+Math.abs(d)+' DÍAS ATRÁS':d===0?'VENCE HOY':'+'+d+' DÍAS') : '—')
@@ -555,22 +652,22 @@ function renderResults(found, q, totalRaw) {
   +'</div>';
 
   // ── Bloque Acceso/Visita con etiquetas claras ──
-  html += '<div style="background:#0a1f3d;border-radius:10px;padding:11px 14px;margin-bottom:11px;border:1px solid #1e3a6e">'
+  html += '<div style="background:#0d1a00;border-radius:10px;padding:11px 14px;margin-bottom:11px;border:1px solid #84cc1644">'
     +'<div class="sctrt">🏢 AUTORIZACIÓN DE INGRESO</div>'
     +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin-bottom:8px">'
       +'<div>'
-        +'<div class="fl" style="color:#60a5fa">📥 FECHA INGRESO</div>'
-        +'<div class="fv" style="color:#93c5fd">'+fmtDate(row.FECHA_INGRESO)+'</div>'
+        +'<div class="fl" style="color:#a3e635">📥 FECHA INGRESO</div>'
+        +'<div class="fv" style="color:#d9f99d">'+fmtDate(row.FECHA_INGRESO)+'</div>'
       +'</div>'
       +'<div>'
-        +'<div class="fl" style="color:#60a5fa">📤 FECHA SALIDA</div>'
-        +'<div class="fv" style="color:#93c5fd">'+fmtDate(row.FECHA_SALIDA)+'</div>'
+        +'<div class="fl" style="color:#a3e635">📤 FECHA SALIDA</div>'
+        +'<div class="fv" style="color:#d9f99d">'+fmtDate(row.FECHA_SALIDA)+'</div>'
       +'</div>'
     +'</div>'
     +(row.LUGAR_SITE1||row.LUGAR_SITE2||row.LUGAR_SITE3 ? '<div style="display:flex;gap:6px;flex-wrap:wrap">'
-      +(row.LUGAR_SITE1?'<span style="background:#1e3a5f;border-radius:5px;padding:2px 8px;font-size:11px;color:#60a5fa">📍'+esc(row.LUGAR_SITE1)+'</span>':'')
-      +(row.LUGAR_SITE2?'<span style="background:#1e3a5f;border-radius:5px;padding:2px 8px;font-size:11px;color:#60a5fa">📍'+esc(row.LUGAR_SITE2)+'</span>':'')
-      +(row.LUGAR_SITE3?'<span style="background:#1e3a5f;border-radius:5px;padding:2px 8px;font-size:11px;color:#60a5fa">📍'+esc(row.LUGAR_SITE3)+'</span>':'')
+      +(row.LUGAR_SITE1?'<span style="background:#1a2e05;border-radius:5px;padding:2px 8px;font-size:11px;color:#a3e635">📍'+esc(row.LUGAR_SITE1)+'</span>':'')
+      +(row.LUGAR_SITE2?'<span style="background:#1a2e05;border-radius:5px;padding:2px 8px;font-size:11px;color:#a3e635">📍'+esc(row.LUGAR_SITE2)+'</span>':'')
+      +(row.LUGAR_SITE3?'<span style="background:#1a2e05;border-radius:5px;padding:2px 8px;font-size:11px;color:#a3e635">📍'+esc(row.LUGAR_SITE3)+'</span>':'')
     +'</div>' : '')
   +'</div>';
 
@@ -590,10 +687,10 @@ function renderResults(found, q, totalRaw) {
   var prevs = row.__prevVigencias || [];
   if (prevs.length > 0) {
     html += '<div style="margin-top:12px;border-top:1px solid #1e3a6e;padding-top:10px">'
-      +'<div style="color:#475569;font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:8px">📂 SCTR ANTERIORES ('+prevs.length+' registro'+(prevs.length>1?'s':'')+')</div>';
+      +'<div style="color:#6b7280;font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:8px">📂 SCTR ANTERIORES ('+prevs.length+' registro'+(prevs.length>1?'s':'')+')</div>';
     prevs.forEach(function(p){
       var ps = getStatus(p);
-      html += '<div style="background:#060f1e;border-radius:7px;padding:7px 10px;margin-bottom:5px;border:1px solid #1e3a6e;display:flex;align-items:center;gap:8px">'
+      html += '<div style="background:#060f1e;border-radius:7px;padding:7px 10px;margin-bottom:5px;border:1px solid #84cc1644;display:flex;align-items:center;gap:8px">'
         +'<div style="width:8px;height:8px;border-radius:50%;background:'+ps.bg+';flex-shrink:0"></div>'
         +'<div style="flex:1;font-size:11px">'
           +'<span style="color:#64748b">'+fmtDate(p.INICIO_VIGENCIA_SCTR)+' → '+fmtDate(p.FIN_VIGENCIA_SCTR)+'</span>'
@@ -835,8 +932,241 @@ function openPanel(){
   document.getElementById('dbgbox').style.display='none';
   document.getElementById('btn-ir-consulta').style.display='none';
   hideProgress();
+  // Inicializar tab por defecto
+  setTimeout(function(){ setTab('file'); loadRemoteURLs(); }, 150);
 }
 function closePanel(){ document.getElementById('pan-modal').style.display='none'; }
+
+// ── TABS ──
+var currentTab = 'file';
+function setTab(tab) {
+  currentTab = tab;
+  var tabs = ['file','gsheet','onedrive','sharepoint'];
+  var colors = {file:'#84cc16',gsheet:'#84cc16',onedrive:'#2563eb',sharepoint:'#7c3aed'};
+  var textColors = {file:'#000',gsheet:'#000',onedrive:'#fff',sharepoint:'#fff'};
+  tabs.forEach(function(t) {
+    var btn = document.getElementById('tab-'+t);
+    var pane = document.getElementById('pane-'+t);
+    if (!btn || !pane) return;
+    if (t === tab) {
+      btn.style.background = colors[t];
+      btn.style.color = textColors[t];
+      btn.style.boxShadow = '0 2px 6px #0002';
+      pane.style.display = 'block';
+    } else {
+      btn.style.background = 'transparent';
+      btn.style.color = '#6b7280';
+      btn.style.boxShadow = 'none';
+      pane.style.display = 'none';
+    }
+  });
+}
+
+// ── CARGAR DESDE URL (Google Sheets, OneDrive, SharePoint) ──
+async function loadFromURL(source) {
+  var urlMap = {gsheet:'url-gsheet', onedrive:'url-onedrive', sharepoint:'url-sharepoint'};
+  var rawUrl = (document.getElementById(urlMap[source]) || {}).value || '';
+  rawUrl = rawUrl.trim();
+  if (!rawUrl) {
+    alert('Por favor ingrese un link válido.');
+    return;
+  }
+
+  var st = document.getElementById('ustatus');
+  st.style.color = '#f59e0b';
+  st.textContent = '🔄 Conectando...';
+  setProgress(10, 'Preparando URL...', source);
+
+  try {
+    var fetchUrl = convertURL(rawUrl, source);
+    setProgress(25, 'Descargando archivo...', fetchUrl.substring(0,60)+'...');
+
+    // Intentar fetch directo
+    var resp;
+    try {
+      resp = await fetchWithTimeout(fetchUrl, 30000);
+    } catch(e) {
+      // Si falla por CORS, intentar proxy CORS
+      setProgress(30, 'Intentando proxy CORS...', '');
+      var proxy = 'https://corsproxy.io/?' + encodeURIComponent(fetchUrl);
+      resp = await fetchWithTimeout(proxy, 30000);
+    }
+
+    if (!resp.ok) throw new Error('HTTP ' + resp.status + ': ' + resp.statusText);
+
+    setProgress(50, 'Archivo recibido — procesando...', '');
+
+    var contentType = resp.headers.get('content-type') || '';
+    var isCSV = contentType.includes('text') || fetchUrl.includes('csv') || fetchUrl.includes('output=csv');
+
+    var rows;
+    if (isCSV) {
+      var text = await resp.text();
+      rows = await parseCSVText(text);
+    } else {
+      var buffer = await resp.arrayBuffer();
+      rows = await parseXLSXBuffer(buffer);
+    }
+
+    if (!rows || !rows.length) throw new Error('No se encontraron registros con columna NRO_DOCUMENTO');
+
+    // Guardar URL para auto-actualización
+    saveRemoteURL(source, rawUrl);
+
+    DB = rows;
+    await idbSaveAll(rows);
+    var meta = await idbLoadMeta();
+    applyLoadedDB(rows, meta);
+    document.getElementById('psuc').textContent = '✅ ' + rows.length + ' registros cargados desde ' + source;
+    document.getElementById('btn-ir-consulta').style.display = 'block';
+    st.style.color = '#16a34a';
+    st.textContent = '✅ ' + rows.length + ' registros actualizados desde ' + getSourceName(source) + '.';
+    setProgress(100, '✅ Completado', rows.length + ' registros');
+    setTimeout(hideProgress, 2000);
+
+  } catch(err) {
+    hideProgress();
+    st.style.color = '#dc2626';
+    st.textContent = '❌ Error: ' + err.message;
+    console.error('loadFromURL error:', err);
+  }
+}
+
+function getSourceName(s) {
+  return {gsheet:'Google Sheets', onedrive:'OneDrive', sharepoint:'SharePoint'}[s] || s;
+}
+
+function convertURL(url, source) {
+  if (source === 'gsheet') {
+    // Convertir link de edición a CSV de publicación
+    // https://docs.google.com/spreadsheets/d/ID/edit → .../pub?output=csv
+    url = url.replace('/edit#gid=', '/pub?gid=').replace('/edit', '/pub');
+    if (!url.includes('output=csv')) {
+      url += (url.includes('?') ? '&' : '?') + 'output=csv';
+    }
+    return url;
+  }
+  if (source === 'onedrive') {
+    // https://1drv.ms/x/... → convertir a descarga directa
+    if (url.includes('1drv.ms')) {
+      // Link corto de OneDrive — agregar download=1
+      return url.replace('redir?', 'download?').replace('/view.aspx', '/download.aspx');
+    }
+    // https://onedrive.live.com/...
+    if (url.includes('onedrive.live.com')) {
+      return url.replace('view.aspx', 'download.aspx');
+    }
+    // Link de SharePoint personal (my.sharepoint)
+    if (url.includes('sharepoint.com') && url.includes(':x:')) {
+      return convertSharePointURL(url);
+    }
+    return url;
+  }
+  if (source === 'sharepoint') {
+    return convertSharePointURL(url);
+  }
+  return url;
+}
+
+function convertSharePointURL(url) {
+  // Convertir URL de vista previa SharePoint a descarga directa
+  // https://empresa-my.sharepoint.com/:x:/g/personal/user/FILEID?e=TOKEN
+  // → https://empresa-my.sharepoint.com/:x:/g/personal/user/FILEID?e=TOKEN&download=1
+  var addDownload = document.getElementById('sp-download');
+  if (addDownload && addDownload.checked && !url.includes('download=1')) {
+    url += (url.includes('?') ? '&' : '?') + 'download=1';
+  }
+  return url;
+}
+
+function fetchWithTimeout(url, ms) {
+  return Promise.race([
+    fetch(url, {
+      mode: 'cors',
+      credentials: 'omit',
+      headers: {'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv,*/*'}
+    }),
+    new Promise(function(_, rej) { setTimeout(function(){ rej(new Error('Timeout — el servidor no respondió en '+(ms/1000)+'s')); }, ms); })
+  ]);
+}
+
+// Guardar/recuperar URLs remotas en IndexedDB
+function saveRemoteURL(source, url) {
+  if (!idb) return;
+  try {
+    var tx = idb.transaction(IDB_STORE_META, 'readwrite');
+    tx.objectStore(IDB_STORE_META).put({k: 'remoteURL_'+source, v: url});
+    tx.objectStore(IDB_STORE_META).put({k: 'remoteSource', v: source});
+  } catch(e){}
+}
+function loadRemoteURLs() {
+  if (!idb) return;
+  ['gsheet','onedrive','sharepoint'].forEach(function(src) {
+    try {
+      var tx = idb.transaction(IDB_STORE_META, 'readonly');
+      tx.objectStore(IDB_STORE_META).get('remoteURL_'+src).onsuccess = function(e) {
+        if (e.target.result && e.target.result.v) {
+          var inp = document.getElementById('url-'+src);
+          if (inp) inp.value = e.target.result.v;
+        }
+      };
+    } catch(ex){}
+  });
+}
+
+// Parser CSV desde texto (para Google Sheets)
+function parseCSVText(text) {
+  return new Promise(function(resolve) {
+    setProgress(65, 'Analizando CSV...', '');
+    var lines = text.split(/\r?\n/).filter(function(l){ return l.trim(); });
+    var hIdx = 0;
+    for (var i=0; i<Math.min(15,lines.length); i++) {
+      if (norm(lines[i]).indexOf('nrodocumento') >= 0) { hIdx=i; break; }
+    }
+    var csvSlice = lines.slice(hIdx).join('\n');
+    var result = Papa.parse(csvSlice, {header:true, skipEmptyLines:true, encoding:'UTF-8'});
+    var rows = result.data;
+    var docKey = rows.length > 0 ? findDocKey(rows[0]) : 'NRO_DOCUMENTO';
+    var clean = rows.map(function(r){
+      var docVal = String(r[docKey]||'').replace(/[\s\u00A0\u200B\uFEFF\r\n\t]/g,'');
+      var c={}; Object.keys(r).forEach(function(k){c[k]=r[k];});
+      c.NRO_DOCUMENTO=docVal; c.__DOC__=docVal; return c;
+    }).filter(function(r){ return r.__DOC__ && norm(r.__DOC__)!=='nrodocumento'; });
+    resolve(clean);
+  });
+}
+
+// Parser XLSX desde ArrayBuffer (para OneDrive/SharePoint)
+function parseXLSXBuffer(buffer) {
+  return new Promise(function(resolve, reject) {
+    setTimeout(function() {
+      try {
+        setProgress(60, 'Procesando Excel...', '');
+        var data = new Uint8Array(buffer);
+        var wb = XLSX.read(data, {type:'array', cellDates:false, cellNF:false, cellStyles:false});
+        var sheetName = wb.SheetNames[0];
+        wb.SheetNames.forEach(function(n){ if(n.trim().toUpperCase()==='DATOS') sheetName=n; });
+        var ws = wb.Sheets[sheetName];
+        var headerRow = findHeaderRow(ws);
+        setTimeout(function(){
+          try {
+            var rows = XLSX.utils.sheet_to_json(ws, {defval:'', raw:true, range:headerRow});
+            var docKey = rows.length>0 ? findDocKey(rows[0]) : null;
+            var clean = [];
+            rows.forEach(function(r){
+              var docVal = docKey ? String(r[docKey]||'') : '';
+              docVal = docVal.replace(/[\s\u00A0\u200B\uFEFF]/g,'');
+              if (!docVal || norm(docVal)==='nrodocumento') return;
+              var c={}; Object.keys(r).forEach(function(k){c[k]=r[k];});
+              c.NRO_DOCUMENTO=docVal; c.__DOC__=docVal; clean.push(c);
+            });
+            resolve(clean);
+          } catch(e){ reject(e); }
+        }, 80);
+      } catch(e){ reject(e); }
+    }, 50);
+  });
+}
 
 function borrarDB(){
   if(!confirm('¿Seguro que desea borrar toda la base de datos guardada?')) return;
@@ -849,7 +1179,7 @@ function borrarDB(){
     document.getElementById('btn-ir-consulta').style.display='none';
     document.getElementById('ustatus').textContent='';
     document.getElementById('results').innerHTML=
-      '<div style="background:#0f2744;border:1px solid #1e3a6e;border-radius:12px;padding:20px;text-align:center;color:#475569;font-size:13px">'
+      '<div style="background:#162300;border:1px solid #84cc1644;border-radius:12px;padding:20px;text-align:center;color:#6b7280;font-size:13px">'
       +'<div style="font-size:32px;margin-bottom:10px">📂</div>'
       +'<div style="color:#94a3b8;font-weight:700;margin-bottom:6px">BASE DE DATOS VACÍA</div>'
       +'Cargue un nuevo archivo Excel desde el panel.</div>';
@@ -1350,10 +1680,10 @@ function applyLoadedDB(rows, meta) {
     el.style.color = '#f87171';
     // Mostrar aviso
     document.getElementById('results').innerHTML =
-      '<div style="background:#0f2744;border:1px solid #1e3a6e;border-radius:12px;padding:20px;text-align:center;color:#475569;font-size:13px">'
+      '<div style="background:#162300;border:1px solid #84cc1644;border-radius:12px;padding:20px;text-align:center;color:#6b7280;font-size:13px">'
       +'<div style="font-size:32px;margin-bottom:10px">📂</div>'
       +'<div style="color:#94a3b8;font-weight:700;margin-bottom:6px">BASE DE DATOS VACÍA</div>'
-      +'Vaya al <strong style="color:#60a5fa">⚙️ Panel</strong> e ingrese el PIN de acceso para cargar su archivo Excel.'
+      +'Vaya al <strong style="color:#a3e635">⚙️ Panel</strong> e ingrese el PIN de acceso para cargar su archivo Excel.'
       +'</div>';
   } else {
     var metaStr = '';
