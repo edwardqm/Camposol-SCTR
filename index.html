@@ -1,393 +1,1018 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0d47a1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="description" content="Consulta de vigencia SCTR - Seguridad Patrimonial Camposol">
-    <title>SCTR Check - Vigencia SCTR</title>
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiU0NUUiBDaGVjayIsInNob3J0X25hbWUiOiJTQ1RSIiwic3RhcnRfdXJsIjoiLiIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwZDQ3YTEiLCJ0aGVtZV9jb2xvciI6IiMwZDQ3YTEiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxOTIgMTkyJyBmaWxsPScjZmZmJyUzRSUzQ3JlY3Qgd2lkdGg9JzE5MicgaGVpZ2h0PScxOTInIHJ4PScyNCcgZmlsbD0nIzBkNDdhMSclM0UlM0MvcGF0aCUzRSUzQ3N2ZyB4PSczNicgeT0nMzYnIHdpZHRoPScxMjAnIGhlaWdodD0nMTIwJyB2aWV3Qm94PScwIDAgMjQgMjQnIGZpbGw9JyNmZmZmZmYnJTNFJTNDcGF0aCBkPSdNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptLTIgMTUuNXYtN2g0djdoLTR6bTAtOWgtNFY2aDR2Mi41eicvJTNFJTNDL3N2ZyUzRSM0Mvc3ZnJTNFIn0seyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDE5MiAxOTInIGZpbGw9JyNmZmYnJTNFXTNDcmVjdCB3aWR0aD0nMTkyJyBoZWlnaHQ9JzE5Micgcng9JzI0JyBmaWxsPScjMGQ0N2ExJyUzRSUzQy9wYXRoJTNFJTNDc3ZnIHg9JzM2JyB5PSczNicgd2lkdGg9JzEyMCcgaGVpZ2h0PScxMjAnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nI2ZmZmZmZiclM0UlM0NwYXRoIGQ9J00xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0tMiAxNS41di03aDR2N2gtNHptMC05aC00VjZoNHYyLjV6Jy8lM0UlM0Mvc3ZnJTNFJTNDL3N2ZyUzRSIsInNpemVzIjoiMTkyeDE5MiIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dfQ==">
-    
-    <!-- QuaggaJS - Librería de lectura de códigos de barras -->
-    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
-    
-    <style>
-:root{--primary:#0d47a1;--primary-dark:#002171;--primary-light:#5472d3;--accent:#ff6f00;--success:#2e7d32;--warning:#f57c00;--danger:#c62828;--gray:#757575;--light:#f5f5f5;--white:#ffffff;--shadow:0 2px 8px rgba(0,0,0,0.15);--shadow-lg:0 4px 16px rgba(0,0,0,0.2)}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{font-family:'Segoe UI',Roboto,-apple-system,BlinkMacSystemFont,sans-serif;background:var(--light);color:#212121;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-.header{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:var(--white);padding:16px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-lg)}
-.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.header-title{font-size:1.3rem;font-weight:700;display:flex;align-items:center;gap:8px}
-.header-icon{width:32px;height:32px;background:rgba(255,255,255,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center}
-.header-subtitle{font-size:0.75rem;opacity:0.85;letter-spacing:0.5px}
-.version-badge{font-size:0.65rem;background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:12px}
-.container{max-width:600px;margin:0 auto;padding:16px}
-.search-card{background:var(--white);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow)}
-.search-tabs{display:flex;gap:8px;margin-bottom:16px}
-.tab-btn{flex:1;padding:12px;border:2px solid var(--primary-light);background:var(--white);color:var(--primary);border-radius:12px;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px}
-.tab-btn.active{background:var(--primary);color:var(--white);border-color:var(--primary)}
-.tab-btn:active{transform:scale(0.98)}
-.scanner-container{display:none;position:relative;width:100%;max-width:400px;margin:0 auto 16px}
-.scanner-container.active{display:block}
-#interactive{width:100%;border-radius:16px;overflow:hidden;background:#000;position:relative;aspect-ratio:4/3}
-#interactive video{width:100%;height:100%;object-fit:cover;display:block}
-.scanner-overlay{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:16px;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.scanner-frame{width:70%;aspect-ratio:1.6;border:3px solid var(--accent);border-radius:12px;position:relative;box-shadow:0 0 0 9999px rgba(0,0,0,0.4)}
-.scanner-frame::before,.scanner-frame::after{content:'';position:absolute;width:20px;height:20px;border-color:var(--accent);border-style:solid}
-.scanner-frame::before{top:-3px;left:-3px;border-width:4px 0 0 4px}
-.scanner-frame::after{bottom:-3px;right:-3px;border-width:0 4px 4px 0}
-.scanner-line{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);animation:scan 2s linear infinite}
-@keyframes scan{0%{top:0;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
-.scanner-hint{position:absolute;bottom:20px;color:var(--white);font-size:0.85rem;text-shadow:0 1px 4px rgba(0,0,0,0.8);background:rgba(0,0,0,0.5);padding:6px 16px;border-radius:20px}
-.scanner-controls{display:flex;gap:10px;justify-content:center;margin-top:12px}
-.manual-container{display:none}
-.manual-container.active{display:block}
-.input-group{position:relative;margin-bottom:12px}
-.input-group input{width:100%;padding:16px 16px 16px 48px;border:2px solid #e0e0e0;border-radius:12px;font-size:1.1rem;font-weight:500;transition:all 0.2s;background:var(--white)}
-.input-group input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(13,71,161,0.1)}
-.input-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--gray);font-size:1.2rem}
-.btn{width:100%;padding:16px;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-primary{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:var(--white);box-shadow:0 4px 12px rgba(13,71,161,0.3)}
-.btn-primary:active{transform:translateY(2px);box-shadow:0 2px 6px rgba(13,71,161,0.3)}
-.btn-secondary{background:var(--white);color:var(--primary);border:2px solid var(--primary-light)}
-.btn-danger{background:linear-gradient(135deg,var(--danger) 0%,#8e0000 100%);color:var(--white)}
-.btn:disabled{opacity:0.6;cursor:not-allowed}
-.results-section{display:none}
-.results-section.active{display:block}
-.result-card{background:var(--white);border-radius:16px;overflow:hidden;margin-bottom:16px;box-shadow:var(--shadow);animation:slideUp 0.3s ease}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.result-header{padding:16px 20px;color:var(--white);position:relative}
-.result-header.vigente{background:linear-gradient(135deg,var(--success) 0%,#1b5e20 100%)}
-.result-header.por-vencer{background:linear-gradient(135deg,var(--warning) 0%,#e65100 100%)}
-.result-header.vencido{background:linear-gradient(135deg,var(--danger) 0%,#8e0000 100%)}
-.result-header.sin-datos{background:linear-gradient(135deg,var(--gray) 0%,#424242 100%)}
-.result-status{font-size:1.5rem;font-weight:800;text-transform:uppercase;letter-spacing:1px}
-.result-days{font-size:2.5rem;font-weight:900;margin-top:4px}
-.result-days-label{font-size:0.9rem;opacity:0.9}
-.result-body{padding:20px}
-.info-row{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f0f0f0}
-.info-row:last-child{border-bottom:none}
-.info-label{font-size:0.8rem;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;flex-shrink:0;margin-right:12px}
-.info-value{font-size:0.95rem;color:#212121;font-weight:500;text-align:right;word-break:break-word}
-.info-value.highlight{color:var(--primary);font-weight:700}
-.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
-.stat-box{background:var(--white);border-radius:12px;padding:16px;text-align:center;box-shadow:var(--shadow)}
-.stat-number{font-size:1.8rem;font-weight:800;color:var(--primary)}
-.stat-label{font-size:0.75rem;color:var(--gray);margin-top:4px;text-transform:uppercase}
-.alert{padding:14px 16px;border-radius:12px;margin-bottom:16px;font-size:0.9rem;display:flex;align-items:center;gap:10px;animation:slideUp 0.3s ease}
-.alert-error{background:#ffebee;color:var(--danger);border-left:4px solid var(--danger)}
-.alert-info{background:#e3f2fd;color:var(--primary);border-left:4px solid var(--primary)}
-.loading-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.9);z-index:1000;flex-direction:column;align-items:center;justify-content:center;gap:16px}
-.loading-overlay.active{display:flex}
-.spinner{width:48px;height:48px;border:4px solid #e3f2fd;border-top-color:var(--primary);border-radius:50%;animation:spin 0.8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.recent-section{margin-top:16px}
-.section-title{font-size:0.85rem;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
-.recent-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--white);border:1px solid #e0e0e0;border-radius:20px;font-size:0.85rem;margin:0 6px 8px 0;cursor:pointer;transition:all 0.2s}
-.recent-chip:active{background:#e3f2fd;border-color:var(--primary-light)}
-.chip-status{width:8px;height:8px;border-radius:50%}
-.chip-status.vigente{background:var(--success)}
-.chip-status.por-vencer{background:var(--warning)}
-.chip-status.vencido{background:var(--danger)}
-.footer{text-align:center;padding:24px 16px;color:var(--gray);font-size:0.75rem}
-.footer-brand{font-weight:700;color:var(--primary);margin-bottom:4px}
-.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:500;align-items:center;justify-content:center;padding:20px}
-.modal-overlay.active{display:flex}
-.modal-content{background:var(--white);border-radius:20px;padding:24px;max-width:400px;width:100%;text-align:center;animation:scaleIn 0.2s ease}
-@keyframes scaleIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
-.modal-icon{font-size:3rem;margin-bottom:12px}
-.modal-title{font-size:1.2rem;font-weight:700;margin-bottom:8px}
-.modal-text{color:var(--gray);margin-bottom:20px;font-size:0.9rem}
-@media(min-width:768px){.container{padding:24px}.header{padding:20px 24px}.header-title{font-size:1.5rem}}
-::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#bdbdbd;border-radius:3px}
-.hidden{display:none!important}
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🛡️ Consulta SCTR v1.3.0</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:linear-gradient(160deg,#060f1e 0%,#0a1f3d 50%,#060f1e 100%);font-family:'Segoe UI',system-ui,sans-serif;color:#e2e8f0;font-size:15px}
+#hdr{background:linear-gradient(90deg,#0a1f3d,#1e3a6e);border-bottom:2px solid #1e3a6e;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:100}
+#hdr-l{display:flex;align-items:center;gap:10px}
+#hdr-title{font-weight:900;font-size:16px;letter-spacing:1px;color:#fff}
+#hdr-sub{color:#60a5fa;font-size:10px;letter-spacing:2px}
+#hdr-r{display:flex;gap:8px;align-items:center}
+#rec-box{background:#0a1f3d;border-radius:8px;padding:4px 12px;border:1px solid #1e3a6e;min-width:110px}
+.rl{color:#475569;font-size:9px;letter-spacing:1px}
+.rv{color:#4ade80;font-size:12px;font-weight:700}
+.btn-p{background:#2563eb;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+#main{max-width:640px;margin:0 auto;padding:18px 14px}
+#abanner{background:#1e3a5f;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:none;flex-wrap:wrap;gap:12px;align-items:center}
+.al{color:#93c5fd;font-weight:700;font-size:13px}
+.badge{border-radius:6px;padding:3px 11px;font-size:12px;font-weight:700}
+.br{background:#dc2626;color:#fff}.by{background:#f59e0b;color:#1c1c1c}
+#sbox{background:#0f2744;border:2px solid #1e3a6e;border-radius:14px;padding:18px;margin-bottom:18px}
+.slbl{color:#60a5fa;font-weight:700;font-size:12px;letter-spacing:2px;margin-bottom:12px}
+#srow{display:flex;gap:8px;margin-bottom:10px}
+#dinput{flex:1;background:#0a1f3d;border:1px solid #1e3a6e;border-radius:10px;color:#e2e8f0;padding:13px 15px;font-size:16px;outline:none;font-family:monospace;letter-spacing:1px}
+#dinput::placeholder{color:#334155;letter-spacing:0;font-size:13px;font-family:'Segoe UI',sans-serif}
+#bsrch{background:#2563eb;color:#fff;border:none;border-radius:10px;padding:0 18px;font-weight:800;font-size:20px;cursor:pointer;min-width:54px}
+#bscan{width:100%;background:linear-gradient(90deg,#1e3a5f,#0f2744);color:#60a5fa;border:1px dashed #2563eb;border-radius:10px;padding:13px 0;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px}
+.hint{color:#334155;font-size:10px;margin-top:7px;text-align:center}
+#results{margin-bottom:20px}
+.rcnt{color:#94a3b8;font-size:11px;margin-bottom:10px;letter-spacing:1px}
+.card{background:#0f2744;border-radius:14px;padding:18px;margin-bottom:14px}
+.sbanner{border-radius:8px;padding:9px 14px;font-weight:800;font-size:14px;letter-spacing:.5px;display:flex;align-items:center;gap:8px;margin-bottom:14px;justify-content:center;text-align:center;flex-wrap:wrap}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:9px 16px;margin-bottom:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px 12px}
+.fl{color:#475569;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1px}
+.fv{color:#e2e8f0;font-size:13px;font-weight:600}
+.fva{color:#fbbf24;font-size:13px;font-weight:700}
+.sctrb{background:#0a1f3d;border-radius:10px;padding:11px 14px;margin-bottom:11px;border:1px solid #1e3a6e}
+.sctrt{color:#60a5fa;font-weight:700;font-size:11px;letter-spacing:2px;margin-bottom:7px}
+.erow{color:#64748b;font-size:11px;margin-top:5px}.erow span{color:#93c5fd}
+.nf{background:#0f2744;border:2px solid #7f1d1d;border-radius:14px;padding:28px 18px;text-align:center}
+.nfi{font-size:38px;margin-bottom:10px}.nft{color:#f87171;font-weight:800;font-size:16px;margin-bottom:7px}
+.nfd{color:#64748b;font-size:13px}.nfd strong{color:#e2e8f0;font-family:monospace}
+.nfh{color:#475569;font-size:11px;margin-top:9px}
+#footer{margin-top:28px;border-top:1px solid #1e3a6e;padding-top:16px;text-align:center}
+.fi{color:#1e3a6e;font-size:18px;margin-bottom:6px}
+.fd{color:#334155;font-size:11px;font-weight:700;letter-spacing:1px}
+.fr{color:#1e3a6e;font-size:10px;margin-top:2px}
+.flink{color:#2563eb;font-size:10px;text-decoration:none;display:inline-block;margin-top:3px}
+.fver{color:#1e3a6e;font-size:9px;margin-top:7px;letter-spacing:1px}
+/* OVERLAY */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:500;display:flex;align-items:center;justify-content:center;padding:12px}
+.mbox{background:#0f2744;border:2px solid #1e3a6e;border-radius:16px;padding:24px;width:100%;max-width:430px}
+.mt{color:#60a5fa;font-weight:800;font-size:15px;margin-bottom:3px;letter-spacing:1px}
+.ms2{color:#475569;font-size:11px;margin-bottom:18px}
+/* SCANNER */
+#vid-wrap{position:relative;margin-bottom:11px}
+#scvid{width:100%;border-radius:10px;background:#000;display:block;max-height:260px;object-fit:cover}
+#sovlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+#sframe{width:190px;height:110px;border:2px solid #60a5fa;border-radius:8px;box-shadow:0 0 0 9999px rgba(0,0,0,0.4)}
+#sstatus{color:#94a3b8;font-size:12px;margin-bottom:12px;text-align:center}
+#serr{color:#f87171;font-size:12px;margin:12px 0;display:none;text-align:center}
+.bclose{background:#dc2626;color:#fff;border:none;border-radius:8px;padding:11px 0;font-weight:700;cursor:pointer;font-size:14px;width:100%}
+/* PANEL */
+.pll{color:#94a3b8;font-size:13px;margin-bottom:9px}
+#pinput{background:#0a1f3d;border:1px solid #1e3a6e;border-radius:8px;color:#e2e8f0;padding:12px;font-size:22px;width:100%;text-align:center;letter-spacing:10px;margin-bottom:7px}
+#perr{color:#f87171;font-size:12px;margin-bottom:7px;display:none}
+.brow{display:flex;gap:8px}
+.bent{flex:1;background:#2563eb;color:#fff;border:none;border-radius:8px;padding:12px 0;font-weight:700;cursor:pointer;font-size:14px}
+.bcan{flex:1;background:#1e3a5f;color:#94a3b8;border:none;border-radius:8px;padding:12px 0;font-weight:700;cursor:pointer;font-size:14px}
+#punlk{display:none}
+#psuc{font-size:13px;font-weight:700;margin-bottom:14px}
+/* PROGRESS */
+#prog-wrap{background:#0a1f3d;border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid #1e3a6e;display:none}
+#prog-bar-bg{background:#1e3a5f;border-radius:6px;height:10px;margin:8px 0}
+#prog-bar{background:#2563eb;border-radius:6px;height:10px;width:0%;transition:width .2s}
+#prog-txt{color:#60a5fa;font-size:12px;font-weight:700}
+#prog-sub{color:#475569;font-size:10px;margin-top:3px}
+/* UPLOAD AREA */
+#upload-area{background:#1e3a5f;border:2px dashed #2563eb;border-radius:10px;padding:22px;text-align:center;cursor:pointer;margin-bottom:14px;transition:background .2s}
+#upload-area:hover{background:#1e4a7f}
+#upload-area p{color:#60a5fa;font-size:14px;font-weight:700;margin-bottom:4px}
+#upload-area small{color:#475569;font-size:11px}
+#finput{display:none}
+#chint{background:#0a1f3d;border-radius:8px;padding:10px 13px;margin-bottom:12px;border:1px solid #1e3a6e}
+.ct{color:#60a5fa;font-size:11px;font-weight:700;margin-bottom:5px}
+.cl{color:#64748b;font-size:10px;line-height:1.8}
+#ustatus{font-size:13px;margin-bottom:10px;font-weight:600;min-height:18px}
+#dbgbox{background:#0a1f3d;border:1px solid #f59e0b;border-radius:8px;padding:10px 13px;margin-bottom:12px;display:none}
+.dt{color:#f59e0b;font-size:11px;font-weight:700;margin-bottom:5px}
+.dc{color:#94a3b8;font-size:10px;line-height:1.7;word-break:break-all;font-family:monospace;white-space:pre-wrap}
+.ghint{color:#475569;font-size:11px;margin-bottom:12px}
+.bcp{width:100%;background:#1e3a5f;color:#94a3b8;border:none;border-radius:8px;padding:12px 0;font-weight:700;cursor:pointer;font-size:14px;margin-top:4px}
+@media(max-width:460px){.g2{grid-template-columns:1fr}.g3{grid-template-columns:1fr 1fr}.card{padding:14px}}
+
+#hist-section{margin-top:22px}
+#hist-title{color:#475569;font-size:11px;font-weight:700;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+#hist-clear{background:none;border:1px solid #334155;border-radius:6px;color:#475569;font-size:10px;padding:3px 10px;cursor:pointer}
+.hist-item{background:#0a1f3d;border-radius:10px;padding:10px 14px;margin-bottom:8px;border:1px solid #1e3a6e;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .2s}
+.hist-item:hover{border-color:#2563eb}
+.hist-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.hist-info{flex:1;min-width:0}
+.hist-doc{color:#e2e8f0;font-size:13px;font-weight:700;font-family:monospace}
+.hist-name{color:#64748b;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-time{color:#334155;font-size:10px;white-space:nowrap}
+.hist-st{font-size:11px;font-weight:700;margin-top:2px}
+#btn-nueva{width:100%;background:#1e3a5f;color:#60a5fa;border:1px solid #2563eb;border-radius:10px;padding:13px 0;font-weight:800;font-size:14px;cursor:pointer;margin-bottom:16px;letter-spacing:.5px;display:none}
+</style>
 </head>
 <body>
-    <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><div style="color:var(--primary);font-weight:600">Buscando...</div></div>
-    <header class="header"><div class="header-top"><div class="header-title"><div class="header-icon">🛡️</div><div><div>SCTR Check</div><div class="header-subtitle">Seguridad Patrimonial · Camposol</div></div></div><span class="version-badge">v1.0.0</span></div></header>
-    <div class="container">
-        <div class="stats-grid" id="statsGrid"><div class="stat-box"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Registros</div></div><div class="stat-box"><div class="stat-number" id="statVigentes" style="color:var(--success)">0</div><div class="stat-label">Vigentes</div></div></div>
-        <div class="search-card">
-            <div class="search-tabs">
-                <button class="tab-btn active" onclick="switchTab('scanner')" id="tabScanner"><span>📷</span> Escanear</button>
-                <button class="tab-btn" onclick="switchTab('manual')" id="tabManual"><span>⌨️</span> Manual</button>
-            </div>
-            <div class="scanner-container active" id="scannerContainer">
-                <div id="interactive"></div>
-                <div class="scanner-overlay">
-                    <div class="scanner-frame"><div class="scanner-line"></div></div>
-                    <div class="scanner-hint">Apunte al código de barras del DNI</div>
-                </div>
-                <div class="scanner-controls">
-                    <button class="btn btn-secondary" onclick="stopScanner()" style="flex:1">⏹️ Detener</button>
-                    <button class="btn btn-primary" onclick="toggleFlash()" style="flex:1">💡 Flash</button>
-                </div>
-            </div>
-            <div class="manual-container" id="manualContainer">
-                <div class="input-group"><span class="input-icon">🆔</span><input type="text" id="dniInput" placeholder="Ingrese número de DNI" maxlength="20" inputmode="numeric" autocomplete="off"></div>
-                <button class="btn btn-primary" onclick="searchManual()" id="btnSearch">🔍 Consultar Vigencia SCTR</button>
-            </div>
-        </div>
-        <div id="alertContainer"></div>
-        <div class="results-section" id="resultsSection">
-            <div class="result-card" id="resultCard">
-                <div class="result-header" id="resultHeader">
-                    <div class="result-status" id="resultStatus">--</div>
-                    <div class="result-days" id="resultDays">--</div>
-                    <div class="result-days-label" id="resultDaysLabel">días restantes</div>
-                </div>
-                <div class="result-body" id="resultBody"></div>
-            </div>
-            <button class="btn btn-secondary" onclick="clearResults()">🔄 Nueva Consulta</button>
-        </div>
-        <div class="recent-section" id="recentSection">
-            <div class="section-title"><span>🕐 Consultas recientes</span><span style="cursor:pointer;color:var(--primary)" onclick="clearRecent()">Limpiar</span></div>
-            <div id="recentList"></div>
-        </div>
-        <div class="footer"><div class="footer-brand">SEGURIDAD PATRIMONIAL</div><div>Camposol · Consulta de Vigencia SCTR</div><div style="margin-top:8px;opacity:0.7">Solo lectura · Uso interno autorizado</div></div>
+
+<div id="hdr">
+  <div id="hdr-l">
+    <span style="font-size:22px">🛡️</span>
+    <div>
+      <div id="hdr-title">CONSULTA VIGENCIA SCTR</div>
+      <div id="hdr-sub">SEGURIDAD PATRIMONIAL — CONTROL DE ACCESO</div>
     </div>
-    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="modal-icon" id="modalIcon">ℹ️</div>
-            <div class="modal-title" id="modalTitle">Título</div>
-            <div class="modal-text" id="modalText">Mensaje</div>
-            <button class="btn btn-primary" onclick="closeModal()">Aceptar</button>
-        </div>
+  </div>
+  <div id="hdr-r">
+    <div id="rec-box">
+      <div class="rl">BASE DE DATOS</div>
+      <div class="rv" id="cnt">0 registros</div>
     </div>
-    <script>
-const DB=[{d:"5877322",td:"CARNET EXTRANJERIA",a:"CONDE RIVAS",n:"JULIO CESAR",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"SRV. MANTTO CUATRO (04) TUNELES DE REFRIGERACION MP",l1:"PLANTA CHAO",fi:"46158",fs:"46174",rz:"AG & V INDUSTRIAL SOLUTIONS",ru:"20609243911",ce:"970731132",is:"46143",fsctr:"46174",di:"-349",v:"SCTR VENCIDO HACE -349 DÍAS",co:"nsanchez@camposol.com"},{d:"61765824",td:"DNI",a:"Garcia Zapata",n:"Danilo Gabriel",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",l2:"FUNDOS PIURA",l3:"FUNDOS PIURA",fi:"46147",fs:"46174",rz:"AGRORAPAZ PERÚ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"27",v:"SCTR VENCE EN 27 DIAS",co:"jrodriguez@camposol.com"},{d:"43002984",td:"DNI",a:"Cobos Vargas",n:"Miguel Angel",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",l2:"FUNDOS PIURA",l3:"FUNDOS PIURA",fi:"46147",fs:"46174",rz:"AGRORAPAZ PERÚ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"27",v:"SCTR VENCE EN 27 DIAS",co:"jrodriguez@camposol.com"},{d:"62983551",td:"DNI",a:"Chavez Salazar",n:"Snaider David",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",l2:"FUNDOS PIURA",l3:"FUNDOS PIURA",fi:"46147",fs:"46174",rz:"AGRORAPAZ PERÚ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"27",v:"SCTR VENCE EN 27 DIAS",co:"jrodriguez@camposol.com"},{d:"61336094",td:"DNI",a:"Castillo Nima",n:"Jordan Alexis",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46153",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"61022065",td:"DNI",a:"Castillo Zapata",n:"Jairo Yoel",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46146",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"62845587",td:"DNI",a:"Flores Jaramillo",n:"Carlos Alfredo",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"75569334",td:"DNI",a:"Zapata Aguilar",n:"Jeyson Alexander",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46148",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"77209896",td:"DNI",a:"Cubas Gonzales",n:"Nanuel",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"47856307",td:"DNI",a:"Cubas Gonzales",n:"Grimaldo",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",l1:"FUNDOS PIURA",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"21",v:"SCTR VENCE EN 21 DIAS",co:"jrodriguez@camposol.com"},{d:"47218194",td:"DNI",a:"Farfan Carrazco",n:"Luis Jeiner",p:"Operario",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"Control Aviar",fi:"46154",fs:"46174",rz:"AGRORAPAZ PERÙ EIRL",ru:"20610610049",ce:"972040532",is:"46144",fsctr:"46174",di:"20",v:"SCTR VENCE EN 20 DIAS",co:"jrodriguez@camposol.com"},{d:"46424595",td:"DNI",a:"PALACIOS ALBURQUEQUE",n:"JULIO CESAR",p:"REPRESENTANTE TECNICO",tp:"PROVEEDOR DE BIENES",m:"ENTREGA DE MERCADERIA",l1:"FUNDO TERRA",l2:"FUNDO TERRA",l3:"FUNDO TERRA",fi:"46104",fs:"46174",rz:"AVGUST PERU SAC",ru:"20535703214",ce:"943597783",is:"45992",fsctr:"46174",di:"70",co:"J.palacios@avgust.com.pe",tv:"CAMIONETA FORD",pl:"CHO 834"},{d:"46424595",td:"DNI",a:"PALACIOS ALBURQUEQUE",n:"JULIO CESAR",p:"REPRESENTANTE TECNICO",tp:"PROVEEDOR DE BIENES",m:"ENTREGA DE SUMINISTROS",l1:"FUNDO AGROALEGRE",l2:"FUNDO TERRA",l3:"FUNDO AGROALEGRE",fi:"46128",fs:"46174",rz:"AVGUST PERU SAC",ru:"20535703214",ce:"943597783",is:"45992",fsctr:"46174",di:"46",co:"J.palacios@avgust.com.pe",tv:"CAMIONETA FORD",pl:"CHO 834"},{d:"70108973",td:"DNI",a:"CARRILLO MANTILLA",n:"DEYLER ALY",p:"SUPERVISOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"26729609",td:"DNI",a:"ALIAGA MALPARTIDA",n:"CLODOMIRO",p:"PREVENCIONISTA",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"70778548",td:"DNI",a:"SAAVEDRA SOTOMAYOR",n:"MARCOS WILSON",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"10289486",td:"DNI",a:"VARGAS REYES",n:"NILTON CESAR",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"73051309",td:"DNI",a:"AGURTO CARREÑO",n:"KENYI PAUL",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"3621944",td:"CARNET DE EXTRANJERIA",a:"MEZA FLORES",n:"TIHUWEL ELIOMAR",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"43469975",td:"DNI",a:"OBREGON GUTIERREZ",n:"WILFREDO",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"43785527",td:"DNI",a:"HERRERA DE LA CRUZ",n:"WALTER JONATHAN",p:"TECNICO",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"MANTENIMIENTO DE NAVE FRUTA FRESCA",l1:"PLANTA CHAO",fi:"46157",fs:"46174",rz:"CCM REFRIAIRE EIRL",ru:"20556099180",ce:"958969004",is:"46143",fsctr:"46174",di:"17",v:"SCTR VENCE EN 17 DÍAS",co:"ksantos@camposol.com"},{d:"2094292",td:"DNI",a:"SANCHEZ CASTILLO",n:"JOSE RAMON",p:"CONDUCTOR",tp:"PROVEEDOR DE BIENES",m:"TRASLADO DE MERCADERIA",l1:"PLANTA CHAO",fi:"46150",fs:"46174",rz:"CITITRANS S.A.C.",ru:"20609553376",ce:"998143943",is:"46143",fsctr:"46174",di:"23",v:"SCTR VENCE EN 23 DÍAS",co:"jfernandez@camposol.com"},{d:"71587288",td:"DNI",a:"VALDIVIEZO CARHUATANTA",n:"CESAR AUGUSTO",p:"ASISTENTE DE OBRA",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE ALTO RIESGO",m:"EJECUCIÓN DE SERVICIO",l1:"FUNDO YAKUY MINKA",fi:"46149",fs:"46174",rz:"CONSTRUCTORA Y CONSULTORA COCAZA E.I.R.L.",ru:"20604938211",ce:"933649316",is:"46143",fsctr:"46174",di:"25",v:"SCTR VENCE EN 25 DÍAS",co:"onarva@camposol.com"},{d:"45326549",td:"DNI",a:"BARRIOS REYES",n:"JUAN MICHAELL",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"MOTIVO_INGRESO",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"6",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com"},{d:"80330544",td:"DNI",a:"BENITO MILLONES",n:"JORGE LUIS",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"MOTIVO_INGRESO",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"6",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com"},{d:"74959915",td:"DNI",a:"CESPEDES BENITO",n:"JESÚS ALBERTO",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"MOTIVO_INGRESO",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"46069",fsctr:"46174",di:"6",co:"fcarrasco@camposol.com"},{d:"75884653",td:"DNI",a:"RAMOS VIDAL",n:"CARLOS DANIEL",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"MOTIVO_INGRESO",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"6",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com"},{d:"76918652",td:"DNI",a:"ROSARIO QUISPE",n:"WILDER ALEXANDER",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"MOTIVO_INGRESO",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"6",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com",tv:"TOYOTA",pl:"TCD-898"},{d:"70933032",td:"DNI",a:"ZAVALETA LEONARDO",n:"GEOFFREY WERENSON",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46168",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"46069",fsctr:"46174",di:"6",v:"SCTR VENCE EN 8 DÍAS",co:"fcarrasco@camposol.com"},{d:"80330544",td:"DNI",a:"BENITO MILLONES",n:"JORGE LUIS",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"4",v:"FALTA 4 DÍAS PARA VENCER SCTR",co:"fcarrasco@camposol.com"},{d:"76918652",td:"DNI",a:"ROSARIO QUISPE",n:"WILDER ALEXANDER",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"4",v:"FALTA 4 DÍAS PARA VENCER SCTR",co:"fcarrasco@camposol.com",tv:"TOYOTA",pl:"TCD-898"},{d:"75884653",td:"DNI",a:"RAMOS VIDAL",n:"CARLOS DANIEL",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"4",v:"FALTA 4 DÍAS PARA VENCER SCTR",co:"fcarrasco@camposol.com"},{d:"45326549",td:"DNI",a:"BARRIOS REYES",n:"JUAN MICHAELL",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"45992",fsctr:"46174",di:"4",v:"FALTA 4 DÍAS PARA VENCER SCTR",co:"fcarrasco@camposol.com"},{d:"70933032",td:"DNI",a:"ZAVALETA LEONARDO",n:"GEOFFREY WERENSON",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"46069",fsctr:"46174",di:"4",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com"},{d:"74959915",td:"DNI",a:"CESPEDES BENITO",n:"JESÚS ALBERTO",p:"ESTIBADOR",tp:"PROVEEDOR DE BIENES",m:"AGROQUIMICOS ORGANICOS Y BIOESTIMULANTES /PRODUCTO \"NO MATPEL",l1:"PLANTA CHAO",l2:"FUNDOS CHAO",fi:"46170",fs:"46174",rz:"CROPS PROTECTION S.A.C",ru:"20600672631",ce:"937502912",is:"46069",fsctr:"46174",di:"4",v:"SCTR VENCE EN 6 DÍAS",co:"fcarrasco@camposol.com"},{d:"40818833",td:"DNI",a:"AGUILAR TELLO",n:"GILMER ELADIO",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"M5W-617"},{d:"42191002",td:"DNI",a:"CUSTODIO CASTAÑEDA",n:"DANY ABEL",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"MINIVAN",pl:"BPI-306"},{d:"72939370",td:"DNI",a:"GUTIERREZ VARAS",n:"ROLIN ALEXANDER",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"MINIVAN",pl:"F5J-180"},{d:"71247644",td:"DNI",a:"LOPEZ CASTILLO",n:"ALIN ALI",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"T7J-149"},{d:"47068823",td:"DNI",a:"NAZARIO RUIZ",n:"ALEX IVAN",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"BUI-077"},{d:"18049711",td:"DNI",a:"NAZARIO SANTIAGO",n:"FERNANDO LUIS",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"T2P-798"},{d:"18045023",td:"DNI",a:"NAZARIO SANTIAGO",n:"CLAUDIO MANUEL",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"T4X-385"},{d:"75314915",td:"DNI",a:"NAZARIO QUITO",n:"CLAUDIO MANUEL",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"T5V-099"},{d:"70348902",td:"DNI",a:"NAZARIO LOPEZ",n:"BRAYAN PIERO",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI"},{d:"71099856",td:"DNI",a:"VASQUEZ VALDERRAMA",n:"REYNER MICKEY",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"MINIVAN",pl:"CEW-578"},{d:"18083321",td:"DNI",a:"VERBEECK GUZMAN",n:"VICTOR HENRRY",p:"CONDUCTOR",tp:"PROVEEDOR DE SERVICIOS PERMANENTE DE BAJO RIESGO",m:"TRANSPORTE DE PERSONAL",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com",tv:"COMBI",pl:"T6Q-004"},{d:"71504731",td:"DNI",a:"AGUILAR MONTOYA",n:"GERSON ANTHONY",p:"AYUDANTE",tp:"PROVEEDOR DE BIENES",m:"REPARTO DE ALIMENTOS",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com"},{d:"60970430",td:"DNI",a:"AGUILAR MONTOYA",n:"YIMI GABRIEL",p:"AYUDANTE",tp:"PROVEEDOR DE BIENES",m:"REPARTO DE ALIMENTOS",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com"},{d:"73251924",td:"DNI",a:"ALVARADO VERDE",n:"BRAYAN WILFREDO",p:"AYUDANTE",tp:"PROVEEDOR DE BIENES",m:"REPARTO DE ALIMENTOS",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com"},{d:"73314639",td:"DNI",a:"CORONEL LOPEZ",n:"CARINA MARILIN",p:"AYUDANTE",tp:"PROVEEDOR DE BIENES",m:"REPARTO DE ALIMENTOS",l1:"FUNDOS CHAO",fi:"46144",fs:"46174",rz:"FERNANDO LUIS NAZARIO SANTIAGO",ru:"10180497116",ce:"957532677",is:"46144",fsctr:"46174",di:"-30",v:"SCTR VENCIDO HACE -30 DÍAS",co:"eparedes@camposol.com"}];
+    <button class="btn-p" onclick="openPanel()">⚙️ Panel</button>
+  </div>
+</div>
 
-let recentSearches=JSON.parse(localStorage.getItem('sctr_recent')||'[]');
-let scannerRunning=false;
+<div id="main">
+  <div id="abanner">
+    <span class="al">⚡ ALERTAS</span>
+    <span id="bexp" class="badge br" style="display:none"></span>
+    <span id="bnear" class="badge by" style="display:none"></span>
+  </div>
 
-window.addEventListener('DOMContentLoaded',()=>{
-    updateStats();
-    renderRecent();
-    document.getElementById('dniInput').addEventListener('keypress',e=>{if(e.key==='Enter')searchManual()});
-    startScanner();
-});
+  <div id="sbox">
+    <div class="slbl">🔍 CONSULTAR VIGENCIA SCTR</div>
+    <div id="srow">
+      <input id="dinput" type="text" inputmode="numeric"
+        placeholder="DNI / Pasaporte / Carnet Extranjería..."
+        onkeydown="if(event.key==='Enter')doSearch()"/>
+      <button id="bsrch" onclick="doSearch()">🔍</button>
+    </div>
+    <button id="bscan" onclick="openScanner()">📷 ACTIVAR LECTOR QR / CÓDIGO DE BARRAS / DNI PERÚ</button>
+    <div class="hint">Compatible: DNI Perú (PDF417) · Pasaporte MRZ · Carnet Extranjería · QR · Code128 · Code39 · EAN · DataMatrix · Aztec</div>
+  </div>
 
-function updateStats(){
-    document.getElementById('statTotal').textContent=DB.length;
-    let v=DB.filter(r=>{let d=parseInt(r.di||0);return d>0;}).length;
-    document.getElementById('statVigentes').textContent=v;
+  <div id="results"></div>
+
+  <!-- NUEVA CONSULTA -->
+  <button id="btn-nueva" onclick="nuevaConsulta()">➕ NUEVA CONSULTA</button>
+
+  <!-- HISTORIAL -->
+  <div id="hist-section" style="display:none">
+    <div id="hist-title">📋 HISTORIAL DE CONSULTAS <button id="hist-clear" onclick="clearHistory()">LIMPIAR</button></div>
+    <div id="hist-list"></div>
+  </div>
+
+  <div id="footer">
+    <div class="fi">🛡️</div>
+    <div class="fd">Desarrollado por Edward Quezada M.</div>
+    <div class="fr">Profesional en Seguridad Patrimonial</div>
+    <a class="flink" href="https://www.linkedin.com/in/edwardqm" target="_blank">🔗 linkedin.com/in/edwardqm</a>
+    <div class="fver">v1.5.0 — SISTEMA DE CONSULTA SCTR © 2025</div>
+  </div>
+</div>
+
+<!-- SCANNER -->
+<div id="scan-modal" class="overlay" style="display:none">
+  <div class="mbox" style="text-align:center;padding:18px">
+    <div class="mt" style="margin-bottom:2px">📷 LECTOR MULTIFORMATO</div>
+    <div style="color:#475569;font-size:10px;margin-bottom:10px;letter-spacing:.5px">DNI · PASAPORTE · CARNET EXTRANJERÍA · QR · PDF417 · CODE128</div>
+    <div id="vid-wrap" style="position:relative;margin-bottom:10px;border-radius:10px;overflow:hidden;background:#000">
+      <video id="scvid" muted playsinline autoplay style="width:100%;display:block;max-height:240px;object-fit:cover"></video>
+      <!-- Scan overlay animado -->
+      <div style="position:absolute;inset:0;pointer-events:none;display:flex;align-items:center;justify-content:center">
+        <div id="sframe" style="position:relative;width:82%;height:110px;border:2px solid #60a5fa;border-radius:8px;box-shadow:0 0 0 9999px rgba(0,0,0,0.45)">
+          <!-- Línea de escaneo animada -->
+          <div id="scan-line" style="position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#60a5fa,transparent);animation:scanline 1.8s linear infinite"></div>
+          <!-- Esquinas -->
+          <div style="position:absolute;top:-2px;left:-2px;width:18px;height:18px;border-top:3px solid #3b82f6;border-left:3px solid #3b82f6;border-radius:3px 0 0 0"></div>
+          <div style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;border-top:3px solid #3b82f6;border-right:3px solid #3b82f6;border-radius:0 3px 0 0"></div>
+          <div style="position:absolute;bottom:-2px;left:-2px;width:18px;height:18px;border-bottom:3px solid #3b82f6;border-left:3px solid #3b82f6;border-radius:0 0 0 3px"></div>
+          <div style="position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-bottom:3px solid #3b82f6;border-right:3px solid #3b82f6;border-radius:0 0 3px 0"></div>
+        </div>
+      </div>
+      <!-- Resultado flash -->
+      <div id="scan-flash" style="display:none;position:absolute;inset:0;background:rgba(34,197,94,0.3);border-radius:10px"></div>
+    </div>
+    <canvas id="sccanvas" style="display:none"></canvas>
+    <div id="serr" style="color:#f87171;font-size:12px;margin:8px 0;display:none"></div>
+    <div id="sstatus" style="color:#94a3b8;font-size:12px;margin-bottom:6px;min-height:18px"></div>
+    <!-- Motores activos -->
+    <div id="scan-engines" style="display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:12px"></div>
+    <!-- Hint tipos de documento -->
+    <div style="background:#0a1f3d;border-radius:8px;padding:8px 12px;margin-bottom:12px;border:1px solid #1e3a6e">
+      <div style="color:#475569;font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:5px">DOCUMENTOS COMPATIBLES</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px">
+        <div style="background:#1e3a5f;border-radius:6px;padding:5px;font-size:10px;color:#93c5fd">🪪 DNI Perú<br><span style="color:#475569">PDF417</span></div>
+        <div style="background:#1e3a5f;border-radius:6px;padding:5px;font-size:10px;color:#93c5fd">🛂 Pasaporte<br><span style="color:#475569">MRZ / Code39</span></div>
+        <div style="background:#1e3a5f;border-radius:6px;padding:5px;font-size:10px;color:#93c5fd">📋 Carnet Ext.<br><span style="color:#475569">Code128 / QR</span></div>
+      </div>
+    </div>
+    <button class="bclose" onclick="closeScanner()" style="width:100%">✕ CERRAR CÁMARA</button>
+  </div>
+</div>
+<style>
+@keyframes scanline{0%{top:0}50%{top:calc(100% - 2px)}100%{top:0}}
+</style>
+
+<!-- PANEL -->
+<div id="pan-modal" class="overlay" style="display:none">
+  <div class="mbox">
+    <div class="mt">🔐 PANEL DE CONTROL</div>
+    <div class="ms2">Actualización de base de datos</div>
+
+    <div id="ppin">
+      <div class="pll">Ingrese el PIN de acceso:</div>
+      <input id="pinput" type="tel" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off"
+        onkeydown="if(event.key==='Enter')checkPin()"/>
+      <div id="perr">PIN incorrecto.</div>
+      <div class="brow">
+        <button class="bent" onclick="checkPin()">INGRESAR</button>
+        <button class="bcan" onclick="closePanel()">CANCELAR</button>
+      </div>
+    </div>
+
+    <div id="punlk">
+      <div id="psuc"></div>
+
+      <!-- BTN REALIZAR CONSULTA (visible after load) -->
+      <div id="btn-ir-consulta" style="display:none;margin-bottom:14px">
+        <button onclick="irAConsulta()" style="width:100%;background:linear-gradient(90deg,#16a34a,#15803d);color:#fff;border:none;border-radius:10px;padding:14px 0;font-weight:800;font-size:15px;cursor:pointer;letter-spacing:1px">🔍 REALIZAR CONSULTA</button>
+      </div>
+
+      <!-- UPLOAD AREA -->
+      <div id="upload-area" onclick="document.getElementById('finput').click()">
+        <p>📂 Toque aquí para cargar Excel o CSV</p>
+        <small>.xlsx · .xls · .csv — cualquier tamaño</small>
+        <input type="file" id="finput" accept=".xlsx,.xls,.csv" onchange="handleFile(event)"/>
+      </div>
+
+      <!-- PROGRESS BAR -->
+      <div id="prog-wrap">
+        <div id="prog-txt">Leyendo archivo...</div>
+        <div id="prog-bar-bg"><div id="prog-bar"></div></div>
+        <div id="prog-sub"></div>
+      </div>
+
+      <div id="chint">
+        <div class="ct">📌 COLUMNAS ESPERADAS (hoja: DATOS):</div>
+        <div class="cl">NRO_DOCUMENTO · TIPO_DOCUMENTO · APELLIDOS · NOMBRES · PUESTO_DE_TRABAJO · TIPO_DE_PROVEEDOR · MOTIVO_INGRESO · LUGAR_SITE1/2/3 · FECHA_INGRESO · FECHA_SALIDA · RAZON_SOCIAL · RUC · CELULAR_EMERGENCIA_EMPRESA · INICIO_VIGENCIA_SCTR · FIN_VIGENCIA_SCTR · CORREO_SOLICITANTE_DE_CAMPOSOL</div>
+      </div>
+
+      <div id="dbgbox"><div class="dt">🔎 DIAGNÓSTICO</div><div class="dc" id="dbgtxt"></div></div>
+      <div id="ustatus"></div>
+      <div class="ghint">💡 Google Sheets → Archivo → Descargar → CSV</div>
+      <button class="bcp" onclick="closePanel()">CERRAR PANEL</button>
+    </div>
+  </div>
+</div>
+
+<!-- XLSX -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- jsQR: QR codes -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.js"></script>
+<!-- ZXing: QR + PDF417 + Code128 + DataMatrix + Aztec + EAN + ITF + Pasaporte MRZ -->
+<script src="https://unpkg.com/@zxing/library@0.19.1/umd/index.min.js"></script>
+<!-- Quagga2: Code128 + Code39 + EAN + UPC + Codabar + I2of5 (barcodes 1D) -->
+<script src="https://unpkg.com/@ericblade/quagga2@1.8.4/dist/quagga.min.js"></script>
+
+<script>
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+var DB = [];
+
+// ═══════════════════════════════════════════════════
+// NORMALIZE — remove ALL invisible/whitespace chars
+// ═══════════════════════════════════════════════════
+function norm(v) {
+  return String(v == null ? '' : v)
+    .replace(/[\s\u00A0\u200B\u200C\u200D\uFEFF\u00AD\r\n\t\x00-\x1F]/g, '')
+    .toLowerCase();
 }
 
-function switchTab(tab){
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.getElementById('tab'+tab[0].toUpperCase()+tab.slice(1)).classList.add('active');
-    document.getElementById('scannerContainer').classList.toggle('active',tab==='scanner');
-    document.getElementById('manualContainer').classList.toggle('active',tab==='manual');
-    if(tab==='scanner'){startScanner();}else{stopScanner();document.getElementById('dniInput').focus();}
+// ═══════════════════════════════════════════════════
+// DATE UTILS
+// ═══════════════════════════════════════════════════
+function xlDate(v) {
+  if (v === null || v === undefined || v === '') return null;
+  // Excel serial number (raw:true delivers dates as numbers like 46158)
+  var n = parseFloat(v);
+  if (!isNaN(n) && n > 30000 && n < 200000) return new Date((n - 25569) * 86400 * 1000);
+  // String fallback: ISO yyyy-mm-dd or dd/mm/yyyy
+  var s = String(v).trim();
+  var mi = s.match(/^(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})/);
+  if (mi) return new Date(+mi[1], +mi[2]-1, +mi[3]);
+  var mp = s.match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})$/);
+  if (mp) { var a=+mp[1],b=+mp[2]; return a>12 ? new Date(+mp[3],b-1,a) : new Date(+mp[3],b-1,a); }
+  var d = new Date(s);
+  return isNaN(d.getTime()) ? null : d;
+}
+function fmtDate(v) {
+  var d = xlDate(v);
+  if (!d || isNaN(d.getTime())) return '—';
+  return d.toLocaleDateString('es-PE',{day:'2-digit',month:'2-digit',year:'numeric'});
+}
+function daysLeft(v) {
+  var d = xlDate(v);
+  if (!d || isNaN(d.getTime())) return null;
+  var now = new Date(); now.setHours(0,0,0,0);
+  d.setHours(0,0,0,0);
+  return Math.round((d - now) / 86400000);
 }
 
-function startScanner(){
-    if(scannerRunning) return;
-    if(typeof Quagga === 'undefined'){
-        showAlert('Librería de escáner no cargada. Use modo manual.','error');
-        switchTab('manual');
-        return;
+// ═══════════════════════════════════════════════════
+// SCTR STATUS
+// ═══════════════════════════════════════════════════
+function getStatus(row) {
+  var d = daysLeft(row.FIN_VIGENCIA_SCTR);
+  if (d === null) return {lbl:'SIN DATOS SCTR', fg:'#6b7280', bg:'#1e293b', ic:'❓'};
+  if (d < 0)   return {lbl:'VENCIDO HACE '+Math.abs(d)+' DÍAS', fg:'#fff', bg:'#dc2626', ic:'🔴', exp:true};
+  if (d === 0) return {lbl:'VENCE HOY', fg:'#fff', bg:'#ea580c', ic:'🔶', soon:true};
+  if (d <= 7)  return {lbl:'VENCE EN '+d+' DÍAS ⚠️', fg:'#fff', bg:'#f59e0b', ic:'🟡', soon:true};
+  if (d <= 30) return {lbl:'VENCE EN '+d+' DÍAS', fg:'#1e3a5f', bg:'#fef3c7', ic:'🟡', soon:true};
+  return {lbl:'VIGENTE — '+d+' DÍAS RESTANTES', fg:'#fff', bg:'#16a34a', ic:'🟢', ok:true};
+}
+
+// ═══════════════════════════════════════════════════
+// SOUND
+// ═══════════════════════════════════════════════════
+function beep(type) {
+  try {
+    var ctx = new (window.AudioContext||window.webkitAudioContext)();
+    if (type==='ok') {
+      [440,660].forEach(function(f,i){
+        var o=ctx.createOscillator(),g=ctx.createGain();
+        o.connect(g);g.connect(ctx.destination);
+        o.frequency.value=f;o.type='sine';
+        g.gain.setValueAtTime(0.3,ctx.currentTime+i*.15);
+        g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*.15+.3);
+        o.start(ctx.currentTime+i*.15);o.stop(ctx.currentTime+i*.15+.3);
+      });
+    } else {
+      var o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.frequency.setValueAtTime(300,ctx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(100,ctx.currentTime+.5);
+      o.type='square';
+      g.gain.setValueAtTime(0.2,ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+.5);
+      o.start(ctx.currentTime);o.stop(ctx.currentTime+.5);
     }
-    scannerRunning=true;
-    Quagga.init({
-        inputStream: {
-            name: "Live",
-            type: "LiveStream",
-            target: document.querySelector('#interactive'),
-            constraints: {
-                facingMode: "environment",
-                width: { ideal: 640 },
-                height: { ideal: 480 }
-            }
-        },
-        decoder: {
-            readers: ["code_128_reader", "ean_reader", "code_39_reader", "codabar_reader"]
-        },
-        locate: true
-    }, function(err) {
-        if(err){
-            console.error(err);
-            showAlert('No se pudo iniciar la cámara. Use modo manual.','error');
-            switchTab('manual');
-            scannerRunning=false;
-            return;
-        }
-        Quagga.start();
-    });
-    Quagga.onDetected(function(result){
-        let code = result.codeResult.code;
-        if(code && code.length >= 6){
-            scannerRunning=false;
-            Quagga.stop();
-            playBeep(true); // Sonido de éxito
-            if(navigator.vibrate) navigator.vibrate(50);
-            performSearch(code);
-            setTimeout(()=>{ if(!scannerRunning) startScanner(); }, 3000);
-        }
-    });
-    Quagga.onProcessed(function(result){
-        let drawingCtx = Quagga.canvas.ctx.overlay,
-            drawingCanvas = Quagga.canvas.dom.overlay;
-        if(result){
-            if(result.boxes){
-                drawingCtx.clearRect(0,0,parseInt(drawingCanvas.getAttribute('width')),parseInt(drawingCanvas.getAttribute('height')));
-                result.boxes.filter(function(b){return b!==result.box;}).forEach(function(b){
-                    Quagga.ImageDebug.drawPath(b, {x:0, y:1}, drawingCtx, {color:'#00FF00', lineWidth:2});
-                });
-            }
-            if(result.box){
-                Quagga.ImageDebug.drawPath(result.box, {x:0, y:1}, drawingCtx, {color:'#FF0000', lineWidth:3});
-            }
-            if(result.codeResult && result.codeResult.code){
-                drawingCtx.font = "bold 18px Arial";
-                drawingCtx.fillStyle = "#00FF00";
-                drawingCtx.fillText(result.codeResult.code, 10, 30);
-            }
-        }
-    });
+  } catch(e){}
 }
 
-function stopScanner(){
-    scannerRunning=false;
-    try{
-        Quagga.stop();
-    }catch(e){}
-    let container = document.querySelector('#interactive');
-    if(container) container.innerHTML = '';
+// ═══════════════════════════════════════════════════
+// ALERTS
+// ═══════════════════════════════════════════════════
+function updateAlerts() {
+  var exp=0,near=0;
+  DB.forEach(function(r){
+    var d=daysLeft(r.FIN_VIGENCIA_SCTR);
+    if(d===null) return;
+    if(d<0) exp++; else if(d<=7) near++;
+  });
+  var ban=document.getElementById('abanner');
+  var be=document.getElementById('bexp'),bn=document.getElementById('bnear');
+  if(!exp&&!near){ban.style.display='none';return;}
+  ban.style.display='flex';
+  be.style.display=exp?'inline':'none';
+  if(exp) be.textContent='🔴 '+exp+' VENCIDO'+(exp>1?'S':'');
+  bn.style.display=near?'inline':'none';
+  if(near) bn.textContent='🟡 '+near+' VENCE'+(near>1?'N':'')+' ≤7 DÍAS';
 }
 
-function toggleFlash(){
-    try{
-        let track = Quagga.CameraAccess.getActiveStream().getVideoTracks()[0];
-        if(track && 'torch' in track.getCapabilities()){
-            track.applyConstraints({advanced:[{torch:!track.getConstraints().torch}]}).catch(()=>{});
+// ═══════════════════════════════════════════════════
+// HISTORY
+// ═══════════════════════════════════════════════════
+var HISTORY = [];
+
+function addToHistory(q, found) {
+  var now = new Date();
+  var timeStr = now.toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'}) + ' ' + now.toLocaleDateString('es-PE',{day:'2-digit',month:'2-digit'});
+  var entry = {
+    q: q,
+    found: found,
+    time: timeStr,
+    st: found.length > 0 ? getStatus(found[0]) : null,
+    name: found.length > 0 ? ((found[0].APELLIDOS||'')+' '+(found[0].NOMBRES||'')).trim() : ''
+  };
+  HISTORY.unshift(entry);
+  if (HISTORY.length > 20) HISTORY.pop();
+  renderHistory();
+}
+
+function renderHistory() {
+  var sec = document.getElementById('hist-section');
+  var list = document.getElementById('hist-list');
+  if (!HISTORY.length) { sec.style.display='none'; return; }
+  sec.style.display='block';
+  var html='';
+  HISTORY.forEach(function(e,i){
+    var dot = e.found.length > 0 ? e.st.bg : '#475569';
+    var stLabel = e.found.length > 0 ? e.st.lbl : 'NO ENCONTRADO';
+    var stColor = e.found.length > 0 ? e.st.bg : '#475569';
+    html+='<div class="hist-item" onclick="replayHistory('+i+')">'
+      +'<div class="hist-dot" style="background:'+dot+'"></div>'
+      +'<div class="hist-info">'
+        +'<div class="hist-doc">'+esc(e.q)+'</div>'
+        +(e.name?'<div class="hist-name">'+esc(e.name)+'</div>':'')
+        +'<div class="hist-st" style="color:'+stColor+'">'+esc(stLabel)+'</div>'
+      +'</div>'
+      +'<div class="hist-time">'+esc(e.time)+'</div>'
+    +'</div>';
+  });
+  list.innerHTML=html;
+}
+
+function replayHistory(i) {
+  var e = HISTORY[i];
+  document.getElementById('dinput').value = e.q;
+  renderResults(e.found, e.q);
+  document.getElementById('btn-nueva').style.display='block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function clearHistory() {
+  HISTORY=[];
+  renderHistory();
+}
+
+function nuevaConsulta() {
+  document.getElementById('dinput').value='';
+  document.getElementById('results').innerHTML='';
+  document.getElementById('btn-nueva').style.display='none';
+  document.getElementById('dinput').focus();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function irAConsulta() {
+  closePanel();
+  document.getElementById('dinput').focus();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ═══════════════════════════════════════════════════
+// SEARCH
+// ═══════════════════════════════════════════════════
+function doSearch(forced) {
+  var q = String(forced || document.getElementById('dinput').value || '').trim();
+  if (!q) return;
+  var qn = norm(q);
+  var found = DB.filter(function(r){ return norm(r.__DOC__||r.NRO_DOCUMENTO) === qn; });
+  renderResults(found, q);
+  addToHistory(q, found);
+  document.getElementById('btn-nueva').style.display='block';
+  beep(found.length > 0 && getStatus(found[0]).ok ? 'ok' : 'err');
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fld(lb,val,ac){
+  var v=String(val==null?'':val).trim();
+  if(!v||v==='—') return '';
+  return '<div><div class="fl">'+esc(lb)+'</div><div class="'+(ac?'fva':'fv')+'">'+esc(v)+'</div></div>';
+}
+function renderResults(found, q) {
+  var el = document.getElementById('results');
+  if (!found.length) {
+    el.innerHTML='<div class="nf"><div class="nfi">🚫</div>'
+      +'<div class="nft">DOCUMENTO NO ENCONTRADO</div>'
+      +'<div class="nfd">El número <strong>'+esc(q)+'</strong> no figura en la base de datos.</div>'
+      +'<div class="nfh">Verifique el número o actualice la base de datos desde el Panel de Control.</div></div>';
+    return;
+  }
+  var html='<div class="rcnt">'+found.length+' REGISTRO'+(found.length>1?'S':'')+' ENCONTRADO'+(found.length>1?'S':'')+'</div>';
+  found.forEach(function(row){
+    var st=getStatus(row);
+    var d=daysLeft(row.FIN_VIGENCIA_SCTR);
+    var name=((row.APELLIDOS||'')+' '+(row.NOMBRES||'')).trim();
+    var docDisp=(row.TIPO_DOCUMENTO?row.TIPO_DOCUMENTO+': ':'')+String(row.NRO_DOCUMENTO||row.__DOC__||'');
+    html+='<div class="card" style="border:2px solid '+st.bg+';box-shadow:0 0 18px '+st.bg+'44">'
+      +'<div class="sbanner" style="background:'+st.bg+';color:'+st.fg+'">'+st.ic+' '+esc(st.lbl)+'</div>'
+      +'<div class="g2">'
+        +fld('APELLIDOS Y NOMBRES',name)
+        +fld('N° DOCUMENTO',docDisp)
+        +fld('PUESTO',row.PUESTO_DE_TRABAJO)
+        +fld('EMPRESA',row.RAZON_SOCIAL)
+        +fld('RUC',row.RUC)
+        +fld('CELULAR EMPRESA',row.CELULAR_EMERGENCIA_EMPRESA)
+      +'</div>'
+      +'<div class="sctrb"><div class="sctrt">📋 DATOS SCTR</div>'
+      +'<div class="g3">'
+        +fld('INICIO',fmtDate(row.INICIO_VIGENCIA_SCTR),true)
+        +fld('FIN VIGENCIA',fmtDate(row.FIN_VIGENCIA_SCTR),true)
+        +fld('DÍAS',d!=null?d+' días':'—',true)
+      +'</div></div>'
+      +'<div class="g2">'
+        +fld('TIPO PROVEEDOR',row.TIPO_DE_PROVEEDOR)
+        +fld('MOTIVO',row.MOTIVO_INGRESO)
+        +fld('F. INGRESO',fmtDate(row.FECHA_INGRESO))
+        +fld('F. SALIDA',fmtDate(row.FECHA_SALIDA))
+        +fld('SITE 1',row.LUGAR_SITE1)
+        +fld('SITE 2',row.LUGAR_SITE2)
+        +fld('SITE 3',row.LUGAR_SITE3)
+        +fld('VEHÍCULO',row.TIPO_VEHICULO)
+        +fld('PLACA',row.PLACA)
+        +fld('LICENCIA',row.TIPO_LICENCIA)
+      +'</div>'
+      +(row.CORREO_SOLICITANTE_DE_CAMPOSOL?'<div class="erow">📧 <span>'+esc(row.CORREO_SOLICITANTE_DE_CAMPOSOL)+'</span></div>':'')
+      +'</div>';
+  });
+  el.innerHTML=html;
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ═══════════════════════════════════════════════════
+// PROGRESS UI
+// ═══════════════════════════════════════════════════
+function setProgress(pct, txt, sub) {
+  document.getElementById('prog-wrap').style.display='block';
+  document.getElementById('prog-bar').style.width=pct+'%';
+  document.getElementById('prog-txt').textContent=txt||'';
+  document.getElementById('prog-sub').textContent=sub||'';
+}
+function hideProgress() { document.getElementById('prog-wrap').style.display='none'; }
+
+// ═══════════════════════════════════════════════════
+// FIND HEADER ROW — scans first 15 rows for NRO_DOCUMENTO
+// ═══════════════════════════════════════════════════
+function findHeaderRow(ws) {
+  var ref = ws['!ref'];
+  if (!ref) return 0;
+  var range = XLSX.utils.decode_range(ref);
+  for (var r = range.s.r; r <= Math.min(range.s.r + 15, range.e.r); r++) {
+    for (var c = range.s.c; c <= Math.min(range.s.c + 30, range.e.c); c++) {
+      var cell = ws[XLSX.utils.encode_cell({r:r, c:c})];
+      if (cell && norm(String(cell.v||'')).replace(/_/g,'') === 'nrodocumento') {
+        return r;
+      }
+    }
+  }
+  return 0; // fallback: row 0
+}
+
+// ═══════════════════════════════════════════════════
+// FIND DOC COLUMN KEY (handles encoding differences)
+// ═══════════════════════════════════════════════════
+function findDocKey(row) {
+  var keys = Object.keys(row);
+  for (var i=0; i<keys.length; i++) {
+    if (norm(keys[i]).replace(/_/g,'') === 'nrodocumento') return keys[i];
+  }
+  return null;
+}
+
+// ═══════════════════════════════════════════════════
+// PARSE XLSX — chunked, non-blocking
+// ═══════════════════════════════════════════════════
+function parseXLSX(file) {
+  return new Promise(function(resolve, reject) {
+    setProgress(10, 'Leyendo archivo...', file.name + ' (' + (file.size/1024).toFixed(0) + ' KB)');
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        setProgress(30, 'Interpretando Excel...', 'Por favor espere...');
+        setTimeout(function() {
+          try {
+            var data = new Uint8Array(e.target.result);
+            setProgress(50, 'Analizando hojas...', '');
+            var wb = XLSX.read(data, {type:'array', cellDates:false, cellNF:false, cellStyles:false});
+
+            // Find sheet DATOS or first sheet
+            var sheetName = wb.SheetNames[0];
+            wb.SheetNames.forEach(function(n){ if(n.trim().toUpperCase()==='DATOS') sheetName=n; });
+            var ws = wb.Sheets[sheetName];
+            setProgress(65, 'Buscando encabezados...', 'Hoja: "'+sheetName+'"');
+
+            setTimeout(function() {
+              try {
+                var headerRow = findHeaderRow(ws);
+                setProgress(75, 'Extrayendo registros...', 'Encabezado en fila '+(headerRow+1));
+
+                setTimeout(function() {
+                  try {
+                    var rows = XLSX.utils.sheet_to_json(ws, {
+                      defval: '',
+                      raw: true,
+                      range: headerRow
+                    });
+
+                    setProgress(90, 'Limpiando datos...', rows.length + ' filas encontradas');
+
+                    // Find actual doc key
+                    var docKey = rows.length > 0 ? findDocKey(rows[0]) : null;
+
+                    var clean = [];
+                    rows.forEach(function(r) {
+                      var docVal = docKey ? String(r[docKey]||'') : '';
+                      docVal = docVal.replace(/[\s\u00A0\u200B\u200C\u200D\uFEFF\u00AD\r\n\t\x00-\x1F]/g,'');
+                      if (!docVal || norm(docVal) === 'nrodocumento') return;
+                      var c = {};
+                      Object.keys(r).forEach(function(k){ c[k]=r[k]; });
+                      c.NRO_DOCUMENTO = docVal;
+                      c.__DOC__ = docVal;
+                      clean.push(c);
+                    });
+
+                    // DEBUG
+                    var dbg = 'Hoja: "'+sheetName+'" | Fila encabezado: '+(headerRow+1)
+                      +'\nClave doc detectada: "'+docKey+'"'
+                      +'\nRegistros totales: '+rows.length+' → válidos: '+clean.length;
+                    if (clean.length > 0) {
+                      dbg += '\nEjemplo NRO_DOCUMENTO[0]: "'+clean[0].NRO_DOCUMENTO+'"';
+                      dbg += '\nEjemplo NRO_DOCUMENTO[1]: "'+(clean[1]?clean[1].NRO_DOCUMENTO:'-')+'"';
+                      dbg += '\nColumnas(10): '+Object.keys(clean[0]).slice(0,10).join(' | ');
+                    }
+                    document.getElementById('dbgtxt').textContent = dbg;
+                    document.getElementById('dbgbox').style.display = 'block';
+
+                    setProgress(100, '✅ Completado', clean.length+' registros listos');
+                    setTimeout(hideProgress, 1500);
+                    resolve(clean);
+                  } catch(err3){ reject(err3); }
+                }, 80);
+              } catch(err2){ reject(err2); }
+            }, 80);
+          } catch(err1){ reject(err1); }
+        }, 50);
+      } catch(e0){ reject(e0); }
+    };
+    reader.onerror = reject;
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+// ═══════════════════════════════════════════════════
+// PARSE CSV
+// ═══════════════════════════════════════════════════
+function parseCSV(file) {
+  return new Promise(function(resolve, reject) {
+    setProgress(20, 'Leyendo CSV...', file.name);
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        setProgress(60, 'Procesando filas...', '');
+        var text = e.target.result;
+        var lines = text.split(/\r?\n/).filter(function(l){ return l.trim(); });
+        if (!lines.length) { resolve([]); return; }
+
+        // Find header line
+        var hIdx = 0;
+        for (var i=0; i<Math.min(15,lines.length); i++) {
+          if (norm(lines[i]).indexOf('nrodocumento') >= 0) { hIdx = i; break; }
         }
-    }catch(e){}
+        // Re-parse from header
+        var csvSlice = lines.slice(hIdx).join('\n');
+        var result = Papa.parse(csvSlice, {header:true, skipEmptyLines:true, encoding:'UTF-8'});
+        var rows = result.data;
+        var docKey = rows.length > 0 ? findDocKey(rows[0]) : 'NRO_DOCUMENTO';
+
+        var clean = rows.map(function(r){
+          var docVal = String(r[docKey]||'').replace(/[\s\u00A0\u200B\u200C\u200D\uFEFF\r\n\t]/g,'');
+          var c = {}; Object.keys(r).forEach(function(k){ c[k]=r[k]; });
+          c.NRO_DOCUMENTO = docVal;
+          c.__DOC__ = docVal;
+          return c;
+        }).filter(function(r){ return r.__DOC__ && norm(r.__DOC__)!=='nrodocumento'; });
+
+        setProgress(100,'✅ CSV listo', clean.length+' registros');
+        setTimeout(hideProgress,1200);
+        resolve(clean);
+      } catch(err){ reject(err); }
+    };
+    reader.onerror = reject;
+    reader.readAsText(file,'UTF-8');
+  });
 }
 
-function playBeep(success){
-    try{
-        let ctx = new (window.AudioContext || window.webkitAudioContext)();
-        let osc = ctx.createOscillator();
-        let gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        gain.gain.value = 0.15;
-        if(success){
-            osc.frequency.setValueAtTime(800, ctx.currentTime);
-            osc.frequency.linearRampToValueAtTime(1200, ctx.currentTime + 0.15);
-            osc.start(ctx.currentTime);
-            osc.stop(ctx.currentTime + 0.25);
-        }else{
-            osc.frequency.setValueAtTime(400, ctx.currentTime);
-            osc.frequency.linearRampToValueAtTime(300, ctx.currentTime + 0.2);
-            osc.start(ctx.currentTime);
-            osc.stop(ctx.currentTime + 0.3);
-        }
-    }catch(e){}
+// ═══════════════════════════════════════════════════
+// HANDLE FILE UPLOAD
+// ═══════════════════════════════════════════════════
+async function handleFile(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  var st = document.getElementById('ustatus');
+  st.style.color='#94a3b8'; st.textContent='';
+  document.getElementById('dbgbox').style.display='none';
+  try {
+    var rows = file.name.toLowerCase().endsWith('.csv') ? await parseCSV(file) : await parseXLSX(file);
+    if (!rows.length) {
+      st.style.color='#f87171';
+      st.textContent='❌ No se encontraron filas con NRO_DOCUMENTO. Revise el diagnóstico.';
+      return;
+    }
+    DB = rows;
+    updateAlerts();
+    document.getElementById('cnt').textContent = DB.length+' registros';
+    document.getElementById('psuc').textContent='✅ '+DB.length+' registros cargados';
+    document.getElementById('btn-ir-consulta').style.display='block';
+    st.style.color='#4ade80';
+    st.textContent='✅ Base de datos actualizada — '+rows.length+' registros listos.';
+  } catch(err) {
+    hideProgress();
+    st.style.color='#f87171';
+    st.textContent='❌ Error al procesar: '+err.message;
+  }
+  e.target.value='';
 }
 
-function searchManual(){
-    let dni = document.getElementById('dniInput').value.trim();
-    if(!dni){ showAlert('Ingrese un número de documento','error'); return; }
-    performSearch(dni);
+// ═══════════════════════════════════════════════════
+// PANEL
+// ═══════════════════════════════════════════════════
+function openPanel(){
+  document.getElementById('pan-modal').style.display='flex';
+  document.getElementById('ppin').style.display='block';
+  document.getElementById('punlk').style.display='none';
+  document.getElementById('pinput').value='';
+  document.getElementById('perr').style.display='none';
+  document.getElementById('ustatus').textContent='';
+  document.getElementById('dbgbox').style.display='none';
+  document.getElementById('btn-ir-consulta').style.display='none';
+  hideProgress();
+}
+function closePanel(){ document.getElementById('pan-modal').style.display='none'; }
+function checkPin(){
+  if(document.getElementById('pinput').value==='0000'){
+    document.getElementById('ppin').style.display='none';
+    document.getElementById('punlk').style.display='block';
+    document.getElementById('psuc').textContent='✅ Acceso concedido — '+DB.length+' registros activos';
+    if(DB.length>0) document.getElementById('btn-ir-consulta').style.display='block';
+    document.getElementById('perr').style.display='none';
+  } else {
+    document.getElementById('perr').style.display='block';
+  }
 }
 
-function performSearch(query){
-    showLoading(true);
-    query = query.replace(/\D/g,'');
-    setTimeout(()=>{
-        showLoading(false);
-        let results = DB.filter(r=>r.d && r.d.replace(/\D/g,'').includes(query));
-        if(!results.length){
-            playBeep(false); // Sonido de error
-            if(navigator.vibrate) navigator.vibrate([30,50,30]);
-            showAlert('No se encontró registro con el documento: '+query,'error');
-            showResults(null);
-            return;
-        }
-        playBeep(true); // Sonido de éxito
-        if(navigator.vibrate) navigator.vibrate(50);
-        let record = results[0];
-        showResults(record);
-        addToRecent(record);
-    },600);
+// ═══════════════════════════════════════════════════
+// SCANNER
+// ═══════════════════════════════════════════════════
+// SCANNER — Motor multi-librería
+// Motores: BarcodeDetector (nativo) + ZXing + jsQR + Quagga2
+// Formatos: PDF417 (DNI Perú), QR, Code128, Code39, EAN,
+//           DataMatrix, Aztec, ITF, MRZ (Pasaporte/CE)
+// ═══════════════════════════════════════════════════
+var scanStream=null, scanAnim=null, scanOn=false;
+var zxingReader=null, quaggaRunning=false, scanThrottle=0;
+var enginesReady={native:false,zxing:false,jsqr:false,quagga:false};
+
+function setEngineStatus(){
+  var el=document.getElementById('scan-engines');
+  if(!el) return;
+  var engines=[
+    {id:'native', label:'Nativo', desc:'PDF417·QR·Code128'},
+    {id:'zxing',  label:'ZXing',  desc:'PDF417·MRZ·DataMatrix'},
+    {id:'jsqr',   label:'jsQR',   desc:'QR codes'},
+    {id:'quagga', label:'Quagga', desc:'Code128·Code39·EAN'}
+  ];
+  el.innerHTML = engines.map(function(e){
+    var on = (e.id==='native' && window.BarcodeDetector) ||
+             (e.id==='zxing'  && window.ZXing) ||
+             (e.id==='jsqr'   && window.jsQR) ||
+             (e.id==='quagga' && window.Quagga);
+    return '<div style="background:'+(on?'#14532d':'#1e293b')+';border-radius:5px;padding:3px 8px;font-size:9px;color:'+(on?'#4ade80':'#475569')+';border:1px solid '+(on?'#166534':'#334155')+'">'
+      +(on?'✓ ':'✗ ')+e.label+'<br><span style="color:'+(on?'#86efac':'#334155')+'">'+e.desc+'</span></div>';
+  }).join('');
 }
 
-function showResults(record){
-    let section = document.getElementById('resultsSection');
-    let header = document.getElementById('resultHeader');
-    let body = document.getElementById('resultBody');
-    if(!record){ section.classList.remove('active'); return; }
-    section.classList.add('active');
-    let dias = parseInt(record.di||0), statusClass, statusText, daysText, daysLabel;
-    if(!record.di || record.di===''){ statusClass='sin-datos'; statusText='SIN DATOS'; daysText='--'; daysLabel='vigencia no registrada'; }
-    else if(dias>15){ statusClass='vigente'; statusText='VIGENTE'; daysText=dias.toString(); daysLabel='días restantes'; }
-    else if(dias>0){ statusClass='por-vencer'; statusText='POR VENCER'; daysText=dias.toString(); daysLabel='días restantes'; }
-    else if(dias===0){ statusClass='por-vencer'; statusText='VENCE HOY'; daysText='0'; daysLabel='días restantes'; }
-    else{ statusClass='vencido'; statusText='VENCIDO'; daysText=Math.abs(dias).toString(); daysLabel='días vencidos'; }
-    header.className = 'result-header '+statusClass;
-    document.getElementById('resultStatus').textContent = statusText;
-    document.getElementById('resultDays').textContent = daysText;
-    document.getElementById('resultDaysLabel').textContent = daysLabel;
-    let fields = [
-        ['Documento', (record.td||'DNI')+': '+(record.d||'-'), true],
-        ['Apellidos', record.a||'-', false],
-        ['Nombres', record.n||'-', false],
-        ['Puesto', record.p||'-', false],
-        ['Tipo Proveedor', record.tp||'-', false],
-        ['Motivo Ingreso', record.m||'-', false],
-        ['Área / Lugar', [record.l1,record.l2,record.l3].filter(Boolean).join(' · ')||'-', false],
-        ['Razón Social', record.rz||'-', true],
-        ['RUC', record.ru||'-', false],
-        ['Vigencia SCTR', record.v||'-', true],
-        ['Días Restantes', record.di||'-', true],
-        ['Inicio SCTR', record.is?fmtDate(record.is):'-', false],
-        ['Fin SCTR', record.fsctr?fmtDate(record.fsctr):'-', false],
-        ['Correo Solicitante', record.co||'-', false],
-        ['Celular Empresa', record.ce||'-', false],
-        ['Tipo Vehículo', record.tv||'-', false],
-        ['Placa', record.pl||'-', false]
+// ── Extractor universal de número de documento ──
+function extractNum(raw){
+  if(!raw) return null;
+  var s = raw.replace(/\r/g,'\n');
+
+  // ── MRZ Pasaporte (TD3): línea tipo P<PER... o número de pasaporte
+  // Formato MRZ línea 2: 9 chars alfanum + check + ...
+  var mrzL2 = s.match(/([A-Z0-9]{9})[0-9][A-Z]{3}/);
+  if(mrzL2){
+    var pp = mrzL2[1].replace(/</g,'').trim();
+    if(pp.length >= 6) return pp;
+  }
+
+  // ── MRZ Carnet Extranjería Perú (TD1/TD2)
+  var mrzCE = s.match(/([A-Z]{1,3}[0-9]{5,9})/);
+  if(mrzCE){
+    var ce = mrzCE[1];
+    if(ce.length >= 6 && ce.length <= 12) return ce;
+  }
+
+  // ── PDF417 DNI Perú: contiene DNI de 8 dígitos
+  var dni8 = s.match(/\b([0-9]{8})\b/);
+  if(dni8) return dni8[1];
+
+  // ── Carnet Extranjería numérico (7–12 dígitos)
+  var ce_num = s.match(/\b([0-9]{7,12})\b/);
+  if(ce_num) return ce_num[1];
+
+  // ── Pasaporte alfanumérico peruano: letra(s) + dígitos
+  var pp_pe = s.match(/\b([A-Z]{1,2}[0-9]{6,9})\b/i);
+  if(pp_pe) return pp_pe[1].toUpperCase();
+
+  // ── Si la cadena completa es solo el número
+  var clean = raw.replace(/[^A-Z0-9]/gi,'');
+  if(/^[0-9]{7,12}$/.test(clean)) return clean;
+  if(/^[A-Z]{1,3}[0-9]{5,9}$/i.test(clean)) return clean.toUpperCase();
+
+  return null;
+}
+
+function scanSuccess(raw, engine){
+  if(!scanOn) return;
+  var num = extractNum(raw);
+  if(!num) return;
+  // Flash verde
+  var fl=document.getElementById('scan-flash');
+  if(fl){fl.style.display='block';setTimeout(function(){fl.style.display='none';},300);}
+  // Cerrar y buscar
+  closeScanner();
+  document.getElementById('dinput').value = num;
+  document.getElementById('sstatus').textContent = '✅ Detectado por '+engine+': '+num;
+  doSearch(num);
+}
+
+function openScanner(){
+  document.getElementById('scan-modal').style.display='flex';
+  document.getElementById('serr').style.display='none';
+  document.getElementById('serr').textContent='';
+  document.getElementById('sstatus').textContent='Iniciando motores...';
+  setEngineStatus();
+  scanOn=true;
+  startCam();
+}
+
+function closeScanner(){
+  scanOn=false;
+  stopCam();
+  stopQuagga();
+  if(zxingReader){ try{zxingReader.reset();}catch(e){} zxingReader=null; }
+  document.getElementById('scan-modal').style.display='none';
+}
+
+function stopCam(){
+  if(scanStream){scanStream.getTracks().forEach(function(t){t.stop();});scanStream=null;}
+  if(scanAnim){cancelAnimationFrame(scanAnim);scanAnim=null;}
+}
+
+function stopQuagga(){
+  if(quaggaRunning && window.Quagga){
+    try{Quagga.stop();}catch(e){}
+    quaggaRunning=false;
+  }
+}
+
+async function startCam(){
+  try{
+    // Intentar cámara trasera primero, luego cualquiera
+    var constraints=[
+      {video:{facingMode:'environment',width:{ideal:1920},height:{ideal:1080}}},
+      {video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}}},
+      {video:true}
     ];
-    body.innerHTML = fields.map(([l,v,h])=>`<div class="info-row"><span class="info-label">${l}</span><span class="info-value ${h?'highlight':''}">${v}</span></div>`).join('');
-    setTimeout(()=>document.getElementById('resultCard').scrollIntoView({behavior:'smooth',block:'start'}),100);
+    var stream=null;
+    for(var i=0;i<constraints.length;i++){
+      try{ stream=await navigator.mediaDevices.getUserMedia(constraints[i]); break; }catch(e){}
+    }
+    if(!stream) throw new Error('No se pudo acceder a ninguna cámara');
+    if(!scanOn){stream.getTracks().forEach(function(t){t.stop();});return;}
+    scanStream=stream;
+    var v=document.getElementById('scvid');
+    v.srcObject=stream; await v.play();
+    document.getElementById('sstatus').textContent='📷 Buscando código...';
+    setEngineStatus();
+    // Arrancar todos los motores
+    startNativeLoop();
+    startZXing(v);
+    startQuagga(v);
+  }catch(err){
+    document.getElementById('serr').style.display='block';
+    document.getElementById('serr').textContent='⚠️ Cámara no disponible: '+err.message;
+    document.getElementById('sstatus').textContent='Ingrese el número manualmente.';
+  }
 }
 
-function fmtDate(serial){
-    if(!serial || isNaN(serial)) return serial;
-    let d = new Date((parseInt(serial)-25569)*86400*1000);
-    if(isNaN(d.getTime())) return serial;
-    return d.toLocaleDateString('es-PE',{day:'2-digit',month:'2-digit',year:'numeric'});
+// ── Motor 1: BarcodeDetector nativo (Chrome Android) ──
+function startNativeLoop(){
+  if(!window.BarcodeDetector) return;
+  var det;
+  try{
+    det=new BarcodeDetector({formats:[
+      'qr_code','pdf417','code_128','code_39','code_93',
+      'ean_13','ean_8','upc_a','upc_e','itf',
+      'data_matrix','aztec','codabar'
+    ]});
+  }catch(e){ return; }
+  var canvas=document.getElementById('sccanvas');
+  var v=document.getElementById('scvid');
+  function loop(){
+    if(!scanOn) return;
+    if(v.readyState===v.HAVE_ENOUGH_DATA){
+      canvas.width=v.videoWidth; canvas.height=v.videoHeight;
+      canvas.getContext('2d').drawImage(v,0,0);
+      det.detect(canvas).then(function(codes){
+        if(!scanOn||!codes.length) return;
+        for(var i=0;i<codes.length;i++){
+          var num=extractNum(codes[i].rawValue);
+          if(num){scanSuccess(codes[i].rawValue,'BarcodeDetector');return;}
+        }
+      }).catch(function(){});
+    }
+    scanAnim=requestAnimationFrame(loop);
+  }
+  loop();
 }
 
-function addToRecent(record){
-    let entry = {d:record.d, n:record.n, a:record.a, di:record.di, t:Date.now()};
-    recentSearches = [entry, ...recentSearches.filter(r=>r.d!==record.d)].slice(0,10);
-    localStorage.setItem('sctr_recent', JSON.stringify(recentSearches));
-    renderRecent();
+// ── Motor 2: ZXing (PDF417, DataMatrix, MRZ, Code128) ──
+function startZXing(videoEl){
+  if(!window.ZXing) return;
+  try{
+    var hints=new Map();
+    var fmts=[
+      ZXing.BarcodeFormat.PDF_417,
+      ZXing.BarcodeFormat.QR_CODE,
+      ZXing.BarcodeFormat.CODE_128,
+      ZXing.BarcodeFormat.CODE_39,
+      ZXing.BarcodeFormat.DATA_MATRIX,
+      ZXing.BarcodeFormat.AZTEC,
+      ZXing.BarcodeFormat.EAN_13,
+      ZXing.BarcodeFormat.ITF
+    ].filter(Boolean);
+    if(fmts.length) hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, fmts);
+    hints.set(ZXing.DecodeHintType.TRY_HARDER, true);
+    zxingReader = new ZXing.BrowserMultiFormatReader(hints, 600);
+    zxingReader.decodeFromVideoElement(videoEl, function(result, err){
+      if(!scanOn||!result) return;
+      var num=extractNum(result.getText());
+      if(num) scanSuccess(result.getText(),'ZXing');
+    });
+  }catch(e){ console.warn('ZXing error:',e); }
 }
 
-function renderRecent(){
-    let container = document.getElementById('recentList');
-    if(!recentSearches.length){ container.innerHTML='<span style="color:#999;font-size:0.85rem">No hay consultas recientes</span>'; return; }
-    container.innerHTML = recentSearches.map(r=>{
-        let d = parseInt(r.di||0), sc='vigente';
-        if(d<=0 && r.di!=='') sc='vencido';
-        else if(d>0 && d<=15) sc='por-vencer';
-        else if(!r.di || r.di==='') sc='sin-datos';
-        return `<span class="recent-chip" onclick="performSearch('${r.d}')"><span class="chip-status ${sc}"></span><strong>${r.d}</strong> · ${r.a}, ${r.n}</span>`;
-    }).join('');
+// ── Motor 3: jsQR (QR puro, muy rápido) ──
+// Se ejecuta en el mismo loop que nativo usando canvas compartido
+// jsQR se llama desde startNativeLoop solo si BarcodeDetector no existe
+(function startJsQR(){
+  if(!window.jsQR || window.BarcodeDetector) return; // nativo ya cubre QR
+  var canvas=document.getElementById('sccanvas');
+  var v=document.getElementById('scvid');
+  function loop(){
+    if(!scanOn) return;
+    if(v.readyState===v.HAVE_ENOUGH_DATA){
+      canvas.width=v.videoWidth; canvas.height=v.videoHeight;
+      var ctx=canvas.getContext('2d');
+      ctx.drawImage(v,0,0);
+      var img=ctx.getImageData(0,0,canvas.width,canvas.height);
+      var code=jsQR(img.data,img.width,img.height,{inversionAttempts:'attemptBoth'});
+      if(code&&code.data){var num=extractNum(code.data);if(num){scanSuccess(code.data,'jsQR');return;}}
+    }
+    requestAnimationFrame(loop);
+  }
+  // Esperar a que la cámara esté lista
+  setTimeout(loop, 1000);
+})();
+
+// ── Motor 4: Quagga2 (Code128, Code39, EAN, Codabar) ──
+function startQuagga(videoEl){
+  if(!window.Quagga) return;
+  try{
+    Quagga.init({
+      inputStream:{
+        type:'LiveStream',
+        target: videoEl,
+        constraints:{facingMode:'environment'},
+        area:{top:'10%',right:'5%',bottom:'10%',left:'5%'}
+      },
+      decoder:{
+        readers:[
+          'code_128_reader','code_39_reader','code_39_vin_reader',
+          'ean_reader','ean_8_reader','upc_reader',
+          'codabar_reader','i2of5_reader','2of5_reader'
+        ],
+        multiple:false
+      },
+      locate:true,
+      numOfWorkers:0
+    }, function(err){
+      if(err||!scanOn){ console.warn('Quagga init:',err); return; }
+      quaggaRunning=true;
+      Quagga.start();
+      Quagga.onDetected(function(data){
+        if(!scanOn) return;
+        var raw=data&&data.codeResult&&data.codeResult.code;
+        if(!raw) return;
+        var num=extractNum(raw);
+        if(num) scanSuccess(raw,'Quagga');
+      });
+    });
+  }catch(e){ console.warn('Quagga error:',e); }
 }
 
-function clearRecent(){ recentSearches=[]; localStorage.removeItem('sctr_recent'); renderRecent(); }
-function clearResults(){ document.getElementById('resultsSection').classList.remove('active'); document.getElementById('dniInput').value=''; document.getElementById('alertContainer').innerHTML=''; }
-function showLoading(show){ document.getElementById('loadingOverlay').classList.toggle('active',show); }
-function showAlert(message,type){ let container=document.getElementById('alertContainer'), div=document.createElement('div'); div.className='alert alert-'+type; div.innerHTML=(type==='error'?'⚠️ ':'ℹ️ ')+message; container.appendChild(div); setTimeout(()=>div.remove(),5000); }
-function showModal(icon,title,text){ document.getElementById('modalIcon').textContent=icon; document.getElementById('modalTitle').textContent=title; document.getElementById('modalText').textContent=text; document.getElementById('modalOverlay').classList.add('active'); }
-function closeModal(e){ if(!e||e.target===document.getElementById('modalOverlay')) document.getElementById('modalOverlay').classList.remove('active'); }
-    </script>
+// ═══════════════════════════════════════════════════
+// INIT DEMO DATA
+// ═══════════════════════════════════════════════════
+DB=[
+  {NRO_DOCUMENTO:'77209896',__DOC__:'77209896',TIPO_DOCUMENTO:'DNI',APELLIDOS:'DEMO APELLIDO',NOMBRES:'DEMO NOMBRE',PUESTO_DE_TRABAJO:'Operario',TIPO_DE_PROVEEDOR:'PROV. SERVICIOS PERM. BAJO RIESGO',MOTIVO_INGRESO:'Control Aviar',LUGAR_SITE1:'FUNDOS PIURA',FECHA_INGRESO:46154,FECHA_SALIDA:46174,RAZON_SOCIAL:'EMPRESA DEMO',RUC:'20610610049',CELULAR_EMERGENCIA_EMPRESA:'999000000',INICIO_VIGENCIA_SCTR:46144,FIN_VIGENCIA_SCTR:46900,CORREO_SOLICITANTE_DE_CAMPOSOL:'demo@camposol.com'},
+  {NRO_DOCUMENTO:'70108973',__DOC__:'70108973',TIPO_DOCUMENTO:'DNI',APELLIDOS:'CARRILLO MANTILLA',NOMBRES:'DEYLER ALY',PUESTO_DE_TRABAJO:'SUPERVISOR',TIPO_DE_PROVEEDOR:'PROV. SERVICIOS ALTO RIESGO',MOTIVO_INGRESO:'MANT. NAVE FRUTA FRESCA',LUGAR_SITE1:'PLANTA CHAO',FECHA_INGRESO:46157,FECHA_SALIDA:46174,RAZON_SOCIAL:'CCM REFRIAIRE EIRL',RUC:'20556099180',CELULAR_EMERGENCIA_EMPRESA:'958969004',INICIO_VIGENCIA_SCTR:46143,FIN_VIGENCIA_SCTR:46680,CORREO_SOLICITANTE_DE_CAMPOSOL:'ksantos@camposol.com'},
+  {NRO_DOCUMENTO:'40818833',__DOC__:'40818833',TIPO_DOCUMENTO:'DNI',APELLIDOS:'AGUILAR TELLO',NOMBRES:'GILMER ELADIO',PUESTO_DE_TRABAJO:'CONDUCTOR',TIPO_DE_PROVEEDOR:'PROV. BAJO RIESGO',MOTIVO_INGRESO:'TRANSPORTE',LUGAR_SITE1:'FUNDOS CHAO',FECHA_INGRESO:46144,FECHA_SALIDA:46174,RAZON_SOCIAL:'F.L. NAZARIO',RUC:'10180497116',CELULAR_EMERGENCIA_EMPRESA:'957532677',INICIO_VIGENCIA_SCTR:46100,FIN_VIGENCIA_SCTR:46145,TIPO_LICENCIA:'AIIB',TIPO_VEHICULO:'COMBI',PLACA:'M5W-617'}
+];
+document.getElementById('cnt').textContent=DB.length+' registros (demo)';
+updateAlerts();
+</script>
 </body>
 </html>
